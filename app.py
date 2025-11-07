@@ -76,7 +76,7 @@ LANG = {
         "date": "등록일", "performance_date": "공연 날짜", "cancel": "취소", "title_label": "제목",
         "content_label": "내용", "upload_image": "이미지 업로드", "upload_file": "파일 업로드",
         "submit": "등록", "warning": "제목과 내용을 모두 입력해주세요.", "file_download": "파일 다운로드",
-        "pending": "미정", "est_time": "{hours}h {mins}m"
+        "pending": "미정", "est_time": "{hours}h {mins}m", "new_notice_alert": "따끈한 공지가 도착했어요!"
     },
     "en": {
         "title_base": "Cantata Tour", "caption": "Maharashtra", "tab_notice": "Notice", "tab_map": "Tour Route",
@@ -87,7 +87,7 @@ LANG = {
         "date": "Registered On", "performance_date": "Performance Date", "cancel": "Cancel",
         "title_label": "Title", "content_label": "Content", "upload_image": "Upload Image",
         "upload_file": "Upload File", "submit": "Submit", "warning": "Please enter both title and content.",
-        "file_download": "Download File", "pending": "TBD", "est_time": "{hours}h {mins}m"
+        "file_download": "Download File", "pending": "TBD", "est_time": "{hours}h {mins}m", "new_notice_alert": "Hot new notice arrived!"
     },
     "hi": {
         "title_base": "कांताता टूर", "caption": "महाराष्ट्र", "tab_notice": "सूचना", "tab_map": "टूर मार्ग",
@@ -98,15 +98,16 @@ LANG = {
         "remove": "हटाएं", "date": "तारीख", "performance_date": "प्रदर्शन तिथि", "cancel": "रद्द करें",
         "title_label": "शीर्षक", "content_label": "सामग्री", "upload_image": "छवि अपलोड करें",
         "upload_file": "फ़ाइल अपलोड करें", "submit": "जमा करें", "warning": "शीर्षक और सामग्री दोनों दर्ज करें।",
-        "file_download": "फ़ाइल डाउन로드 करें", "pending": "निर्धारित नहीं", "est_time": "{hours}घं {mins}मि"
+        "file_download": "फ़ाइल डाउन로드 करें", "pending": "निर्धारित नहीं", "est_time": "{hours}घं {mins}मि", "new_notice_alert": "ताज़ा सूचना आई है!"
     }
 }
 
 _ = lambda key: LANG[st.session_state.lang].get(key, key)
 
-# --- 7. 테마 ---
-MERRY_CHRISTMAS_WAV = "UklGRu4FAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA..."
+# --- 7. 크리스마스 캐롤 사운드 (Jingle Bells) ---
+CHRISTMAS_CAROL_WAV = "UklGRu4FAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA..."
 
+# --- 8. 테마 및 알림 슬라이드 ---
 st.markdown(f"""
 <style>
 .stApp {{ background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: #f0f0f0; }}
@@ -122,6 +123,9 @@ st.markdown(f"""
 .popup-content {{ max-width: 280px; text-align: center; color: #e74c3c; line-height: 1.6; padding: 10px; }}
 .popup-content b {{ font-size: 1.3em; }}
 .parallel-text {{ color: #e74c3c; font-weight: bold; font-size: 12px; white-space: nowrap; text-shadow: 0 0 4px white; transform-origin: center; pointer-events: none; }}
+/* 슬라이드 알림 */
+.alert-slide {{ position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #e74c3c; color: white; padding: 12px 30px; border-radius: 50px; font-weight: bold; font-size: 1.1em; z-index: 10000; animation: slide 4s forwards; box-shadow: 0 0 15px rgba(231, 76, 60, 0.8); }}
+@keyframes slide {{ 0% {{ transform: translateX(-50%) translateY(-100px); opacity: 0; }} 10%, 90% {{ transform: translateX(-50%) translateY(0); opacity: 1; }} 100% {{ transform: translateX(-50%) translateY(-100px); opacity: 0; }} }}
 </style>
 <script>
 function createSnowflake() {{
@@ -134,14 +138,14 @@ function createSnowflake() {{
     setTimeout(() => s.remove(), 18000);
 }}
 setInterval(createSnowflake, 400);
-function playMerryChristmas() {{
-    const audio = new Audio('data:audio/wav;base64,{MERRY_CHRISTMAS_WAV}');
+function playChristmasCarol() {{
+    const audio = new Audio('data:audio/wav;base64,{CHRISTMAS_CAROL_WAV}');
     audio.play().catch(() => {{}});
 }}
 </script>
 """, unsafe_allow_html=True)
 
-# --- 8. 타이틀 ---
+# --- 9. 타이틀 ---
 st.markdown(f"""
 <div class="christmas-title">
 <div class="cantata">{_('title_base')}</div>
@@ -150,7 +154,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- 9. 사이드바 ---
+# --- 10. 사이드바 ---
 with st.sidebar:
     lang_options = ["한국어", "English", "हिंदी"]
     lang_map = {"한국어":"ko", "English":"en", "हिंदी":"hi"}
@@ -177,7 +181,7 @@ with st.sidebar:
             st.session_state.admin = False
             st.rerun()
 
-# --- 10. JSON 헬퍼 ---
+# --- 11. JSON 헬퍼 ---
 def load_json(f): 
     try:
         if os.path.exists(f):
@@ -191,7 +195,7 @@ def save_json(f, d):
     with open(f, "w", encoding="utf-8") as file:
         json.dump(d, file, ensure_ascii=False, indent=2)
 
-# --- 11. 초기 도시 ---
+# --- 12. 초기 도시 ---
 DEFAULT_CITIES = [
     {"city": "Mumbai", "venue": "Gateway of India", "seats": "5000", "note": "인도 영화 수도", "google_link": "https://goo.gl/maps/abc123", "indoor": False, "lat": 19.0760, "lon": 72.8777, "perf_date": None, "date": "11/07 02:01"},
     {"city": "Pune", "venue": "Shaniwar Wada", "seats": "3000", "note": "IT 허브", "google_link": "https://goo.gl/maps/def456", "indoor": True, "lat": 18.5204, "lon": 73.8567, "perf_date": None, "date": "11/07 02:01"},
@@ -203,7 +207,7 @@ if not os.path.exists(CITY_FILE):
 
 CITY_COORDS = {c["city"]: (c["lat"], c["lon"]) for c in DEFAULT_CITIES}
 
-# --- 12. 공지 기능 ---
+# --- 13. 공지 기능 ---
 def add_notice(title, content, img=None, file=None):
     img_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{img.name}") if img else None
     file_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{file.name}") if file else None
@@ -241,13 +245,16 @@ def render_notices():
             if new and not st.session_state.admin:
                 st.session_state.seen_notices.append(n["id"])
 
+    # 새로운 공지 알림
     if has_new and not st.session_state.get("sound_played", False):
-        st.markdown("<script>playMerryChristmas();</script>", unsafe_allow_html=True)
+        st.markdown("<script>playChristmasCarol();</script>", unsafe_allow_html=True)
         st.session_state.sound_played = True
+        # 슬라이드 알림
+        st.markdown(f'<div class="alert-slide">{_("new_notice_alert")}</div>', unsafe_allow_html=True)
     elif not has_new:
         st.session_state.sound_played = False
 
-# --- 13. 지도 ---
+# --- 14. 지도 ---
 def render_map():
     st.subheader(_('map_title'))
     PUNE_LAT, PUNE_LON = 18.5204, 73.8567
@@ -274,7 +281,7 @@ def render_map():
         edit_city_name = st.session_state.edit_city
         edit_city = next((c for c in cities if c["city"] == edit_city_name), None)
         if edit_city:
-            with st.expander(f"✏️ {edit_city_name} 수정 중", expanded=True):
+            with st.expander(f"Edit {edit_city_name} 수정 중", expanded=True):
                 with st.form("edit_city_form", clear_on_submit=True):
                     col1, col2 = st.columns(2)
                     with col1:
@@ -358,7 +365,7 @@ def render_map():
         except:
             continue
 
-    # 줌 반응 스크립트 (라벨 가시성)
+    # 줌 반응 스크립트
     label_script = """
     <script>
     const map = window.parent.document.getElementsByClassName('folium-map')[0].firstChild;
@@ -420,7 +427,6 @@ def render_map():
             bearing = degrees(atan2(next_c['lon'] - c['lon'], next_c['lat'] - c['lat']))
             rotate = bearing
 
-            # 라벨 (항상 표시, 줌에 따라 가시성 제어)
             label_opacity = 0.5 if is_past else 1.0
             folium.Marker(
                 [mid_lat, mid_lon],
@@ -434,7 +440,6 @@ def render_map():
                 ''')
             ).add_to(m)
 
-            # 라인: 이전 구간 50% 더 흐림
             line_opacity = 0.5 if is_past else 1.0
             segment_coords = [(c['lat'], c['lon']), (next_c['lat'], next_c['lon'])]
             AntPath(segment_coords, color="#e74c3c", weight=6, opacity=line_opacity, delay=800, dash_array=[20, 30]).add_to(m)
@@ -465,13 +470,20 @@ def render_map():
     if map_html:
         st.components.v1.html(label_script, height=0)
 
-# --- 14. 탭 ---
+# --- 15. 탭 ---
 tab1, tab2 = st.tabs([_("tab_notice"), _("tab_map")])
 
+# 새로운 공지가 있으면 자동으로 공지 탭으로 이동
 if st.session_state.get("new_notice", False):
     st.session_state.active_tab = "공지"
     st.session_state.new_notice = False
     st.rerun()
+
+# 탭 선택 유지
+if st.session_state.active_tab == "공지":
+    tab1.select()
+else:
+    tab2.select()
 
 with tab1:
     if st.session_state.admin:
