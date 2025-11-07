@@ -50,6 +50,8 @@ for k, v in defaults.items():
 _ = lambda key: LANG.get(st.session_state.lang, LANG["ko"]).get(key, key)
 
 # --- 5. 크리스마스 사운드 ---
+# NOTE: The base64 data for the WAV file is likely redacted here.
+# For the app to run locally, this needs to be a valid base64 string of a WAV file.
 CHRISTMAS_CAROL_WAV = "UklGRu4FAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA..."
 
 # --- 6. 테마 & CSS ---
