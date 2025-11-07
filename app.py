@@ -1,7 +1,7 @@
 # app.py - 칸타타 투어 2025 (실제 교통 시간 + 라인 위 평행 텍스트) 🔥
 
 import streamlit as st
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import AntPath
@@ -76,7 +76,8 @@ LANG = {
         "date": "등록일", "performance_date": "공연 날짜", "cancel": "취소", "title_label": "제목",
         "content_label": "내용", "upload_image": "이미지 업로드", "upload_file": "파일 업로드",
         "submit": "등록", "warning": "제목과 내용을 모두 입력해주세요.", "file_download": "파일 다운로드",
-        "pending": "미정", "est_time": "{hours}h {mins}m", "new_notice_alert": "따끈한 공지가 도착했어요!"
+        "pending": "미정", "est_time": "{hours}h {mins}m", "new_notice_alert": "따끈한 공지가 도착했어요!",
+        "today": "오늘", "yesterday": "어제"
     },
     "en": {
         "title_base": "Cantata Tour", "caption": "Maharashtra", "tab_notice": "Notice", "tab_map": "Tour Route",
@@ -87,7 +88,8 @@ LANG = {
         "date": "Registered On", "performance_date": "Performance Date", "cancel": "Cancel",
         "title_label": "Title", "content_label": "Content", "upload_image": "Upload Image",
         "upload_file": "Upload File", "submit": "Submit", "warning": "Please enter both title and content.",
-        "file_download": "Download File", "pending": "TBD", "est_time": "{hours}h {mins}m", "new_notice_alert": "Hot new notice arrived!"
+        "file_download": "Download File", "pending": "TBD", "est_time": "{hours}h {mins}m", "new_notice_alert": "Hot new notice arrived!",
+        "today": "Today", "yesterday": "Yesterday"
     },
     "hi": {
         "title_base": "कांताता टूर", "caption": "महाराष्ट्र", "tab_notice": "सूचना", "tab_map": "टूर मार्ग",
@@ -98,7 +100,8 @@ LANG = {
         "remove": "हटाएं", "date": "तारीख", "performance_date": "प्रदर्शन तिथि", "cancel": "रद्द करें",
         "title_label": "शीर्षक", "content_label": "सामग्री", "upload_image": "छवि अपलोड करें",
         "upload_file": "फ़ाइल अपलोड करें", "submit": "जमा करें", "warning": "शीर्षक और सामग्री दोनों दर्ज करें।",
-        "file_download": "फ़ाइल डाउन로드 करें", "pending": "निर्धारित नहीं", "est_time": "{hours}घं {mins}मि", "new_notice_alert": "ताज़ा सूचना आई है!"
+        "file_download": "फ़ाइल डाउन로드 करें", "pending": "निर्धारित नहीं", "est_time": "{hours}घं {mins}मि", "new_notice_alert": "ताज़ा सूचना आई है!",
+        "today": "आज", "yesterday": "कल"
     }
 }
 
@@ -208,6 +211,21 @@ if not os.path.exists(CITY_FILE):
 CITY_COORDS = {c["city"]: (c["lat"], c["lon"]) for c in DEFAULT_CITIES}
 
 # --- 13. 공지 기능 ---
+def format_notice_date(date_str):
+    """공지 날짜를 '오늘', '어제', 또는 원래 형식으로 변환"""
+    try:
+        notice_date = datetime.strptime(date_str.split()[0], "%m/%d").replace(year=datetime.now().year)
+        today = date.today()
+        yesterday = today - timedelta(days=1)
+        if notice_date.date() == today:
+            return _("today")
+        elif notice_date.date() == yesterday:
+            return _("yesterday")
+        else:
+            return date_str
+    except:
+        return date_str
+
 def add_notice(title, content, img=None, file=None):
     img_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{img.name}") if img else None
     file_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{file.name}") if file else None
@@ -230,9 +248,11 @@ def render_notices():
     for i, n in enumerate(data):
         new = n["id"] not in st.session_state.seen_notices and not st.session_state.admin
         if new: has_new = True
-        title = f"{n['date']} | {n['title']}"
+        display_date = format_notice_date(n['date'])
+        title = f"{display_date} | {n['title']}"
         if new: title += ' <span class="new-badge">NEW</span>'
 
+        # 공지 expander (탭 전환 시 접힘 유지)
         with st.expander(title, expanded=False):
             st.markdown(n["content"])
             if n.get("image") and os.path.exists(n["image"]): st.image(n["image"], use_container_width=True)
@@ -281,7 +301,7 @@ def render_map():
         edit_city_name = st.session_state.edit_city
         edit_city = next((c for c in cities if c["city"] == edit_city_name), None)
         if edit_city:
-            with st.expander(f"✏️ {edit_city_name} 수정 중", expanded=True):
+            with st.expander(f"Edit {edit_city_name} 수정 중", expanded=True):
                 with st.form("edit_city_form", clear_on_submit=True):
                     col1, col2 = st.columns(2)
                     with col1:
@@ -444,7 +464,7 @@ def render_map():
             segment_coords = [(c['lat'], c['lon']), (next_c['lat'], next_c['lon'])]
             AntPath(segment_coords, color="#e74c3c", weight=6, opacity=line_opacity, delay=800, dash_array=[20, 30]).add_to(m)
 
-        # 도시 정보 expander (기본 접힘)
+        # 도시 정보 expander (탭 전환 시 접힘)
         with st.expander(f"{c['city']} | {display_date}", expanded=False):
             st.write(f"등록일: {c.get('date', '—')}")
             st.write(f"공연 날짜: {display_date}")
@@ -473,11 +493,19 @@ def render_map():
 # --- 15. 탭 ---
 tab1, tab2 = st.tabs([_("tab_notice"), _("tab_map")])
 
-# 새로운 공지 → 공지 탭으로 이동
+# 탭 전환 시 expander 초기화
+if st.session_state.active_tab == "공지":
+    tab1.select()
+    st.session_state.expanded = {}
+elif st.session_state.active_tab == "투어 경로":
+    tab2.select()
+    st.session_state.expanded = {}
+
+# 새로운 공지 → 공지 탭으로 이동 + expander 초기화
 if st.session_state.get("new_notice", False):
     st.session_state.active_tab = "공지"
     st.session_state.new_notice = False
-    st.session_state.expanded = {}  # expander 초기화
+    st.session_state.expanded = {}
     st.rerun()
 
 with tab1:
@@ -493,6 +521,16 @@ with tab1:
                 else:
                     st.warning(_("warning"))
     render_notices()
+    # 탭 전환 버튼
+    if st.button(_("tab_map")):
+        st.session_state.active_tab = "투어 경로"
+        st.session_state.expanded = {}
+        st.rerun()
 
 with tab2:
     render_map()
+    # 탭 전환 버튼
+    if st.button(_("tab_notice")):
+        st.session_state.active_tab = "공지"
+        st.session_state.expanded = {}
+        st.rerun()
