@@ -281,7 +281,7 @@ def render_map():
         edit_city_name = st.session_state.edit_city
         edit_city = next((c for c in cities if c["city"] == edit_city_name), None)
         if edit_city:
-            with st.expander(f"Edit {edit_city_name} 수정 중", expanded=True):
+            with st.expander(f"✏️ {edit_city_name} 수정 중", expanded=True):
                 with st.form("edit_city_form", clear_on_submit=True):
                     col1, col2 = st.columns(2)
                     with col1:
@@ -365,7 +365,7 @@ def render_map():
         except:
             continue
 
-    # 줌 반응 스크립트
+    # 줌 반응 스크립트 (라벨 가시성)
     label_script = """
     <script>
     const map = window.parent.document.getElementsByClassName('folium-map')[0].firstChild;
@@ -444,8 +444,8 @@ def render_map():
             segment_coords = [(c['lat'], c['lon']), (next_c['lat'], next_c['lon'])]
             AntPath(segment_coords, color="#e74c3c", weight=6, opacity=line_opacity, delay=800, dash_array=[20, 30]).add_to(m)
 
-        # 도시 정보 expander
-        with st.expander(f"{c['city']} | {display_date}"):
+        # 도시 정보 expander (기본 접힘)
+        with st.expander(f"{c['city']} | {display_date}", expanded=False):
             st.write(f"등록일: {c.get('date', '—')}")
             st.write(f"공연 날짜: {display_date}")
             st.write(f"장소: {c.get('venue', '—')}")
@@ -473,17 +473,12 @@ def render_map():
 # --- 15. 탭 ---
 tab1, tab2 = st.tabs([_("tab_notice"), _("tab_map")])
 
-# 새로운 공지가 있으면 자동으로 공지 탭으로 이동
+# 새로운 공지 → 공지 탭으로 이동
 if st.session_state.get("new_notice", False):
     st.session_state.active_tab = "공지"
     st.session_state.new_notice = False
+    st.session_state.expanded = {}  # expander 초기화
     st.rerun()
-
-# 탭 선택 유지
-if st.session_state.active_tab == "공지":
-    tab1.select()
-else:
-    tab2.select()
 
 with tab1:
     if st.session_state.admin:
