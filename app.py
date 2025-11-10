@@ -963,4 +963,346 @@ with tab2:
                             updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]))
                             
                             try:
-                                initial_date = datetime.strptime(item.get('date', '202
+                                initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
+                            except ValueError:
+                                initial_date = date.today()
+                                
+                            updated_date = col_ud.date_input(_("date"), value=initial_date)
+                            updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'))
+                            
+                            col_ul, col_us, col_ug, col_up = st.columns(4) 
+                            current_map_type = item.get('type', 'outdoor')
+                            current_map_index = 0 if current_map_type == "indoor" else 1
+                            map_type_list = list(type_options_map_rev.values())
+                            updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
+                            updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
+                            
+                            seats_value = item.get('seats', '0')
+                            updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50)
+                            updated_google = col_ug.text_input(_("google_link"), value=item.get('google_link', ''))
+
+                            updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5)
+
+                            updated_note = st.text_area(_("note"), value=item.get('note'))
+                            
+                            if st.form_submit_button(_("update")):
+                                for idx, s in enumerate(tour_schedule):
+                                    if s.get('id') == item_id:
+                                        coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
+                                        
+                                        tour_schedule[idx] = {
+                                            "id": item_id,
+                                            "city": updated_city,
+                                            "venue": updated_venue,
+                                            "lat": coords["lat"],
+                                            "lon": coords["lon"],
+                                            "date": updated_date.strftime("%Y-%m-%d"),
+                                            "type": updated_type,
+                                            "seats": str(updated_seats),
+                                            "note": updated_note,
+                                            "google_link": updated_google,
+                                            "probability": updated_probability, 
+                                            "reg_date": s.get('reg_date', datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S"))
+                                        }
+                                        save_json(CITY_FILE, tour_schedule)
+                                        st.session_state[f"edit_mode_{item_id}"] = False
+                                        st.toast(_("schedule_upd_success"), icon='👍')
+                                        safe_rerun()
+                                        break
+                                
+                    if not st.session_state.get(f"edit_mode_{item_id}"):
+                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} ({item.get('reg_date', '')})")
+                        st.markdown(f"**{_('venue')}:** {item.get('venue', 'N/A')}")
+                        st.markdown(f"**{_('seats')}:** {item.get('seats', 'N/A')}")
+                        st.markdown(f"**{_('type')}:** {translated_type}")
+                        st.markdown(f"**{_('probability')}:** {probability_val}%") 
+                        if item.get('google_link'):
+                            google_link_url = item['google_link']
+                            st.markdown(f"**{_('google_link')}:** [{_('google_link')}]({google_link_url})")
+                        st.markdown(f"**{_('note')}:** {item.get('note', 'N/A')}")
+        else:
+            st.info(_("no_schedule"))
+
+    # --- 지도 표시 (사용자 & 관리자 공통) ---
+    current_date = date.today()
+    schedule_for_map = sorted([
+        s for s in tour_schedule 
+        if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')
+    ], key=lambda x: x['date'])
+    
+    AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
+    start_coords = [AURANGABAD_COORDS['lat'], AURANGABAD_COORDS['lon']]
+    
+    m = folium.Map(location=start_coords, zoom_start=8)
+    locations = []
+    
+    for item in schedule_for_map:
+        lat = item['lat']
+        lon = item['lon']
+        date_str = item['date']
+        
+        try:
+            event_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            event_date = current_date + timedelta(days=365)
+        
+        is_past = event_date < current_date
+        
+        icon_color = '#BB3333'
+        opacity_val = 0.25 if is_past else 1.0
+        
+        type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+        map_type_icon = '🏠' if item.get('type') == 'indoor' else '🌳'
+        probability_val = item.get('probability', 100)
+        
+        city_name_display = item.get('city', 'N/A')
+        red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
+        
+        bar_color = "red" if probability_val < 50 else "gold" if probability_val < 90 else "#66BB66"
+        
+        prob_bar_html = f"""
+        <div style="margin-top: 5px;">
+            <b>{_('probability')}:</b>
+            <div style="width: 100%; height: 10px; background-color: #333; border-radius: 5px; overflow: hidden; margin-top: 3px;">
+                <div style="width: {probability_val}%; height: 100%; background-color: {bar_color};"></div>
+            </div>
+            <span style="font-size: 12px; font-weight: bold; color: {bar_color};">{probability_val}%</span>
+        </div>
+        """
+        
+        popup_html = f"""
+        <div style="color: #FAFAFA; background-color: #1A1A1A; padding: 10px; border-radius: 8px;">
+            <b>{_('city')}:</b> {red_city_name}<br>
+            <b>{_('date')}:</b> {date_str}<br>
+            <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
+            <b>{_('type')}:</b> {map_type_icon} {translated_type}<br>
+            {prob_bar_html}
+        """
+        
+        if item.get('google_link'):
+            google_link_url = item['google_link'] 
+            popup_html += f'<a href="{google_link_url}" target="_blank" style="color: #FFD700; text-decoration: none; display: block; margin-top: 5px;">{_("google_link")}</a>'
+        
+        popup_html += "</div>"
+        
+        city_initial = item.get('city', 'A')[0]
+        marker_icon_html = f"""
+            <div style="
+                transform: scale(0.666); 
+                opacity: {opacity_val};
+                text-align: center;
+                white-space: nowrap;
+            ">
+                <i class="fa fa-map-marker fa-3x" style="color: {icon_color};"></i>
+                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
+            </div>
+        """
+        
+        folium.Marker(
+            [lat, lon],
+            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.DivIcon(
+                icon_size=(30, 45),
+                icon_anchor=(15, 45),
+                html=marker_icon_html
+            )
+        ).add_to(m)
+        
+        locations.append([lat, lon])
+
+    # 4. AntPath (경로 애니메이션) - 과거/미래 분리 및 스타일 적용
+    if len(locations) > 1:
+        current_index = -1
+        for i, item in enumerate(schedule_for_map):
+            try:
+                event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
+                if event_date >= current_date:
+                    current_index = i
+                    break
+            except ValueError:
+                continue
+        
+        if current_index == -1: 
+            past_segments = locations
+            future_segments = []
+        elif current_index == 0: 
+            past_segments = []
+            future_segments = locations
+        else: 
+            past_segments = locations[:current_index + 1]
+            future_segments = locations[current_index:]
+
+        # 지난 경로: 25% 투명도의 빨간색 선
+        if len(past_segments) > 1:
+            folium.PolyLine(
+                locations=past_segments,
+                color="#BB3333",
+                weight=5,
+                opacity=0.25, # 25% 투명도
+                tooltip=_("past_route")
+            ).add_to(m)
+            
+        # 미래 경로: AntPath 애니메이션 및 툴팁
+        if len(future_segments) > 1:
+            AntPath(
+                future_segments, 
+                use="regular", 
+                dash_array='30, 20', 
+                color='#BB3333', 
+                weight=5, 
+                opacity=0.8,
+                options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"} 
+            ).add_to(m)
+
+            # 세그먼트별 툴팁 (거리/시간)
+            for i in range(len(future_segments) - 1):
+                p1 = future_segments[i]
+                p2 = future_segments[i+1]
+                
+                segment_info = calculate_distance_and_time(p1, p2)
+                
+                folium.PolyLine(
+                    locations=[p1, p2],
+                    color="transparent", 
+                    weight=15, 
+                    opacity=0, 
+                    tooltip=folium.Tooltip(
+                        segment_info, 
+                        permanent=False, 
+                        direction="top", 
+                        sticky=True,
+                        style="background-color: #2D2D2D; color: #FAFAFA; padding: 5px; border-radius: 5px;"
+                    )
+                ).add_to(m)
+            
+        elif locations:
+            try:
+                single_item_date = datetime.strptime(schedule_for_map[0]['date'], "%Y-%m-%d").date()
+                single_is_past = single_item_date < current_date
+            except ValueError:
+                single_is_past = False
+                
+            folium.Circle(
+                location=locations[0],
+                radius=1000,
+                color='#BB3333',
+                fill=True,
+                fill_color='#BB3333',
+                fill_opacity=0.25 if single_is_past else 0.8,
+                tooltip=_("single_location")
+            ).add_to(m)
+
+    # 지도 표시
+    st_folium(m, width=1000, height=600)
+
+
+# --- CSS 적용 (최하단에 위치시켜야 함) ---
+st.markdown(f"""
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* Snowfall animation setup */
+@keyframes snowfall {{
+    0% {{ background-position: 0% 0%, 0% 0%, 0% 0% }}
+    100% {{ background-position: 500px 1000px, 250px 500px, -100px 300px }}
+}}
+
+/* Dark Christmas Theme Colors */
+:root {{
+    --bg-dark: #1A1A1A; /* Deep Dark */
+    --accent-red: #BB3333; /* Burgundy Red */
+    --accent-gold: #FFD700; /* Gold/Yellow */
+    --text-light: #FAFAFA; /* Light Text */
+    --form-bg: #2D2D2D;
+    --expander-bg: #333333;
+}}
+
+/* Snow effect applied to the root container */
+.stApp {{
+    background-color: var(--bg-dark); 
+    color: var(--text-light); 
+    font-family: Arial, sans-serif;
+    
+    /* Snow effect layer */
+    background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='none'/><circle cx='5' cy='5' r='1.5' fill='rgba(255, 255, 255, 0.9)'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='none'/><circle cx='10' cy='10' r='2' fill='rgba(255, 255, 255, 0.7)'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='none'/><circle cx='15' cy='15' r='2.5' fill='rgba(255, 255, 255, 0.5)'/></svg>");
+    
+    /* Snow positioning and size */
+    background-size: 500px 500px, 250px 250px, 150px 150px; 
+    
+    /* Snow animation speed (slower for gentle fall) */
+    animation: snowfall 40s linear infinite; 
+}}
+
+/* Header Styling */
+.main-title {{
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}}
+
+/* 탭 배경색/글꼴색 */
+.stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {{
+    color: var(--text-light) !important;
+}}
+
+/* 폼 배경색 */
+.stForm {{
+    padding: 15px;
+    border: 1px solid #444444; /* Darker border */
+    border-radius: 10px;
+    background-color: var(--form-bg);
+}}
+
+/* Expander 배경색 */
+.streamlit-expanderHeader {{
+    background-color: var(--expander-bg);
+    color: var(--text-light);
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--accent-red); /* Subtle Red underline */
+}}
+
+/* 버튼 스타일 */
+.stButton>button {{
+    background-color: var(--accent-red); /* Burgundy Red */
+    color: white;
+    border-radius: 8px;
+    border: 1px solid var(--accent-red);
+    padding: 8px 16px;
+    transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}}
+.stButton>button:hover {{
+    background-color: #CC4444; /* Slightly brighter red */
+    border-color: #FFD700; /* Gold hover effect */
+}}
+
+/* Custom Content Box Style (공지/포스트 내용 박스) */
+.notice-content-box {{
+    border-left: 5px solid var(--accent-gold); /* Gold accent for info box */
+    background-color: rgba(255, 215, 0, 0.05); /* Very subtle light gold background */
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #FAFAFA;
+}}
+
+/* Streamlit Alert 메시지 숨기기 (사용자 요청 반영: 모든 상태 알림 숨김) */
+/* [FIX] 삭제 확인 모달은 보여주기 위해 st.error와 st.warning은 숨기지 않습니다. */
+
+
+/* Selectbox/Input Label Color */
+.stSelectbox>label, .stTextInput>label, .stTextArea>label, .stNumberInput>label {{
+    color: var(--text-light);
+}}
+.stSelectbox div[data-baseweb="select"] {{
+    background-color: #333333;
+}}
+</style>
+""", unsafe_allow_html=True)
