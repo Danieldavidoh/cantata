@@ -1,10146 +1,1255 @@
+import json
+import os
+import uuid
+import base64
+import random
+import streamlit as st
+from datetime import datetime, date, timedelta
+import folium
+from streamlit_folium import st_folium
+from folium.plugins import AntPath
+from pytz import timezone
+from math import radians, cos, sin, asin, sqrt # <-- 거리 계산을 위해 추가
 
-[     UTC     ] Logs for cantata-5p3ekcbnrzpky5ldmme8md.streamlit.app/
-────────────────────────────────────────────────────────────────────────────────────────
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:14.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:14.810 503 GET /script-health-check (127.0.0.1) 109.07ms
-2025-11-07 10:23:19.728 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:19.729 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:19.829 503 GET /script-health-check (127.0.0.1) 109.60ms
-2025-11-07 10:23:24.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:24.803 503 GET /script-health-check (127.0.0.1) 105.87ms
-2025-11-07 10:23:29.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:29.715 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:29.814 503 GET /script-health-check (127.0.0.1) 110.46ms
-2025-11-07 10:23:34.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:34.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:34.816 503 GET /script-health-check (127.0.0.1) 112.16ms
-2025-11-07 10:23:39.734 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:39.736 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:39.837 503 GET /script-health-check (127.0.0.1) 110.96ms
-2025-11-07 10:23:44.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:44.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:44.806 503 GET /script-health-check (127.0.0.1) 109.83ms
-2025-11-07 10:23:49.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:49.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:49.816 503 GET /script-health-check (127.0.0.1) 114.02ms
-2025-11-07 10:23:54.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:54.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:54.816 503 GET /script-health-check (127.0.0.1) 108.69ms
-2025-11-07 10:23:59.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:23:59.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:23:59.810 503 GET /script-health-check (127.0.0.1) 109.18ms
-2025-11-07 10:24:04.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:04.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:04.810 503 GET /script-health-check (127.0.0.1) 110.32ms
-2025-11-07 10:24:09.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:09.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:09.810 503 GET /script-health-check (127.0.0.1) 109.59ms
-2025-11-07 10:24:14.717 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:14.719 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:14.818 503 GET /script-health-check (127.0.0.1) 109.36ms
-2025-11-07 10:24:19.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:19.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:19.811 503 GET /script-health-check (127.0.0.1) 109.84ms
-2025-11-07 10:24:24.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:24.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:24.814 503 GET /script-health-check (127.0.0.1) 109.68ms
-2025-11-07 10:24:29.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:29.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:29.817 503 GET /script-health-check (127.0.0.1) 113.96ms
-2025-11-07 10:24:34.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:34.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:34.815 503 GET /script-health-check (127.0.0.1) 110.23ms
-2025-11-07 10:24:39.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:39.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:39.807 503 GET /script-health-check (127.0.0.1) 110.38ms
-2025-11-07 10:24:44.730 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:44.732 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:44.831 503 GET /script-health-check (127.0.0.1) 109.23ms
-2025-11-07 10:24:49.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:49.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:49.815 503 GET /script-health-check (127.0.0.1) 109.54ms
-2025-11-07 10:24:54.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:54.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:54.807 503 GET /script-health-check (127.0.0.1) 105.42ms
-2025-11-07 10:24:59.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:24:59.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:24:59.814 503 GET /script-health-check (127.0.0.1) 110.34ms
-2025-11-07 10:25:04.719 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:04.721 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:04.819 503 GET /script-health-check (127.0.0.1) 109.17ms
-2025-11-07 10:25:09.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:09.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:09.813 503 GET /script-health-check (127.0.0.1) 109.30ms
-2025-11-07 10:25:14.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:14.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:14.811 503 GET /script-health-check (127.0.0.1) 109.22ms
-2025-11-07 10:25:19.718 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:19.720 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:19.817 503 GET /script-health-check (127.0.0.1) 109.13ms
-2025-11-07 10:25:24.726 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:24.728 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:24.828 503 GET /script-health-check (127.0.0.1) 111.74ms
-2025-11-07 10:25:29.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:29.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:29.816 503 GET /script-health-check (127.0.0.1) 109.58ms
-2025-11-07 10:25:34.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:34.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:34.801 503 GET /script-health-check (127.0.0.1) 101.79ms
-2025-11-07 10:25:39.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:39.800 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:25:44.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:44.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:44.809 503 GET /script-health-check (127.0.0.1) 101.34ms
-2025-11-07 10:25:49.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:49.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:49.805 503 GET /script-health-check (127.0.0.1) 101.90ms
-2025-11-07 10:25:54.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:54.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:54.803 503 GET /script-health-check (127.0.0.1) 102.19ms
-2025-11-07 10:25:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:25:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:25:59.801 503 GET /script-health-check (127.0.0.1) 101.99ms
-2025-11-07 10:26:04.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:04.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:04.802 503 GET /script-health-check (127.0.0.1) 101.56ms
-2025-11-07 10:26:09.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:09.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:09.800 503 GET /script-health-check (127.0.0.1) 102.18ms
-2025-11-07 10:26:14.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:14.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:14.800 503 GET /script-health-check (127.0.0.1) 101.62ms
-2025-11-07 10:26:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:19.799 503 GET /script-health-check (127.0.0.1) 101.52ms
-2025-11-07 10:26:24.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:24.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:24.808 503 GET /script-health-check (127.0.0.1) 102.39ms
-2025-11-07 10:26:29.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:29.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:29.800 503 GET /script-health-check (127.0.0.1) 102.07ms
-2025-11-07 10:26:34.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:34.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:34.802 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:26:39.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:39.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:39.803 503 GET /script-health-check (127.0.0.1) 102.27ms
-2025-11-07 10:26:44.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:44.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:44.798 503 GET /script-health-check (127.0.0.1) 102.29ms
-2025-11-07 10:26:49.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:49.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:49.801 503 GET /script-health-check (127.0.0.1) 102.01ms
-2025-11-07 10:26:54.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:54.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:54.804 503 GET /script-health-check (127.0.0.1) 102.04ms
-2025-11-07 10:26:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:26:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:26:59.800 503 GET /script-health-check (127.0.0.1) 101.74ms
-2025-11-07 10:27:04.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:04.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:04.798 503 GET /script-health-check (127.0.0.1) 101.85ms
-2025-11-07 10:27:09.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:09.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:09.800 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:27:14.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:14.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:14.803 503 GET /script-health-check (127.0.0.1) 102.09ms
-2025-11-07 10:27:19.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:19.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:19.802 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:27:24.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:24.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:24.806 503 GET /script-health-check (127.0.0.1) 101.79ms
-2025-11-07 10:27:29.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:29.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:29.803 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:27:34.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:34.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:34.803 503 GET /script-health-check (127.0.0.1) 102.03ms
-2025-11-07 10:27:39.720 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:39.722 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:39.816 503 GET /script-health-check (127.0.0.1) 101.47ms
-2025-11-07 10:27:44.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:44.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:44.800 503 GET /script-health-check (127.0.0.1) 101.66ms
-2025-11-07 10:27:49.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:49.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:49.803 503 GET /script-health-check (127.0.0.1) 101.54ms
-2025-11-07 10:27:54.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:54.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:54.806 503 GET /script-health-check (127.0.0.1) 101.96ms
-2025-11-07 10:27:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:27:59.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:27:59.801 503 GET /script-health-check (127.0.0.1) 102.37ms
-2025-11-07 10:28:04.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:04.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:04.802 503 GET /script-health-check (127.0.0.1) 101.97ms
-2025-11-07 10:28:09.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:09.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:09.799 503 GET /script-health-check (127.0.0.1) 101.64ms
-2025-11-07 10:28:14.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:14.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:14.800 503 GET /script-health-check (127.0.0.1) 101.57ms
-2025-11-07 10:28:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:19.799 503 GET /script-health-check (127.0.0.1) 101.45ms
-2025-11-07 10:28:24.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:24.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:24.799 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:28:29.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:29.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:29.802 503 GET /script-health-check (127.0.0.1) 102.53ms
-2025-11-07 10:28:34.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:34.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:34.804 503 GET /script-health-check (127.0.0.1) 102.07ms
-2025-11-07 10:28:39.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:39.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:39.808 503 GET /script-health-check (127.0.0.1) 102.40ms
-2025-11-07 10:28:44.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:44.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:44.806 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:28:49.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:49.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:49.804 503 GET /script-health-check (127.0.0.1) 102.42ms
-2025-11-07 10:28:54.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:54.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:54.803 503 GET /script-health-check (127.0.0.1) 102.10ms
-2025-11-07 10:28:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:28:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:28:59.800 503 GET /script-health-check (127.0.0.1) 102.20ms
-2025-11-07 10:29:04.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:04.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:04.809 503 GET /script-health-check (127.0.0.1) 102.39ms
-2025-11-07 10:29:09.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:09.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:09.800 503 GET /script-health-check (127.0.0.1) 102.19ms
-2025-11-07 10:29:14.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:14.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:14.798 503 GET /script-health-check (127.0.0.1) 101.48ms
-2025-11-07 10:29:19.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:19.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:19.803 503 GET /script-health-check (127.0.0.1) 101.29ms
-2025-11-07 10:29:24.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:24.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:24.800 503 GET /script-health-check (127.0.0.1) 101.42ms
-2025-11-07 10:29:29.731 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:29.733 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:29.828 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:29:34.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:34.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:34.806 503 GET /script-health-check (127.0.0.1) 104.66ms
-2025-11-07 10:29:39.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:39.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:39.804 503 GET /script-health-check (127.0.0.1) 101.79ms
-2025-11-07 10:29:44.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:44.802 503 GET /script-health-check (127.0.0.1) 102.05ms
-2025-11-07 10:29:49.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:49.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:49.802 503 GET /script-health-check (127.0.0.1) 101.87ms
-2025-11-07 10:29:54.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:54.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:54.799 503 GET /script-health-check (127.0.0.1) 101.45ms
-2025-11-07 10:29:59.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:29:59.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:29:59.802 503 GET /script-health-check (127.0.0.1) 101.85ms
-2025-11-07 10:30:04.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:04.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:04.800 503 GET /script-health-check (127.0.0.1) 101.68ms
-2025-11-07 10:30:09.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:09.804 503 GET /script-health-check (127.0.0.1) 101.37ms
-2025-11-07 10:30:14.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:14.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:14.799 503 GET /script-health-check (127.0.0.1) 101.72ms
-2025-11-07 10:30:19.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:19.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:19.799 503 GET /script-health-check (127.0.0.1) 102.10ms
-2025-11-07 10:30:24.723 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:24.725 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:24.820 503 GET /script-health-check (127.0.0.1) 101.87ms
-2025-11-07 10:30:29.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:29.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:29.804 503 GET /script-health-check (127.0.0.1) 101.45ms
-2025-11-07 10:30:34.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:34.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:34.802 503 GET /script-health-check (127.0.0.1) 103.00ms
-2025-11-07 10:30:39.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:39.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:39.803 503 GET /script-health-check (127.0.0.1) 102.27ms
-2025-11-07 10:30:44.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:44.715 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:44.809 503 GET /script-health-check (127.0.0.1) 101.55ms
-2025-11-07 10:30:49.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:49.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:49.803 503 GET /script-health-check (127.0.0.1) 101.65ms
-2025-11-07 10:30:54.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:54.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:54.805 503 GET /script-health-check (127.0.0.1) 101.14ms
-2025-11-07 10:30:59.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:30:59.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:30:59.797 503 GET /script-health-check (127.0.0.1) 101.53ms
-2025-11-07 10:31:04.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:04.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:04.803 503 GET /script-health-check (127.0.0.1) 102.52ms
-2025-11-07 10:31:09.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:09.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:09.801 503 GET /script-health-check (127.0.0.1) 101.47ms
-2025-11-07 10:31:14.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:14.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:14.801 503 GET /script-health-check (127.0.0.1) 101.96ms
-2025-11-07 10:31:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:19.800 503 GET /script-health-check (127.0.0.1) 101.95ms
-2025-11-07 10:31:24.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:24.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:24.801 503 GET /script-health-check (127.0.0.1) 101.83ms
-2025-11-07 10:31:29.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:29.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:29.802 503 GET /script-health-check (127.0.0.1) 102.14ms
-2025-11-07 10:31:34.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:34.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:34.804 503 GET /script-health-check (127.0.0.1) 102.07ms
-2025-11-07 10:31:39.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:39.799 503 GET /script-health-check (127.0.0.1) 102.01ms
-2025-11-07 10:31:44.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:44.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:44.802 503 GET /script-health-check (127.0.0.1) 101.82ms
-2025-11-07 10:31:49.700 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:49.701 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:49.797 503 GET /script-health-check (127.0.0.1) 101.67ms
-2025-11-07 10:31:54.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:54.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:54.802 503 GET /script-health-check (127.0.0.1) 101.88ms
-2025-11-07 10:31:59.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:31:59.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:31:59.803 503 GET /script-health-check (127.0.0.1) 101.63ms
-2025-11-07 10:32:04.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:04.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:04.806 503 GET /script-health-check (127.0.0.1) 101.34ms
-2025-11-07 10:32:09.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:09.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:09.807 503 GET /script-health-check (127.0.0.1) 101.98ms
-2025-11-07 10:32:14.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:14.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:14.805 503 GET /script-health-check (127.0.0.1) 101.66ms
-2025-11-07 10:32:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:19.799 503 GET /script-health-check (127.0.0.1) 101.87ms
-2025-11-07 10:32:24.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:24.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:24.805 503 GET /script-health-check (127.0.0.1) 102.25ms
-2025-11-07 10:32:29.725 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:29.726 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:29.821 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:32:34.718 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:34.720 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:34.813 503 GET /script-health-check (127.0.0.1) 101.95ms
-2025-11-07 10:32:39.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:39.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:39.805 503 GET /script-health-check (127.0.0.1) 101.75ms
-2025-11-07 10:32:44.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:44.803 503 GET /script-health-check (127.0.0.1) 101.96ms
-2025-11-07 10:32:49.732 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:49.734 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:49.828 503 GET /script-health-check (127.0.0.1) 101.70ms
-2025-11-07 10:32:54.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:54.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:54.801 503 GET /script-health-check (127.0.0.1) 101.94ms
-2025-11-07 10:32:59.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:32:59.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:32:59.798 503 GET /script-health-check (127.0.0.1) 101.76ms
-2025-11-07 10:33:04.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:04.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:04.808 503 GET /script-health-check (127.0.0.1) 102.18ms
-2025-11-07 10:33:09.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:09.803 503 GET /script-health-check (127.0.0.1) 101.28ms
-2025-11-07 10:33:14.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:14.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:14.799 503 GET /script-health-check (127.0.0.1) 102.26ms
-2025-11-07 10:33:19.724 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:19.725 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:19.819 503 GET /script-health-check (127.0.0.1) 102.48ms
-2025-11-07 10:33:24.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:24.803 503 GET /script-health-check (127.0.0.1) 101.95ms
-2025-11-07 10:33:29.727 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:29.728 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:29.824 503 GET /script-health-check (127.0.0.1) 102.09ms
-2025-11-07 10:33:34.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:34.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:34.804 503 GET /script-health-check (127.0.0.1) 102.15ms
-2025-11-07 10:33:39.700 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:39.702 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:39.797 503 GET /script-health-check (127.0.0.1) 102.24ms
-2025-11-07 10:33:44.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:44.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:44.806 503 GET /script-health-check (127.0.0.1) 102.19ms
-2025-11-07 10:33:49.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:49.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:49.799 503 GET /script-health-check (127.0.0.1) 102.41ms
-2025-11-07 10:33:54.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:54.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:54.799 503 GET /script-health-check (127.0.0.1) 101.25ms
-2025-11-07 10:33:59.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:33:59.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:33:59.812 503 GET /script-health-check (127.0.0.1) 102.00ms
-2025-11-07 10:34:04.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:04.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:04.806 503 GET /script-health-check (127.0.0.1) 101.45ms
-2025-11-07 10:34:09.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:09.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:09.800 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:34:14.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:14.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:14.803 503 GET /script-health-check (127.0.0.1) 102.43ms
-2025-11-07 10:34:19.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:19.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:19.802 503 GET /script-health-check (127.0.0.1) 101.41ms
-2025-11-07 10:34:24.724 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:24.726 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:24.821 503 GET /script-health-check (127.0.0.1) 102.10ms
-2025-11-07 10:34:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:29.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:29.801 503 GET /script-health-check (127.0.0.1) 102.51ms
-2025-11-07 10:34:34.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:34.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:34.804 503 GET /script-health-check (127.0.0.1) 102.09ms
-2025-11-07 10:34:39.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:39.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:39.804 503 GET /script-health-check (127.0.0.1) 101.40ms
-2025-11-07 10:34:44.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:44.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:44.805 503 GET /script-health-check (127.0.0.1) 101.78ms
-2025-11-07 10:34:49.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:49.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:49.807 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:34:54.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:54.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:54.804 503 GET /script-health-check (127.0.0.1) 101.90ms
-2025-11-07 10:34:59.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:34:59.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:34:59.807 503 GET /script-health-check (127.0.0.1) 102.37ms
-2025-11-07 10:35:04.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:04.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:04.800 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:35:09.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:09.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:09.800 503 GET /script-health-check (127.0.0.1) 101.46ms
-2025-11-07 10:35:14.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:14.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:14.806 503 GET /script-health-check (127.0.0.1) 102.12ms
-2025-11-07 10:35:19.728 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:19.729 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:19.825 503 GET /script-health-check (127.0.0.1) 102.60ms
-2025-11-07 10:35:24.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:24.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:24.799 503 GET /script-health-check (127.0.0.1) 101.69ms
-2025-11-07 10:35:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:29.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:29.801 503 GET /script-health-check (127.0.0.1) 101.90ms
-2025-11-07 10:35:34.717 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:34.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:34.814 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:35:39.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:39.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:39.806 503 GET /script-health-check (127.0.0.1) 102.46ms
-2025-11-07 10:35:44.726 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:44.727 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:44.822 503 GET /script-health-check (127.0.0.1) 101.67ms
-2025-11-07 10:35:49.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:49.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:49.804 503 GET /script-health-check (127.0.0.1) 102.24ms
-2025-11-07 10:35:54.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:54.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:54.803 503 GET /script-health-check (127.0.0.1) 101.53ms
-2025-11-07 10:35:59.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:35:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:35:59.800 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:36:04.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:04.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:04.813 503 GET /script-health-check (127.0.0.1) 101.84ms
-2025-11-07 10:36:09.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:09.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:09.799 503 GET /script-health-check (127.0.0.1) 102.39ms
-2025-11-07 10:36:14.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:14.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:14.798 503 GET /script-health-check (127.0.0.1) 101.84ms
-2025-11-07 10:36:19.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:19.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:19.801 503 GET /script-health-check (127.0.0.1) 102.41ms
-2025-11-07 10:36:24.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:24.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:24.801 503 GET /script-health-check (127.0.0.1) 101.55ms
-2025-11-07 10:36:29.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:29.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:29.799 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:36:34.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:34.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:34.799 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:36:39.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:39.800 503 GET /script-health-check (127.0.0.1) 101.74ms
-2025-11-07 10:36:44.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:44.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:44.805 503 GET /script-health-check (127.0.0.1) 101.72ms
-2025-11-07 10:36:49.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:49.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:49.801 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:36:54.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:54.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:54.800 503 GET /script-health-check (127.0.0.1) 101.58ms
-2025-11-07 10:36:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:36:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:36:59.800 503 GET /script-health-check (127.0.0.1) 102.19ms
-2025-11-07 10:37:04.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:04.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:04.802 503 GET /script-health-check (127.0.0.1) 101.69ms
-2025-11-07 10:37:09.700 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:09.701 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:09.797 503 GET /script-health-check (127.0.0.1) 102.36ms
-2025-11-07 10:37:14.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:14.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:14.806 503 GET /script-health-check (127.0.0.1) 102.12ms
-2025-11-07 10:37:19.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:19.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:19.803 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:37:24.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:24.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:24.805 503 GET /script-health-check (127.0.0.1) 101.56ms
-2025-11-07 10:37:29.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:29.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:29.798 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:37:34.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:34.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:34.802 503 GET /script-health-check (127.0.0.1) 101.51ms
-2025-11-07 10:37:39.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:39.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:39.805 503 GET /script-health-check (127.0.0.1) 102.02ms
-2025-11-07 10:37:44.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:44.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:44.808 503 GET /script-health-check (127.0.0.1) 101.97ms
-2025-11-07 10:37:49.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:49.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:49.799 503 GET /script-health-check (127.0.0.1) 101.51ms
-2025-11-07 10:37:54.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:54.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:54.798 503 GET /script-health-check (127.0.0.1) 101.64ms
-2025-11-07 10:37:59.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:37:59.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:37:59.800 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:38:04.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:04.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:04.804 503 GET /script-health-check (127.0.0.1) 101.26ms
-2025-11-07 10:38:09.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:09.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:09.805 503 GET /script-health-check (127.0.0.1) 101.96ms
-2025-11-07 10:38:14.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:14.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:14.799 503 GET /script-health-check (127.0.0.1) 101.64ms
-2025-11-07 10:38:19.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:19.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:19.800 503 GET /script-health-check (127.0.0.1) 101.73ms
-2025-11-07 10:38:24.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:24.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:24.801 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:38:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:29.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:29.802 503 GET /script-health-check (127.0.0.1) 101.87ms
-2025-11-07 10:38:34.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:34.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:34.800 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:38:39.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:39.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:39.801 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:38:44.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:44.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:44.800 503 GET /script-health-check (127.0.0.1) 102.40ms
-2025-11-07 10:38:49.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:49.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:49.802 503 GET /script-health-check (127.0.0.1) 101.25ms
-2025-11-07 10:38:54.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:54.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:54.803 503 GET /script-health-check (127.0.0.1) 101.44ms
-2025-11-07 10:38:59.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:38:59.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:38:59.806 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:39:04.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:04.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:04.808 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:39:09.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:09.804 503 GET /script-health-check (127.0.0.1) 102.03ms
-2025-11-07 10:39:14.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:14.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:14.799 503 GET /script-health-check (127.0.0.1) 101.80ms
-2025-11-07 10:39:19.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:19.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:19.803 503 GET /script-health-check (127.0.0.1) 101.73ms
-2025-11-07 10:39:24.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:24.803 503 GET /script-health-check (127.0.0.1) 101.90ms
-2025-11-07 10:39:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:29.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:29.801 503 GET /script-health-check (127.0.0.1) 102.56ms
-2025-11-07 10:39:34.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:34.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:34.803 503 GET /script-health-check (127.0.0.1) 101.58ms
-2025-11-07 10:39:39.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:39.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:39.800 503 GET /script-health-check (127.0.0.1) 101.72ms
-2025-11-07 10:39:44.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:44.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:44.800 503 GET /script-health-check (127.0.0.1) 102.36ms
-2025-11-07 10:39:49.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:49.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:49.802 503 GET /script-health-check (127.0.0.1) 102.30ms
-2025-11-07 10:39:54.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:54.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:54.799 503 GET /script-health-check (127.0.0.1) 101.86ms
-2025-11-07 10:39:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:39:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:39:59.800 503 GET /script-health-check (127.0.0.1) 101.69ms
-2025-11-07 10:40:04.718 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:04.719 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:04.814 503 GET /script-health-check (127.0.0.1) 101.89ms
-2025-11-07 10:40:09.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:09.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:09.812 503 GET /script-health-check (127.0.0.1) 102.35ms
-2025-11-07 10:40:14.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:14.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:14.801 503 GET /script-health-check (127.0.0.1) 101.84ms
-2025-11-07 10:40:19.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:19.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:19.803 503 GET /script-health-check (127.0.0.1) 101.84ms
-2025-11-07 10:40:24.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:24.803 503 GET /script-health-check (127.0.0.1) 102.52ms
-2025-11-07 10:40:29.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:29.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:29.804 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:40:34.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:34.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:34.806 503 GET /script-health-check (127.0.0.1) 101.97ms
-2025-11-07 10:40:39.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:39.800 503 GET /script-health-check (127.0.0.1) 102.57ms
-2025-11-07 10:40:44.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:44.803 503 GET /script-health-check (127.0.0.1) 102.12ms
-2025-11-07 10:40:49.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:49.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:49.800 503 GET /script-health-check (127.0.0.1) 102.64ms
-2025-11-07 10:40:54.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:54.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:54.799 503 GET /script-health-check (127.0.0.1) 101.75ms
-2025-11-07 10:40:59.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:40:59.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:40:59.805 503 GET /script-health-check (127.0.0.1) 102.26ms
-2025-11-07 10:41:04.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:04.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:04.800 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:41:09.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:09.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:09.802 503 GET /script-health-check (127.0.0.1) 102.15ms
-2025-11-07 10:41:14.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:14.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:14.800 503 GET /script-health-check (127.0.0.1) 101.34ms
-2025-11-07 10:41:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:19.800 503 GET /script-health-check (127.0.0.1) 101.64ms
-2025-11-07 10:41:24.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:24.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:24.799 503 GET /script-health-check (127.0.0.1) 101.42ms
-2025-11-07 10:41:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:29.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:29.801 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:41:34.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:34.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:34.808 503 GET /script-health-check (127.0.0.1) 102.03ms
-2025-11-07 10:41:39.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:39.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:39.802 503 GET /script-health-check (127.0.0.1) 101.74ms
-2025-11-07 10:41:44.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:44.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:44.798 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:41:49.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:49.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:49.799 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:41:54.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:54.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:54.812 503 GET /script-health-check (127.0.0.1) 101.61ms
-2025-11-07 10:41:59.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:41:59.702 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:41:59.798 503 GET /script-health-check (127.0.0.1) 101.50ms
-2025-11-07 10:42:04.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:04.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:04.803 503 GET /script-health-check (127.0.0.1) 101.64ms
-2025-11-07 10:42:09.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:09.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:09.803 503 GET /script-health-check (127.0.0.1) 102.23ms
-2025-11-07 10:42:14.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:14.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:14.804 503 GET /script-health-check (127.0.0.1) 102.19ms
-2025-11-07 10:42:19.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:19.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:19.803 503 GET /script-health-check (127.0.0.1) 101.95ms
-2025-11-07 10:42:24.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:24.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:24.804 503 GET /script-health-check (127.0.0.1) 102.16ms
-2025-11-07 10:42:29.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:29.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:29.804 503 GET /script-health-check (127.0.0.1) 102.09ms
-2025-11-07 10:42:34.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:34.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:34.806 503 GET /script-health-check (127.0.0.1) 101.83ms
-2025-11-07 10:42:39.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:39.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:39.807 503 GET /script-health-check (127.0.0.1) 102.18ms
-2025-11-07 10:42:44.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:44.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:44.812 503 GET /script-health-check (127.0.0.1) 102.43ms
-2025-11-07 10:42:49.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:49.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:49.804 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:42:54.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:54.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:54.801 503 GET /script-health-check (127.0.0.1) 101.67ms
-2025-11-07 10:42:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:42:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:42:59.800 503 GET /script-health-check (127.0.0.1) 101.36ms
-2025-11-07 10:43:04.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:04.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:04.803 503 GET /script-health-check (127.0.0.1) 102.42ms
-2025-11-07 10:43:09.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:09.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:09.806 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:43:14.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:14.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:14.807 503 GET /script-health-check (127.0.0.1) 102.16ms
-2025-11-07 10:43:19.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:19.799 503 GET /script-health-check (127.0.0.1) 102.05ms
-2025-11-07 10:43:24.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:24.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:24.803 503 GET /script-health-check (127.0.0.1) 102.15ms
-2025-11-07 10:43:29.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:29.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:29.804 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:43:34.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:34.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:34.801 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:43:39.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:39.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:39.802 503 GET /script-health-check (127.0.0.1) 101.95ms
-2025-11-07 10:43:44.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:44.802 503 GET /script-health-check (127.0.0.1) 102.05ms
-2025-11-07 10:43:49.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:49.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:49.802 503 GET /script-health-check (127.0.0.1) 101.80ms
-2025-11-07 10:43:54.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:54.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:54.805 503 GET /script-health-check (127.0.0.1) 101.31ms
-2025-11-07 10:43:59.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:43:59.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:43:59.800 503 GET /script-health-check (127.0.0.1) 101.59ms
-2025-11-07 10:44:04.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:04.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:04.807 503 GET /script-health-check (127.0.0.1) 102.12ms
-2025-11-07 10:44:09.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:09.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:09.808 503 GET /script-health-check (127.0.0.1) 102.23ms
-2025-11-07 10:44:14.724 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:14.725 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:14.820 503 GET /script-health-check (127.0.0.1) 101.98ms
-2025-11-07 10:44:19.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:19.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:19.809 503 GET /script-health-check (127.0.0.1) 101.94ms
-2025-11-07 10:44:24.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:24.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:24.812 503 GET /script-health-check (127.0.0.1) 102.47ms
-2025-11-07 10:44:29.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:29.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:29.808 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:44:34.720 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:34.722 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:34.816 503 GET /script-health-check (127.0.0.1) 101.52ms
-2025-11-07 10:44:39.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:39.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:39.804 503 GET /script-health-check (127.0.0.1) 102.37ms
-2025-11-07 10:44:44.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:44.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:44.797 503 GET /script-health-check (127.0.0.1) 101.68ms
-2025-11-07 10:44:49.722 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:49.723 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:49.818 503 GET /script-health-check (127.0.0.1) 101.66ms
-2025-11-07 10:44:54.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:54.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:54.800 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:44:59.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:44:59.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:44:59.808 503 GET /script-health-check (127.0.0.1) 102.83ms
-2025-11-07 10:45:04.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:04.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:04.813 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:45:09.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:09.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:09.800 503 GET /script-health-check (127.0.0.1) 102.40ms
-2025-11-07 10:45:14.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:14.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:14.801 503 GET /script-health-check (127.0.0.1) 101.82ms
-2025-11-07 10:45:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:19.800 503 GET /script-health-check (127.0.0.1) 102.29ms
-2025-11-07 10:45:24.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:24.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:24.812 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:45:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:29.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:29.801 503 GET /script-health-check (127.0.0.1) 102.15ms
-2025-11-07 10:45:34.717 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:34.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:34.813 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:45:39.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:39.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:39.801 503 GET /script-health-check (127.0.0.1) 101.96ms
-2025-11-07 10:45:44.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:44.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:44.807 503 GET /script-health-check (127.0.0.1) 102.19ms
-2025-11-07 10:45:49.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:49.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:49.811 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:45:54.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:54.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:54.802 503 GET /script-health-check (127.0.0.1) 101.44ms
-2025-11-07 10:45:59.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:45:59.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:45:59.798 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:46:04.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:04.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:04.797 503 GET /script-health-check (127.0.0.1) 101.71ms
-2025-11-07 10:46:09.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:09.802 503 GET /script-health-check (127.0.0.1) 101.88ms
-2025-11-07 10:46:14.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:14.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:14.798 503 GET /script-health-check (127.0.0.1) 101.88ms
-2025-11-07 10:46:19.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:19.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:19.802 503 GET /script-health-check (127.0.0.1) 101.79ms
-2025-11-07 10:46:24.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:24.801 503 GET /script-health-check (127.0.0.1) 101.27ms
-2025-11-07 10:46:29.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:29.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:29.804 503 GET /script-health-check (127.0.0.1) 102.32ms
-2025-11-07 10:46:34.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:34.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:34.799 503 GET /script-health-check (127.0.0.1) 101.69ms
-2025-11-07 10:46:39.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:39.800 503 GET /script-health-check (127.0.0.1) 101.72ms
-2025-11-07 10:46:44.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:44.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:44.799 503 GET /script-health-check (127.0.0.1) 101.54ms
-2025-11-07 10:46:49.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:49.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:49.802 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:46:54.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:54.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:54.797 503 GET /script-health-check (127.0.0.1) 101.85ms
-2025-11-07 10:46:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:46:59.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:46:59.801 503 GET /script-health-check (127.0.0.1) 101.70ms
-2025-11-07 10:47:04.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:04.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:04.806 503 GET /script-health-check (127.0.0.1) 102.48ms
-2025-11-07 10:47:09.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:09.804 503 GET /script-health-check (127.0.0.1) 102.45ms
-2025-11-07 10:47:14.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:14.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:14.809 503 GET /script-health-check (127.0.0.1) 107.63ms
-2025-11-07 10:47:19.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:19.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:19.803 503 GET /script-health-check (127.0.0.1) 102.31ms
-2025-11-07 10:47:24.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:24.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:24.807 503 GET /script-health-check (127.0.0.1) 102.03ms
-2025-11-07 10:47:29.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:29.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:29.804 503 GET /script-health-check (127.0.0.1) 101.56ms
-2025-11-07 10:47:34.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:34.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:34.804 503 GET /script-health-check (127.0.0.1) 102.09ms
-2025-11-07 10:47:39.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:39.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:39.806 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:47:44.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:44.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:44.809 503 GET /script-health-check (127.0.0.1) 102.59ms
-2025-11-07 10:47:49.719 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:49.720 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:49.816 503 GET /script-health-check (127.0.0.1) 102.48ms
-2025-11-07 10:47:54.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:54.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:54.801 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:47:59.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:47:59.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:47:59.799 503 GET /script-health-check (127.0.0.1) 101.44ms
-2025-11-07 10:48:04.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:04.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:04.804 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:48:09.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:09.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:09.808 503 GET /script-health-check (127.0.0.1) 101.71ms
-2025-11-07 10:48:14.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:14.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:14.800 503 GET /script-health-check (127.0.0.1) 101.76ms
-2025-11-07 10:48:19.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:19.799 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:48:24.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:24.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:24.802 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:48:29.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:29.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:29.798 503 GET /script-health-check (127.0.0.1) 101.98ms
-2025-11-07 10:48:34.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:34.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:34.801 503 GET /script-health-check (127.0.0.1) 101.87ms
-2025-11-07 10:48:39.699 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:39.701 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:39.796 503 GET /script-health-check (127.0.0.1) 102.06ms
-2025-11-07 10:48:44.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:44.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:44.804 503 GET /script-health-check (127.0.0.1) 101.74ms
-2025-11-07 10:48:49.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:49.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:49.802 503 GET /script-health-check (127.0.0.1) 102.00ms
-2025-11-07 10:48:54.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:54.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:54.804 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:48:59.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:48:59.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:48:59.805 503 GET /script-health-check (127.0.0.1) 101.39ms
-2025-11-07 10:49:04.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:04.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:04.804 503 GET /script-health-check (127.0.0.1) 102.51ms
-2025-11-07 10:49:09.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:09.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:09.799 503 GET /script-health-check (127.0.0.1) 101.31ms
-2025-11-07 10:49:14.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:14.702 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:14.798 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:49:19.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:19.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:19.802 503 GET /script-health-check (127.0.0.1) 102.39ms
-2025-11-07 10:49:24.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:24.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:24.804 503 GET /script-health-check (127.0.0.1) 102.33ms
-2025-11-07 10:49:29.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:29.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:29.806 503 GET /script-health-check (127.0.0.1) 102.01ms
-2025-11-07 10:49:34.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:34.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:34.804 503 GET /script-health-check (127.0.0.1) 101.60ms
-2025-11-07 10:49:39.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:39.800 503 GET /script-health-check (127.0.0.1) 102.10ms
-2025-11-07 10:49:44.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:44.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:44.811 503 GET /script-health-check (127.0.0.1) 101.85ms
-2025-11-07 10:49:49.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:49.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:49.805 503 GET /script-health-check (127.0.0.1) 101.60ms
-2025-11-07 10:49:54.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:54.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:54.797 503 GET /script-health-check (127.0.0.1) 101.58ms
-2025-11-07 10:49:59.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:49:59.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:49:59.799 503 GET /script-health-check (127.0.0.1) 101.72ms
-2025-11-07 10:50:04.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:04.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:04.798 503 GET /script-health-check (127.0.0.1) 101.97ms
-2025-11-07 10:50:09.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:09.804 503 GET /script-health-check (127.0.0.1) 101.47ms
-2025-11-07 10:50:14.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:14.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:14.804 503 GET /script-health-check (127.0.0.1) 102.01ms
-2025-11-07 10:50:19.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:19.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:19.806 503 GET /script-health-check (127.0.0.1) 101.85ms
-2025-11-07 10:50:24.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:24.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:24.807 503 GET /script-health-check (127.0.0.1) 102.37ms
-2025-11-07 10:50:29.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:29.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:29.801 503 GET /script-health-check (127.0.0.1) 102.26ms
-2025-11-07 10:50:34.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:34.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:34.800 503 GET /script-health-check (127.0.0.1) 102.20ms
-2025-11-07 10:50:39.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:39.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:39.803 503 GET /script-health-check (127.0.0.1) 101.49ms
-2025-11-07 10:50:44.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:44.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:44.800 503 GET /script-health-check (127.0.0.1) 101.76ms
-2025-11-07 10:50:49.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:49.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:49.803 503 GET /script-health-check (127.0.0.1) 102.39ms
-2025-11-07 10:50:54.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:54.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:54.804 503 GET /script-health-check (127.0.0.1) 102.27ms
-2025-11-07 10:50:59.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:50:59.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:50:59.803 503 GET /script-health-check (127.0.0.1) 101.37ms
-2025-11-07 10:51:04.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:04.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:04.803 503 GET /script-health-check (127.0.0.1) 102.52ms
-2025-11-07 10:51:09.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:09.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:09.803 503 GET /script-health-check (127.0.0.1) 101.58ms
-2025-11-07 10:51:14.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:14.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:14.801 503 GET /script-health-check (127.0.0.1) 101.76ms
-2025-11-07 10:51:19.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:19.799 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:51:24.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:24.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:24.803 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:51:29.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:29.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:29.804 503 GET /script-health-check (127.0.0.1) 102.30ms
-2025-11-07 10:51:34.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:34.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:34.802 503 GET /script-health-check (127.0.0.1) 101.83ms
-2025-11-07 10:51:39.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:39.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:39.800 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:51:44.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:44.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:44.804 503 GET /script-health-check (127.0.0.1) 101.42ms
-2025-11-07 10:51:49.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:49.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:49.800 503 GET /script-health-check (127.0.0.1) 102.22ms
-2025-11-07 10:51:54.720 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:54.722 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:54.815 503 GET /script-health-check (127.0.0.1) 102.35ms
-2025-11-07 10:51:59.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:51:59.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:51:59.800 503 GET /script-health-check (127.0.0.1) 101.63ms
-2025-11-07 10:52:04.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:04.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:04.807 503 GET /script-health-check (127.0.0.1) 102.32ms
-2025-11-07 10:52:09.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:09.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:09.806 503 GET /script-health-check (127.0.0.1) 101.68ms
-2025-11-07 10:52:14.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:14.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:14.807 503 GET /script-health-check (127.0.0.1) 101.64ms
-2025-11-07 10:52:19.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:19.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:19.805 503 GET /script-health-check (127.0.0.1) 101.75ms
-2025-11-07 10:52:24.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:24.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:24.801 503 GET /script-health-check (127.0.0.1) 102.13ms
-2025-11-07 10:52:29.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:29.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:29.803 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:52:34.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:34.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:34.811 503 GET /script-health-check (127.0.0.1) 101.63ms
-2025-11-07 10:52:39.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:39.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:39.801 503 GET /script-health-check (127.0.0.1) 101.91ms
-2025-11-07 10:52:44.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:44.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:44.801 503 GET /script-health-check (127.0.0.1) 102.29ms
-2025-11-07 10:52:49.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:49.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:49.800 503 GET /script-health-check (127.0.0.1) 101.79ms
-2025-11-07 10:52:54.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:54.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:54.803 503 GET /script-health-check (127.0.0.1) 102.37ms
-2025-11-07 10:52:59.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:52:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:52:59.800 503 GET /script-health-check (127.0.0.1) 101.70ms
-2025-11-07 10:53:04.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:04.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:04.802 503 GET /script-health-check (127.0.0.1) 101.47ms
-2025-11-07 10:53:09.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:09.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:09.802 503 GET /script-health-check (127.0.0.1) 101.75ms
-2025-11-07 10:53:14.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:14.715 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:14.811 503 GET /script-health-check (127.0.0.1) 102.21ms
-2025-11-07 10:53:19.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:19.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:19.800 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:53:24.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:24.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:24.804 503 GET /script-health-check (127.0.0.1) 102.00ms
-2025-11-07 10:53:29.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:29.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:29.806 503 GET /script-health-check (127.0.0.1) 101.39ms
-2025-11-07 10:53:34.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:34.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:34.799 503 GET /script-health-check (127.0.0.1) 101.82ms
-2025-11-07 10:53:39.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:39.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:39.801 503 GET /script-health-check (127.0.0.1) 102.03ms
-2025-11-07 10:53:44.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:44.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:44.802 503 GET /script-health-check (127.0.0.1) 103.43ms
-2025-11-07 10:53:49.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:49.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:49.803 503 GET /script-health-check (127.0.0.1) 102.37ms
-2025-11-07 10:53:54.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:54.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:54.804 503 GET /script-health-check (127.0.0.1) 101.53ms
-2025-11-07 10:53:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:53:59.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:53:59.801 503 GET /script-health-check (127.0.0.1) 101.69ms
-2025-11-07 10:54:04.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:04.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:04.806 503 GET /script-health-check (127.0.0.1) 101.98ms
-2025-11-07 10:54:09.728 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:09.729 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:09.825 503 GET /script-health-check (127.0.0.1) 102.09ms
-2025-11-07 10:54:14.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:14.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:14.800 503 GET /script-health-check (127.0.0.1) 102.26ms
-2025-11-07 10:54:19.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:19.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:19.804 503 GET /script-health-check (127.0.0.1) 102.14ms
-2025-11-07 10:54:24.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:24.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:24.811 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:54:29.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:29.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:29.809 503 GET /script-health-check (127.0.0.1) 102.27ms
-2025-11-07 10:54:34.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:34.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:34.812 503 GET /script-health-check (127.0.0.1) 101.75ms
-2025-11-07 10:54:39.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:39.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:39.807 503 GET /script-health-check (127.0.0.1) 102.23ms
-2025-11-07 10:54:44.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:44.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:44.799 503 GET /script-health-check (127.0.0.1) 102.10ms
-2025-11-07 10:54:49.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:49.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:49.806 503 GET /script-health-check (127.0.0.1) 102.04ms
-2025-11-07 10:54:54.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:54.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:54.799 503 GET /script-health-check (127.0.0.1) 102.08ms
-2025-11-07 10:54:59.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:54:59.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:54:59.802 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:55:04.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:04.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:04.804 503 GET /script-health-check (127.0.0.1) 102.77ms
-2025-11-07 10:55:09.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:09.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:09.803 503 GET /script-health-check (127.0.0.1) 102.15ms
-2025-11-07 10:55:14.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:14.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:14.802 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:55:19.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:19.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:19.802 503 GET /script-health-check (127.0.0.1) 101.94ms
-2025-11-07 10:55:24.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:24.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:24.804 503 GET /script-health-check (127.0.0.1) 102.54ms
-2025-11-07 10:55:29.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:29.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:29.801 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:55:34.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:34.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:34.809 503 GET /script-health-check (127.0.0.1) 101.99ms
-2025-11-07 10:55:39.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:39.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:39.801 503 GET /script-health-check (127.0.0.1) 102.98ms
-2025-11-07 10:55:44.719 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:44.721 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:44.814 503 GET /script-health-check (127.0.0.1) 102.52ms
-2025-11-07 10:55:49.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:49.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:49.806 503 GET /script-health-check (127.0.0.1) 102.70ms
-2025-11-07 10:55:54.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:54.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:54.811 503 GET /script-health-check (127.0.0.1) 102.14ms
-2025-11-07 10:55:59.718 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:55:59.719 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:55:59.814 503 GET /script-health-check (127.0.0.1) 101.74ms
-2025-11-07 10:56:04.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:04.715 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:04.811 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:56:09.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:09.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:09.812 503 GET /script-health-check (127.0.0.1) 102.15ms
-2025-11-07 10:56:14.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:14.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:14.807 503 GET /script-health-check (127.0.0.1) 102.29ms
-2025-11-07 10:56:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:19.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:19.801 503 GET /script-health-check (127.0.0.1) 102.49ms
-2025-11-07 10:56:24.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:24.802 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:56:29.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:29.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:29.805 503 GET /script-health-check (127.0.0.1) 102.76ms
-2025-11-07 10:56:34.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:34.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:34.802 503 GET /script-health-check (127.0.0.1) 102.24ms
-2025-11-07 10:56:39.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:39.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:39.807 503 GET /script-health-check (127.0.0.1) 102.43ms
-2025-11-07 10:56:44.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:44.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:44.798 503 GET /script-health-check (127.0.0.1) 101.93ms
-2025-11-07 10:56:49.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:49.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:49.804 503 GET /script-health-check (127.0.0.1) 101.51ms
-2025-11-07 10:56:54.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:54.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:54.803 503 GET /script-health-check (127.0.0.1) 102.22ms
-2025-11-07 10:56:59.700 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:56:59.702 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:56:59.797 503 GET /script-health-check (127.0.0.1) 101.75ms
-2025-11-07 10:57:04.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:04.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:04.802 503 GET /script-health-check (127.0.0.1) 101.76ms
-2025-11-07 10:57:09.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:09.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:09.805 503 GET /script-health-check (127.0.0.1) 102.08ms
-2025-11-07 10:57:14.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:14.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:14.808 503 GET /script-health-check (127.0.0.1) 101.92ms
-2025-11-07 10:57:19.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:19.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:19.800 503 GET /script-health-check (127.0.0.1) 102.23ms
-2025-11-07 10:57:24.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:24.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:24.807 503 GET /script-health-check (127.0.0.1) 102.47ms
-2025-11-07 10:57:29.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:29.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:29.802 503 GET /script-health-check (127.0.0.1) 102.17ms
-2025-11-07 10:57:34.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:34.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:34.813 503 GET /script-health-check (127.0.0.1) 102.11ms
-2025-11-07 10:57:39.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:39.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:39.799 503 GET /script-health-check (127.0.0.1) 101.70ms
-2025-11-07 10:57:44.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:44.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:44.806 503 GET /script-health-check (127.0.0.1) 101.69ms
-2025-11-07 10:57:49.702 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:49.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:49.798 503 GET /script-health-check (127.0.0.1) 101.47ms
-2025-11-07 10:57:54.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:54.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:54.800 503 GET /script-health-check (127.0.0.1) 101.78ms
-2025-11-07 10:57:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:57:59.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:57:59.801 503 GET /script-health-check (127.0.0.1) 101.83ms
-2025-11-07 10:58:04.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:04.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:04.802 503 GET /script-health-check (127.0.0.1) 101.74ms
-2025-11-07 10:58:09.701 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:09.703 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:09.798 503 GET /script-health-check (127.0.0.1) 101.78ms
-2025-11-07 10:58:14.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:14.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:14.799 503 GET /script-health-check (127.0.0.1) 102.20ms
-2025-11-07 10:58:19.721 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:19.722 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:19.817 503 GET /script-health-check (127.0.0.1) 101.35ms
-2025-11-07 10:58:24.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:24.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:24.800 503 GET /script-health-check (127.0.0.1) 101.65ms
-2025-11-07 10:58:29.703 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:29.704 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:29.799 503 GET /script-health-check (127.0.0.1) 101.67ms
-2025-11-07 10:58:34.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:34.705 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:34.800 503 GET /script-health-check (127.0.0.1) 101.63ms
-2025-11-07 10:58:39.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:39.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:39.805 503 GET /script-health-check (127.0.0.1) 101.85ms
-2025-11-07 10:58:44.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:44.717 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:44.813 503 GET /script-health-check (127.0.0.1) 101.81ms
-2025-11-07 10:58:49.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:49.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:49.808 503 GET /script-health-check (127.0.0.1) 108.55ms
-2025-11-07 10:58:54.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:54.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:54.809 503 GET /script-health-check (127.0.0.1) 110.14ms
-2025-11-07 10:58:59.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:58:59.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:58:59.809 503 GET /script-health-check (127.0.0.1) 108.73ms
-2025-11-07 10:59:04.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:04.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:04.809 503 GET /script-health-check (127.0.0.1) 110.43ms
-2025-11-07 10:59:09.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:09.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:09.808 503 GET /script-health-check (127.0.0.1) 106.88ms
-2025-11-07 10:59:14.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:14.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:14.814 503 GET /script-health-check (127.0.0.1) 113.07ms
-2025-11-07 10:59:19.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:19.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:19.812 503 GET /script-health-check (127.0.0.1) 110.40ms
-2025-11-07 10:59:24.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:24.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:24.816 503 GET /script-health-check (127.0.0.1) 110.30ms
-2025-11-07 10:59:29.717 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:29.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:29.818 503 GET /script-health-check (127.0.0.1) 110.14ms
-2025-11-07 10:59:34.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:34.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:34.809 503 GET /script-health-check (127.0.0.1) 110.06ms
-2025-11-07 10:59:39.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:39.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:39.810 503 GET /script-health-check (127.0.0.1) 106.28ms
-2025-11-07 10:59:44.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:44.806 503 GET /script-health-check (127.0.0.1) 109.11ms
-2025-11-07 10:59:49.726 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:49.728 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:49.824 503 GET /script-health-check (127.0.0.1) 105.37ms
-2025-11-07 10:59:54.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:54.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:54.808 503 GET /script-health-check (127.0.0.1) 108.73ms
-2025-11-07 10:59:59.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 10:59:59.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 10:59:59.809 503 GET /script-health-check (127.0.0.1) 108.70ms
-2025-11-07 11:00:04.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:04.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:04.811 503 GET /script-health-check (127.0.0.1) 111.56ms
-2025-11-07 11:00:09.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:09.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:09.814 503 GET /script-health-check (127.0.0.1) 109.84ms
-2025-11-07 11:00:14.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:14.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:14.803 503 GET /script-health-check (127.0.0.1) 106.12ms
-2025-11-07 11:00:19.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:19.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:19.809 503 GET /script-health-check (127.0.0.1) 109.83ms
-2025-11-07 11:00:24.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:24.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:24.811 503 GET /script-health-check (127.0.0.1) 109.06ms
-2025-11-07 11:00:29.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:29.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:29.806 503 GET /script-health-check (127.0.0.1) 109.05ms
-2025-11-07 11:00:34.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:34.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:34.805 503 GET /script-health-check (127.0.0.1) 106.05ms
-2025-11-07 11:00:39.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:39.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:39.809 503 GET /script-health-check (127.0.0.1) 110.52ms
-2025-11-07 11:00:44.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:44.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:44.808 503 GET /script-health-check (127.0.0.1) 108.90ms
-2025-11-07 11:00:49.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:49.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:49.815 503 GET /script-health-check (127.0.0.1) 116.72ms
-2025-11-07 11:00:54.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:54.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:54.809 503 GET /script-health-check (127.0.0.1) 109.80ms
-2025-11-07 11:00:59.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:00:59.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:00:59.811 503 GET /script-health-check (127.0.0.1) 109.34ms
-2025-11-07 11:01:04.716 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:04.718 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:04.815 503 GET /script-health-check (127.0.0.1) 109.12ms
-2025-11-07 11:01:09.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:09.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:09.810 503 GET /script-health-check (127.0.0.1) 110.58ms
-2025-11-07 11:01:14.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:14.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:14.809 503 GET /script-health-check (127.0.0.1) 109.92ms
-2025-11-07 11:01:19.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:19.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:19.807 503 GET /script-health-check (127.0.0.1) 108.20ms
-2025-11-07 11:01:24.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:24.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:24.804 503 GET /script-health-check (127.0.0.1) 105.91ms
-2025-11-07 11:01:29.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:29.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:29.816 503 GET /script-health-check (127.0.0.1) 109.46ms
-2025-11-07 11:01:34.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:34.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:34.808 503 GET /script-health-check (127.0.0.1) 105.90ms
-2025-11-07 11:01:39.719 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:39.721 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:39.821 503 GET /script-health-check (127.0.0.1) 110.39ms
-2025-11-07 11:01:44.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:44.805 503 GET /script-health-check (127.0.0.1) 108.22ms
-2025-11-07 11:01:49.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:49.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:49.807 503 GET /script-health-check (127.0.0.1) 108.82ms
-2025-11-07 11:01:54.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:54.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:54.817 503 GET /script-health-check (127.0.0.1) 118.93ms
-2025-11-07 11:01:59.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:01:59.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:01:59.807 503 GET /script-health-check (127.0.0.1) 109.06ms
-2025-11-07 11:02:04.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:04.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:04.810 503 GET /script-health-check (127.0.0.1) 106.61ms
-2025-11-07 11:02:09.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:09.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:09.810 503 GET /script-health-check (127.0.0.1) 108.63ms
-2025-11-07 11:02:14.717 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:14.719 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:14.818 503 GET /script-health-check (127.0.0.1) 109.89ms
-2025-11-07 11:02:19.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:19.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:19.817 503 GET /script-health-check (127.0.0.1) 116.75ms
-2025-11-07 11:02:24.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:24.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:24.807 503 GET /script-health-check (127.0.0.1) 105.39ms
-2025-11-07 11:02:29.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:29.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:29.811 503 GET /script-health-check (127.0.0.1) 106.59ms
-2025-11-07 11:02:34.714 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:34.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:34.810 503 GET /script-health-check (127.0.0.1) 105.83ms
-2025-11-07 11:02:39.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:39.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:39.810 503 GET /script-health-check (127.0.0.1) 110.88ms
-2025-11-07 11:02:44.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:44.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:44.811 503 GET /script-health-check (127.0.0.1) 107.36ms
-2025-11-07 11:02:49.713 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:49.715 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:49.814 503 GET /script-health-check (127.0.0.1) 109.09ms
-2025-11-07 11:02:54.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:54.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:54.810 503 GET /script-health-check (127.0.0.1) 108.73ms
-2025-11-07 11:02:59.704 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:02:59.706 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:02:59.802 503 GET /script-health-check (127.0.0.1) 105.56ms
-2025-11-07 11:03:04.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:04.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:04.809 503 GET /script-health-check (127.0.0.1) 109.16ms
-2025-11-07 11:03:09.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:09.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:09.803 503 GET /script-health-check (127.0.0.1) 105.24ms
-2025-11-07 11:03:14.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:14.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:14.810 503 GET /script-health-check (127.0.0.1) 108.83ms
-2025-11-07 11:03:19.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:19.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:19.810 503 GET /script-health-check (127.0.0.1) 109.11ms
-2025-11-07 11:03:24.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:24.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:24.810 503 GET /script-health-check (127.0.0.1) 110.29ms
-2025-11-07 11:03:29.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:29.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:29.806 503 GET /script-health-check (127.0.0.1) 109.69ms
-2025-11-07 11:03:34.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:34.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:34.804 503 GET /script-health-check (127.0.0.1) 105.60ms
-2025-11-07 11:03:39.707 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:39.709 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:39.809 503 GET /script-health-check (127.0.0.1) 110.79ms
-2025-11-07 11:03:44.719 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:44.721 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:44.817 503 GET /script-health-check (127.0.0.1) 112.32ms
-2025-11-07 11:03:49.719 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:49.720 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:49.820 503 GET /script-health-check (127.0.0.1) 109.63ms
-2025-11-07 11:03:54.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:54.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:54.812 503 GET /script-health-check (127.0.0.1) 111.20ms
-2025-11-07 11:03:59.709 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:03:59.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:03:59.814 503 GET /script-health-check (127.0.0.1) 113.84ms
-2025-11-07 11:04:04.715 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:04.716 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:04.816 503 GET /script-health-check (127.0.0.1) 109.86ms
-2025-11-07 11:04:09.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:09.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:09.811 503 GET /script-health-check (127.0.0.1) 109.65ms
-2025-11-07 11:04:14.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:14.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:14.808 503 GET /script-health-check (127.0.0.1) 108.89ms
-2025-11-07 11:04:19.708 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:19.710 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:19.809 503 GET /script-health-check (127.0.0.1) 109.80ms
-2025-11-07 11:04:24.733 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:24.734 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:24.830 503 GET /script-health-check (127.0.0.1) 106.28ms
-2025-11-07 11:04:29.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:29.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:29.812 503 GET /script-health-check (127.0.0.1) 111.19ms
-2025-11-07 11:04:34.710 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:34.711 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:34.810 503 GET /script-health-check (127.0.0.1) 109.79ms
-2025-11-07 11:04:39.712 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:39.714 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:39.815 503 GET /script-health-check (127.0.0.1) 111.82ms
-2025-11-07 11:04:44.705 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:44.707 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:44.807 503 GET /script-health-check (127.0.0.1) 109.18ms
-2025-11-07 11:04:49.744 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:49.746 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:49.844 503 GET /script-health-check (127.0.0.1) 108.44ms
-2025-11-07 11:04:54.711 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:54.712 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:54.812 503 GET /script-health-check (127.0.0.1) 110.87ms
-2025-11-07 11:04:59.706 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:04:59.708 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:04:59.803 503 GET /script-health-check (127.0.0.1) 105.75ms
-2025-11-07 11:05:04.721 Script compilation error
-Traceback (most recent call last):
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 571, in _run_script
-    code = self._script_cache.get_bytecode(script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/script_cache.py", line 72, in get_bytecode
-    filebody = magic.add_magic(filebody, script_path)
-  File "/home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptrunner/magic.py", line 45, in add_magic
-    tree = ast.parse(code, script_path, "exec")
-  File "/usr/local/lib/python3.13/ast.py", line 50, in parse
-    return compile(source, filename, mode, flags,
-                   _feature_version=feature_version, optimize=optimize)
-  File "/mount/src/cantata/app.py", line 265
-    const past = isPast(c.perf_date);
-    ^^^^^^^^^^
-SyntaxError: invalid syntax. Perhaps you forgot a comma?
-2025-11-07 11:05:04.723 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2025-11-07 11:05:04.818 503 GET /script-health-check (127.0.0.1) 106.45ms
-[11:05:06] 🐙 Pulling code changes from Github...
-[11:05:07] 📦 Processing dependencies...
-[11:05:07] 📦 Processed dependencies!
-[11:05:09] 🔄 Updated app!
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 # app.py - 칸타타 투어 2025 (간결화 + 탭 전환 시 expander 접힘)         
-      2                                                                         
-  ❱   3 import streamlit as st                                                  
-      4 from datetime import datetime, date, timedelta                          
-      5 import folium                                                           
-      6 from streamlit_folium import st_folium                                  
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:09.883 503 GET /script-health-check (127.0.0.1) 185.25ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:14.871 503 GET /script-health-check (127.0.0.1) 144.70ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:19.850 503 GET /script-health-check (127.0.0.1) 146.63ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:24.832 503 GET /script-health-check (127.0.0.1) 133.80ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:29.857 503 GET /script-health-check (127.0.0.1) 143.41ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:34.846 503 GET /script-health-check (127.0.0.1) 139.29ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:39.842 503 GET /script-health-check (127.0.0.1) 141.86ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:44.836 503 GET /script-health-check (127.0.0.1) 135.59ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:49.836 503 GET /script-health-check (127.0.0.1) 135.93ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:54.858 503 GET /script-health-check (127.0.0.1) 147.25ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:05:59.838 503 GET /script-health-check (127.0.0.1) 134.73ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:04.840 503 GET /script-health-check (127.0.0.1) 137.83ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:09.846 503 GET /script-health-check (127.0.0.1) 138.77ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:14.858 503 GET /script-health-check (127.0.0.1) 152.49ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:19.831 503 GET /script-health-check (127.0.0.1) 135.08ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:24.832 503 GET /script-health-check (127.0.0.1) 133.27ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:29.832 503 GET /script-health-check (127.0.0.1) 134.13ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:34.829 503 GET /script-health-check (127.0.0.1) 134.61ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:39.846 503 GET /script-health-check (127.0.0.1) 133.01ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:44.831 503 GET /script-health-check (127.0.0.1) 131.77ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:49.830 503 GET /script-health-check (127.0.0.1) 131.19ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:54.835 503 GET /script-health-check (127.0.0.1) 137.76ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:06:59.832 503 GET /script-health-check (127.0.0.1) 131.90ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:04.838 503 GET /script-health-check (127.0.0.1) 137.12ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:09.857 503 GET /script-health-check (127.0.0.1) 141.63ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:14.841 503 GET /script-health-check (127.0.0.1) 140.47ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:19.857 503 GET /script-health-check (127.0.0.1) 157.80ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:24.833 503 GET /script-health-check (127.0.0.1) 134.52ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:29.838 503 GET /script-health-check (127.0.0.1) 139.23ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:34.847 503 GET /script-health-check (127.0.0.1) 140.24ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:39.833 503 GET /script-health-check (127.0.0.1) 132.27ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:44.851 503 GET /script-health-check (127.0.0.1) 147.49ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:49.838 503 GET /script-health-check (127.0.0.1) 137.19ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:54.857 503 GET /script-health-check (127.0.0.1) 148.24ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:07:59.838 503 GET /script-health-check (127.0.0.1) 134.07ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:04.861 503 GET /script-health-check (127.0.0.1) 160.80ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:09.834 503 GET /script-health-check (127.0.0.1) 137.05ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:14.854 503 GET /script-health-check (127.0.0.1) 152.02ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:19.851 503 GET /script-health-check (127.0.0.1) 154.79ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:24.826 503 GET /script-health-check (127.0.0.1) 129.68ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:29.836 503 GET /script-health-check (127.0.0.1) 134.56ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:34.841 503 GET /script-health-check (127.0.0.1) 142.03ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:39.832 503 GET /script-health-check (127.0.0.1) 132.83ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:44.832 503 GET /script-health-check (127.0.0.1) 130.00ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:49.829 503 GET /script-health-check (127.0.0.1) 132.38ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:54.835 503 GET /script-health-check (127.0.0.1) 133.84ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:08:59.831 503 GET /script-health-check (127.0.0.1) 132.48ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:04.827 503 GET /script-health-check (127.0.0.1) 132.09ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:09.832 503 GET /script-health-check (127.0.0.1) 133.73ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:14.829 503 GET /script-health-check (127.0.0.1) 132.26ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:19.840 503 GET /script-health-check (127.0.0.1) 135.74ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:24.840 503 GET /script-health-check (127.0.0.1) 131.98ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:29.843 503 GET /script-health-check (127.0.0.1) 141.19ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:34.862 503 GET /script-health-check (127.0.0.1) 157.80ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:39.844 503 GET /script-health-check (127.0.0.1) 135.00ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:44.827 503 GET /script-health-check (127.0.0.1) 129.95ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:49.837 503 GET /script-health-check (127.0.0.1) 133.45ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:54.858 503 GET /script-health-check (127.0.0.1) 150.97ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:09:59.830 503 GET /script-health-check (127.0.0.1) 133.25ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:04.857 503 GET /script-health-check (127.0.0.1) 146.69ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:09.834 503 GET /script-health-check (127.0.0.1) 133.33ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:14.832 503 GET /script-health-check (127.0.0.1) 130.47ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:19.843 503 GET /script-health-check (127.0.0.1) 143.14ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:24.828 503 GET /script-health-check (127.0.0.1) 131.21ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:29.828 503 GET /script-health-check (127.0.0.1) 131.86ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:34.835 503 GET /script-health-check (127.0.0.1) 133.34ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:39.838 503 GET /script-health-check (127.0.0.1) 140.49ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:44.832 503 GET /script-health-check (127.0.0.1) 133.18ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:49.835 503 GET /script-health-check (127.0.0.1) 135.97ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:54.841 503 GET /script-health-check (127.0.0.1) 138.76ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:10:59.846 503 GET /script-health-check (127.0.0.1) 139.39ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:04.839 503 GET /script-health-check (127.0.0.1) 139.10ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:09.835 503 GET /script-health-check (127.0.0.1) 133.07ms
-[11:11:12] 🐙 Pulling code changes from Github...
-[11:11:13] 📦 Processing dependencies...
-[11:11:13] 📦 Processed dependencies!
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-[11:11:14] 🔄 Updated app!
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:14.876 503 GET /script-health-check (127.0.0.1) 151.19ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:19.844 503 GET /script-health-check (127.0.0.1) 132.50ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:24.837 503 GET /script-health-check (127.0.0.1) 142.21ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:29.828 503 GET /script-health-check (127.0.0.1) 129.97ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:34.827 503 GET /script-health-check (127.0.0.1) 130.21ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:39.832 503 GET /script-health-check (127.0.0.1) 131.74ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:44.828 503 GET /script-health-check (127.0.0.1) 132.55ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:49.832 503 GET /script-health-check (127.0.0.1) 135.54ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:54.833 503 GET /script-health-check (127.0.0.1) 132.75ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:11:59.828 503 GET /script-health-check (127.0.0.1) 128.54ms
-────────────────────── Traceback (most recent call last) ───────────────────────
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/exec_code.py:129 in exec_func_with_error_handling                        
-                                                                                
-  /home/adminuser/venv/lib/python3.13/site-packages/streamlit/runtime/scriptru  
-  nner/script_runner.py:669 in code_to_exec                                     
-                                                                                
-  /mount/src/cantata/app.py:3 in <module>                                       
-                                                                                
-      1 import streamlit as st                                                  
-      2 from datetime import datetime, date, timedelta                          
-  ❱   3 import folium                                                           
-      4 from streamlit_folium import st_folium                                  
-      5 from folium.plugins import AntPath                                      
-      6 import json, os, uuid, base64                                           
-────────────────────────────────────────────────────────────────────────────────
-ModuleNotFoundError: No module named 'folium'
-2025-11-07 11:12:04.873 503 GET /script-health-check (127.0.0.1) 170.11ms
+# --- 파일 저장 경로 설정 ---
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# 가짜 라이브러리 임포트 (st_autorefresh는 Streamlit 환경에서만 유효)
+try:
+    from streamlit_autorefresh import st_autorefresh
+except ImportError:
+    st_autorefresh = lambda **kwargs: None
+    # st.warning("`streamlit_autorefresh` 라이브러리가 설치되지 않았습니다. 자동 새로고침이 작동하지 않을 수 있습니다.")
+
+st.set_page_config(page_title="칸타타 투어 2025", layout="wide")
+
+# --- 자동 새로고침 ---
+# 관리자가 아닐 경우 10초마다 새로고침
+if not st.session_state.get("admin", False):
+    st_autorefresh(interval=10000, key="auto_refresh_user")
+
+# --- 파일 경로 ---
+NOTICE_FILE = "notice.json"
+CITY_FILE = "cities.json"
+USER_POST_FILE = "user_posts.json" # <-- 사용자 포스트 저장소
+
+# --- 다국어 설정 ---
+LANG = {
+    "ko": {
+        "title_cantata": "칸타타 투어", "title_year": "2025", "title_region": "마하라스트라",
+        "tab_notice": "공지", "tab_map": "투어 경로", "indoor": "실내", "outdoor": "실외",
+        "venue": "공연 장소", "seats": "예상 인원", "note": "특이사항", "google_link": "구글맵",
+        "warning": "도시와 장소를 입력하세요", "delete": "제거", "menu": "메뉴", "login": "로그인", "logout": "로그아웃",
+        "add_city": "추가", "register": "등록", "update": "수정", "remove": "제거",
+        "date": "날짜", "city_name": "도시 이름", "search_placeholder": "도시/장소 검색...",
+        
+        # 추가 번역 (모든 UI 요소 포함)
+        "general": "일반", "urgent": "긴급",
+        "admin_login": "관리자 로그인",
+        "update_content": "내용 수정",
+        "existing_notices": "기존 공지사항",
+        "no_notices": "공지사항이 없습니다.",
+        "content": "내용",
+        "no_content": "내용 없음",
+        "no_title": "제목 없음",
+        "tour_schedule_management": "투어 일정 관리",
+        "set_data": "데이터 설정",
+        "type": "유형",
+        "city": "도시",
+        "link": "링크",
+        "past_route": "지난 경로",
+        "single_location": "단일 위치",
+        "legend": "범례",
+        "no_schedule": "일정이 없습니다.",
+        "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
+        "logged_in_success": "관리자로 로그인했습니다.",
+        "logged_out_success": "로그아웃했습니다.",
+        "incorrect_password": "비밀번호가 틀렸습니다.",
+        "fill_in_fields": "제목과 내용을 채워주세요.",
+        "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!",
+        "notice_del_success": "공지사항이 삭제되었습니다.",
+        "notice_upd_success": "공지사항이 수정되었습니다.",
+        "schedule_reg_success": "일정이 등록되었습니다.",
+        "schedule_del_success": "일정 항목이 제거되었습니다.",
+        "schedule_upd_success": "일정이 성공적으로 수정되었습니다.",
+        "venue_placeholder": "공연 장소를 입력하세요",
+        "note_placeholder": "특이사항을 입력하세요",
+        "google_link_placeholder": "구글맵 URL을 입력하세요",
+        "seats_tooltip": "예상 관객 인원",
+        "file_attachment": "파일 첨부",
+        "attached_files": "첨부 파일",
+        "no_files": "없음",
+        "user_posts": "사용자 포스트", # <-- 추가
+        "new_post": "새 포스트 작성", # <-- 추가
+        "post_content": "포스트 내용", # <-- 추가
+        "media_attachment": "사진/동영상 첨부", # <-- 추가
+        "post_success": "포스트가 성공적으로 업로드되었습니다!", # <-- 추가
+        "no_posts": "현재 포스트가 없습니다.", # <-- 추가
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", # <-- 추가
+        "probability": "가능성 (%)" # <-- NEW: 가능성 필드 추가
+    },
+    "en": {
+        "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
+        "tab_notice": "Notice", "tab_map": "Tour Route", "indoor": "Indoor", "outdoor": "Outdoor",
+        "venue": "Venue", "seats": "Expected", "note": "Note", "google_link": "Google Maps",
+        "warning": "Enter city and venue", "delete": "Remove", "menu": "Menu", "login": "Login", "logout": "Logout",
+        "add_city": "Add", "register": "Register", "update": "Update", "remove": "Remove",
+        "date": "Date", "city_name": "City Name", "search_placeholder": "Search City/Venue...",
+        
+        # Additional translations
+        "general": "General", "urgent": "Urgent",
+        "admin_login": "Admin Login",
+        "update_content": "Update Content",
+        "existing_notices": "Existing Notices",
+        "no_notices": "No notices available.",
+        "content": "Content",
+        "no_content": "No Content",
+        "no_title": "No Title",
+        "tour_schedule_management": "Tour Schedule Management",
+        "set_data": "Set Data",
+        "type": "Type",
+        "city": "City",
+        "link": "Link",
+        "past_route": "Past Route",
+        "single_location": "Single Location",
+        "legend": "Legend",
+        "no_schedule": "No schedule available.",
+        "city_coords_error": "Coordinates not found. Please add to city_dict.",
+        "logged_in_success": "Logged in as Admin.",
+        "logged_out_success": "Logged out.",
+        "incorrect_password": "Incorrect password.",
+        "fill_in_fields": "Please fill in the title and content.",
+        "notice_reg_success": "Notice registered successfully!",
+        "notice_del_success": "Notice deleted.",
+        "notice_upd_success": "Notice updated.",
+        "schedule_reg_success": "Schedule registered.",
+        "schedule_del_success": "Schedule entry removed.",
+        "schedule_upd_success": "Schedule updated successfully.",
+        "venue_placeholder": "Enter venue name",
+        "note_placeholder": "Enter notes/special remarks",
+        "google_link_placeholder": "Enter Google Maps URL",
+        "seats_tooltip": "Expected audience count",
+        "file_attachment": "File Attachment",
+        "attached_files": "Attached Files",
+        "no_files": "None",
+        "user_posts": "User Posts",
+        "new_post": "Create New Post",
+        "post_content": "Post Content",
+        "media_attachment": "Attach Photo/Video",
+        "post_success": "Post uploaded successfully!",
+        "no_posts": "No posts available.",
+        "admin_only_files": "Attached files can only be viewed by Admin.",
+        "probability": "Probability (%)" # <-- NEW
+    },
+    "hi": {
+        "title_cantata": "कैंटाटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
+        "tab_notice": "सूचना", "tab_map": "टूर रूट", "indoor": "इनडोर", "outdoor": "आउटडोर",
+        "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
+        "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
+        "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
+        "date": "तारीख", "city_name": "शहर का नाम", "search_placeholder": "शहर/स्थल खोजें...",
+        
+        # Additional translations
+        "general": "सामान्य", "urgent": "तत्काल",
+        "admin_login": "व्यवस्थापक लॉगिन",
+        "update_content": "सामग्री अपडेट करें",
+        "existing_notices": "मौजूदा सूचनाएं",
+        "no_notices": "कोई सूचना उपलब्ध नहीं है।",
+        "content": "सामग्री",
+        "no_content": "कोई सामग्री नहीं",
+        "no_title": "कोई शीर्षक नहीं",
+        "tour_schedule_management": "टूर अनुसूची प्रबंधन",
+        "set_data": "डेटा सेट करें",
+        "type": "प्रकार",
+        "city": "शहर",
+        "link": "लिंक",
+        "past_route": "पिछला मार्ग",
+        "single_location": "एकल स्थान",
+        "legend": "किंवदंती",
+        "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
+        "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।",
+        "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
+        "logged_out_success": "लॉग आउट किया गया।",
+        "incorrect_password": "गलत पासवर्ड।",
+        "fill_in_fields": "कृपया शीर्षक और सामग्री भरें।",
+        "notice_reg_success": "सूचना सफलतापूर्वक पंजीकृत हुई!",
+        "notice_del_success": "सूचना हटा दी गई।",
+        "notice_upd_success": "सूचना अपडेट की गई।",
+        "schedule_reg_success": "कार्यक्रम पंजीकृत हुआ।",
+        "schedule_del_success": "कार्यक्रम प्रविष्टि हटा दी गई।",
+        "schedule_upd_success": "कार्यक्रम सफलतापूर्वक अपडेट किया गया।",
+        "venue_placeholder": "स्थल का नाम दर्ज करें",
+        "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें",
+        "google_link_placeholder": "गूगल मैप्स URL दर्ज करें",
+        "seats_tooltip": "अपेक्षित दर्शक संख्या",
+        "file_attachment": "फ़ाइल संलग्नक",
+        "attached_files": "संलग्न फ़ाइलें",
+        "no_files": "कोई नहीं",
+        "user_posts": "उपयोगकर्ता पोस्ट",
+        "new_post": "नई पोस्ट बनाएं",
+        "post_content": "पोस्ट सामग्री",
+        "media_attachment": "फोटो/वीडियो संलग्न करें",
+        "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!",
+        "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
+        "admin_only_files": "संलग्न फ़ाइलें केवल व्यवस्थापक द्वारा देखी जा सकती हैं।",
+        "probability": "संभावना (%)" # <-- NEW
+    }
+}
+
+# --- 세션 초기화 ---
+defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False}
+for k, v in defaults.items():
+    if k not in st.session_state:
+        st.session_state[k] = v
+    elif k == "lang" and not isinstance(st.session_state[k], str):
+        st.session_state[k] = "ko"
+
+# --- 번역 함수 ---
+def _(key):
+    lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
+    return LANG.get(lang, LANG["ko"]).get(key, key)
+
+# --- 파일 첨부/저장 함수 ---
+def save_uploaded_files(uploaded_files):
+    file_info_list = []
+    for uploaded_file in uploaded_files:
+        # 파일명을 UUID로 저장하여 충돌 방지
+        unique_filename = f"{uuid.uuid4()}_{uploaded_file.name}"
+        file_path = os.path.join(UPLOAD_DIR, unique_filename)
+        
+        # 파일을 디스크에 저장
+        try:
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+            
+            file_info_list.append({
+                "name": uploaded_file.name,
+                "path": file_path,
+                "type": uploaded_file.type,
+                "size": uploaded_file.size
+            })
+        except Exception as e:
+            # Streamlit Alert 메시지 숨김 처리
+            pass
+            
+    return file_info_list
+
+# --- 파일 Base64 인코딩 함수 (추가) ---
+def get_file_as_base64(file_path):
+    """파일 경로를 받아 Base64 문자열을 반환합니다."""
+    try:
+        with open(file_path, "rb") as f:
+            file_bytes = f.read()
+            base64_encoded_data = base64.b64encode(file_bytes).decode('utf-8')
+            return base64_encoded_data
+    except Exception:
+        # 파일이 없거나 접근할 수 없을 경우
+        return None
+
+# --- 미디어 인라인 표시 및 다운로드 헬퍼 함수 (재사용성을 위해 별도 정의) ---
+def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post=False):
+    file_size_kb = round(file_info['size'] / 1024, 1)
+    file_type = file_info['type']
+    file_path = file_info['path']
+    file_name = file_info['name']
+    key_prefix = "admin" if is_admin else "user"
+    
+    if is_user_post and not is_admin:
+        # 사용자 포스트의 파일은 일반 모드에서 숨김 (관리자만 확인 가능)
+        # 파일이 첨부되었음을 알리는 텍스트만 표시
+        st.markdown(f"**{_('attached_files')}:** {_('admin_only_files')}")
+        return
+
+    if os.path.exists(file_path):
+        # 1. 이미지 파일은 인라인으로 표시
+        if file_type.startswith('image/'):
+            base64_data = get_file_as_base64(file_path)
+            if base64_data:
+                st.image(
+                    f"data:{file_type};base64,{base64_data}",
+                    caption=f"🖼️ {file_name} ({file_size_kb} KB)",
+                    use_column_width=True
+                )
+            else:
+                # Base64 인코딩 실패 시 다운로드 버튼 표시
+                st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
+                try:
+                    with open(file_path, "rb") as f:
+                        st.download_button(
+                            label=f"⬇️ {file_name} 다운로드 (인라인 실패)",
+                            data=f.read(),
+                            file_name=file_name,
+                            mime=file_type,
+                            key=f"{key_prefix}_download_{notice_id}_{file_name}_imgfallback"
+                        )
+                except Exception:
+                    pass
+        
+        # 2. 비디오 파일은 st.video로 표시
+        elif file_type.startswith('video/'):
+            st.video(open(file_path, 'rb').read(), format=file_type, start_time=0)
+            st.markdown(f"**🎬 {file_name} ({file_size_kb} KB)**")
+            
+        # 3. 기타 파일은 다운로드 버튼으로 표시
+        else:
+            icon = "📄"
+            try:
+                with open(file_path, "rb") as f:
+                    st.download_button(
+                        label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)",
+                        data=f.read(),
+                        file_name=file_name,
+                        mime=file_type,
+                        key=f"{key_prefix}_download_{notice_id}_{file_name}"
+                    )
+            except Exception:
+                pass
+    else:
+        st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+
+
+# --- JSON 헬퍼 ---
+def load_json(f):
+    if os.path.exists(f):
+        try:
+            with open(f, "r", encoding="utf-8") as file:
+                return json.load(file)
+        except json.JSONDecodeError:
+            return []
+    return []
+
+def save_json(f, d):
+    try:
+        with open(f, "w", encoding="utf-8") as file:
+            json.dump(d, file, ensure_ascii=False, indent=2)
+    except Exception as e:
+        # Streamlit Alert 메시지 숨김 처리
+        pass
+        
+# --- NEW: 거리 및 시간 계산 함수 ---
+def haversine(lat1, lon1, lat2, lon2):
+    """두 위도/경도 쌍 사이의 지구 표면 거리를 km 단위로 계산합니다 (Haversine 공식)."""
+    R = 6371  # 지구 반지름 (km)
+
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * asin(sqrt(a))
+    distance = R * c
+    return distance
+
+def calculate_distance_and_time(p1, p2):
+    """두 좌표 사이의 거리와 예상 소요 시간을 문자열로 반환합니다."""
+    lat1, lon1 = p1
+    lat2, lon2 = p2
+    distance_km = haversine(lat1, lon1, lat2, lon2)
+    
+    # 거리에 따라 예상 평균 속도 적용
+    if distance_km < 500:
+        avg_speed_kmh = 60
+    else:
+        avg_speed_kmh = 80
+        
+    travel_time_h = distance_km / avg_speed_kmh
+    
+    # 거리 형식 지정
+    distance_str = f"{distance_km:.1f} km"
+    
+    # 시간 형식 지정 (HH시간 MM분)
+    hours = int(travel_time_h)
+    minutes = int((travel_time_h - hours) * 60)
+    
+    # 한국어로 거리 및 시간 정보 문자열 구성
+    if hours > 0:
+        time_str = f"{hours}시간 {minutes}분"
+    else:
+        time_str = f"{minutes}분"
+
+    return f"거리: {distance_str} | 예상 시간: {time_str}"
+
+
+# --- 도시 목록 및 좌표 정의 (원래 코드에서 가져옴) ---
+city_dict = {
+    "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
+    "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
+    "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, "Badlapur": {"lat": 19.1088, "lon": 73.1311},
+    "Bhandara": {"lat": 21.180052, "lon": 79.564987}, "Bhiwandi": {"lat": 19.300282, "lon": 73.069645},
+    "Bhusawal": {"lat": 21.02606, "lon": 75.830095}, "Chandrapur": {"lat": 19.957275, "lon": 79.296875},
+    "Chiplun": {"lat": 17.5322, "lon": 73.516}, "Dhule": {"lat": 20.904964, "lon": 74.774651},
+    "Dombivli": {"lat": 19.2183, "lon": 73.0865}, "Gondia": {"lat": 21.4598, "lon": 80.195},
+    "Hingoli": {"lat": 19.7146, "lon": 77.1424}, "Ichalkaranji": {"lat": 16.6956, "lon": 74.4561},
+    "Jalgaon": {"lat": 21.007542, "lon": 75.562554}, "Jalna": {"lat": 19.833333, "lon": 75.883333},
+    "Kalyan": {"lat": 19.240283, "lon": 73.13073}, "Karad": {"lat": 17.284, "lon": 74.1779},
+    "Karanja": {"lat": 20.7083, "lon": 76.93}, "Karanja Lad": {"lat": 20.3969, "lon": 76.8908},
+    "Karjat": {"lat": 18.9121, "lon": 73.3259}, "Kavathe Mahankal": {"lat": 17.218, "lon": 74.416},
+    "Khamgaon": {"lat": 20.691, "lon": 76.6886}, "Khopoli": {"lat": 18.6958, "lon": 73.3207},
+    "Kolad": {"lat": 18.5132, "lon": 73.2166}, "Kolhapur": {"lat": 16.691031, "lon": 74.229523},
+    "Kopargaon": {"lat": 19.883333, "lon": 74.483333}, "Koparkhairane": {"lat": 19.0873, "lon": 72.9856},
+    "Kothrud": {"lat": 18.507399, "lon": 73.807648}, "Kudal": {"lat": 16.033333, "lon": 73.683333},
+    "Kurla": {"lat": 19.0667, "lon": 72.8833}, "Latur": {"lat": 18.406526, "lon": 76.560229},
+    "Lonavala": {"lat": 18.75, "lon": 73.4}, "Mahad": {"lat": 18.086, "lon": 73.3006},
+    "Malegaon": {"lat": 20.555256, "lon": 74.525539}, "Malkapur": {"lat": 20.4536, "lon": 76.3886},
+    "Manmad": {"lat": 20.3333, "lon": 74.4333}, "Mira-Bhayandar": {"lat": 19.271112, "lon": 72.854094},
+    "Mumbai": {"lat": 19.07609, "lon": 72.877426}, "Nagpur": {"lat": 21.1458, "lon": 79.088154},
+    "Nanded": {"lat": 19.148733, "lon": 77.321011}, "Nandurbar": {"lat": 21.317, "lon": 74.02},
+    "Nashik": {"lat": 20.011645, "lon": 73.790332}, "Niphad": {"lat": 20.074, "lon": 73.834},
+    "Osmanabad": {"lat": 18.169111, "lon": 76.035309}, "Palghar": {"lat": 19.691644, "lon": 72.768478},
+    "Panaji": {"lat": 15.4909, "lon": 73.8278}, "Panvel": {"lat": 18.989746, "lon": 73.117069},
+    "Parbhani": {"lat": 19.270335, "lon": 76.773347}, "Peth": {"lat": 18.125, "lon": 74.514},
+    "Phaltan": {"lat": 17.9977, "lon": 74.4066}, "Pune": {"lat": 18.52043, "lon": 73.856743},
+    "Raigad": {"lat": 18.515048, "lon": 73.179436}, "Ramtek": {"lat": 21.3142, "lon": 79.2676},
+    "Ratnagiri": {"lat": 16.990174, "lon": 73.311902}, "Sangli": {"lat": 16.855005, "lon": 74.56427},
+    "Sangole": {"lat": 17.126, "lon": 75.0331}, "Saswad": {"lat": 18.3461, "lon": 74.0335},
+    "Satara": {"lat": 17.688481, "lon": 73.993631}, "Sawantwadi": {"lat": 15.8964, "lon": 73.7626},
+    "Shahada": {"lat": 21.1167, "lon": 74.5667}, "Shirdi": {"lat": 19.7667, "lon": 74.4771},
+    "Shirpur": {"lat": 21.1286, "lon": 74.4172}, "Shirur": {"lat": 18.7939, "lon": 74.0305},
+    "Shrirampur": {"lat": 19.6214, "lon": 73.8653}, "Sinnar": {"lat": 19.8531, "lon": 73.9976},
+    "Solan": {"lat": 30.9083, "lon": 77.0989}, "Solapur": {"lat": 17.659921, "lon": 75.906393},
+    "Talegaon": {"lat": 18.7519, "lon": 73.487}, "Thane": {"lat": 19.218331, "lon": 72.978088},
+    "Achalpur": {"lat": 20.1833, "lon": 77.6833}, "Akot": {"lat": 21.1, "lon": 77.1167},
+    "Ambajogai": {"lat": 18.9667, "lon": 76.6833}, "Amalner": {"lat": 21.0333, "lon": 75.3333},
+    "Anjangaon Surji": {"lat": 21.1167, "lon": 77.8667}, "Arvi": {"lat": 20.45, "lon": 78.15},
+    "Ashti": {"lat": 18.0, "lon": 76.25}, "Atpadi": {"lat": 17.1667, "lon": 74.4167},
+    "Baramati": {"lat": 18.15, "lon": 74.6}, "Barshi": {"lat": 18.11, "lon": 76.06},
+    "Basmat": {"lat": 18.7, "lon": 77.856}, "Bhokar": {"lat": 19.5167, "lon": 77.3833},
+    "Biloli": {"lat": 19.5333, "lon": 77.2167}, "Chikhli": {"lat": 20.9, "lon": 76.0167},
+    "Daund": {"lat": 18.4667, "lon": 74.65}, "Deola": {"lat": 20.5667, "lon": 74.05},
+    "Dhanora": {"lat": 20.7167, "lon": 79.0167}, "Dharni": {"lat": 21.25, "lon": 78.2667},
+    "Dharur": {"lat": 18.0833, "lon": 76.7}, "Digras": {"lat": 19.45, "lon": 77.55},
+    "Dindori": {"lat": 21.0, "lon": 79.0}, "Erandol": {"lat": 21.0167, "lon": 75.2167},
+    "Faizpur": {"lat": 21.1167, "lon": 75.7167}, "Gadhinglaj": {"lat": 16.2333, "lon": 74.1333},
+    "Guhagar": {"lat": 16.4, "lon": 73.4}, "Hinganghat": {"lat": 20.0167, "lon": 78.7667},
+    "Igatpuri": {"lat": 19.6961, "lon": 73.5212}, "Junnar": {"lat": 19.2667, "lon": 73.8833},
+    "Kankavli": {"lat": 16.3833, "lon": 73.5167}, "Koregaon": {"lat": 17.2333, "lon": 74.1167},
+    "Kupwad": {"lat": 16.7667, "lon": 74.4667}, "Lonar": {"lat": 19.9833, "lon": 76.5167},
+    "Mangaon": {"lat": 18.1869, "lon": 73.2555}, "Mangalwedha": {"lat": 16.6667, "lon": 75.1333},
+    "Morshi": {"lat": 20.0556, "lon": 77.7647}, "Pandharpur": {"lat": 17.6658, "lon": 75.3203},
+    "Parli": {"lat": 18.8778, "lon": 76.65}, "Rahuri": {"lat": 19.2833, "lon": 74.5833},
+    "Raver": {"lat": 20.5876, "lon": 75.9002}, "Sangamner": {"lat": 19.3167, "lon": 74.5333},
+    "Savner": {"lat": 21.0833, "lon": 79.1333}, "Sillod": {"lat": 20.0667, "lon": 75.1833},
+    "Tumsar": {"lat": 20.4623, "lon": 79.5429}, "Udgir": {"lat": 18.4167, "lon": 77.1239},
+    "Ulhasnagar": {"lat": 19.218451, "lon": 73.16024}, "Vasai-Virar": {"lat": 19.391003, "lon": 72.839729},
+    "Wadgaon Road": {"lat": 18.52, "lon": 73.85}, "Wadwani": {"lat": 18.9, "lon": 76.69},
+    "Wai": {"lat": 17.9524, "lon": 73.8775}, "Wani": {"lat": 19.0, "lon": 78.002},
+    "Wardha": {"lat": 20.745445, "lon": 78.602452}, "Wardha Road": {"lat": 20.75, "lon": 78.6},
+    "Yavatmal": {"lat": 20.389917, "lon": 78.130051}
+}
+
+major_cities_available = [c for c in ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Kalyan", "Vasai-Virar", "Aurangabad", "Solapur", "Mira-Bhayandar", "Bhiwandi", "Amravati", "Nanded", "Kolhapur", "Ulhasnagar", "Sangli", "Malegaon", "Jalgaon", "Akola", "Latur", "Dhule", "Ahmadnagar", "Chandrapur", "Parbhani", "Ichalkaranji", "Jalna", "Ambernath", "Bhusawal", "Panvel", "Dombivli"] if c in city_dict]
+remaining_cities = sorted([c for c in city_dict if c not in major_cities_available])
+# 수정: "공연없음" 옵션 제거
+city_options = major_cities_available + remaining_cities
+
+
+# --- 데이터 로드 (공지사항 및 투어 일정) ---
+tour_notices = load_json(NOTICE_FILE)
+tour_schedule = load_json(CITY_FILE) 
+user_posts = load_json(USER_POST_FILE) # <-- 사용자 포스트 로드
+
+# 만약 city_dict에 있는 도시 정보가 없다면 초기화
+if not tour_schedule:
+    # 초기 도시 데이터를 지도 경로를 위해 포맷팅하여 저장
+    initial_schedule = []
+    for city, coords in city_dict.items():
+        initial_schedule.append({
+            "id": str(uuid.uuid4()),
+            "city": city,
+            "venue": "TBD",
+            "lat": coords["lat"],
+            "lon": coords["lon"],
+            "date": "",
+            "type": "outdoor",
+            "seats": "0",
+            "note": "Initial Data",
+            "google_link": "",
+            "probability": 100, # NEW: 초기값 100%
+            "reg_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        })
+    save_json(CITY_FILE, initial_schedule)
+    tour_schedule = initial_schedule
+
+
+# --- 관리자 및 UI 설정 ---
+ADMIN_PASS = "0009" # 비밀번호: '0009'
+
+# 요청 반영: 제목 스타일 (아이콘 제거, 기본 스타일 유지)
+title_html = f"""
+    <div class="header-container">
+        <h1 class="main-title">
+            <span style="color: #BB3333;">{_('title_cantata')}</span> <!-- 크리스마스 레드 -->
+            <span style="color: #FAFAFA;">{_('title_year')}</span>
+            <span style="color: #66BB66; font-size: 0.66em;">{_('title_region')}</span> <!-- 크리스마스 그린 -->
+        </h1>
+    </div>
+"""
+st.markdown(title_html, unsafe_allow_html=True)
+
+# 언어 선택 버튼 (상단 고정)
+col_lang, col_auth = st.columns([1, 3])
+with col_lang:
+    # 요청 반영: 언어 선택 옵션을 해당 언어명으로 표시
+    LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
+    lang_keys = list(LANG_OPTIONS.keys())
+    lang_display_names = list(LANG_OPTIONS.values())
+    
+    current_lang_index = lang_keys.index(st.session_state.lang)
+
+    selected_lang_display = st.selectbox(
+        _("menu"), 
+        options=lang_display_names, 
+        index=current_lang_index,
+        key="lang_select"
+    )
+    
+    # 표시된 이름으로 다시 키를 찾음
+    selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
+    
+    if selected_lang_key != st.session_state.lang:
+        st.session_state.lang = selected_lang_key
+        st.rerun()
+
+# --- 로그인 / 로그아웃 로직 (버튼 문제 수정) ---
+# st.rerun() 대신 st.experimental_rerun()의 대체 함수를 사용합니다.
+# Streamlit 1.29.0+ 버전에서는 st.rerun()을 사용해야 합니다.
+def safe_rerun():
+    if hasattr(st, 'rerun'):
+        st.rerun()
+    elif hasattr(st, 'experimental_rerun'):
+        st.experimental_rerun()
+    else:
+        # Fallback for very old versions or other environments
+        pass
+
+def handle_login_button_click():
+    """로그인 버튼 클릭 시 폼 표시 상태를 토글하고 강제 재실행합니다."""
+    st.session_state.show_login_form = not st.session_state.show_login_form
+    safe_rerun()
+
+with col_auth:
+    if st.session_state.admin:
+        if st.button(_("logout"), key="logout_btn"):
+            st.session_state.admin = False
+            st.session_state.logged_in_user = None
+            st.session_state.show_login_form = False
+            safe_rerun()
+    else:
+        # 로그인 버튼 클릭 시 on_click 대신 명시적 핸들러를 사용해 즉시 재실행을 보장
+        if st.button(_("login"), key="login_btn"):
+            handle_login_button_click()
+        
+        # 폼 표시 상태가 True일 때만 폼을 렌더링
+        if st.session_state.show_login_form:
+            with st.form("login_form_permanent", clear_on_submit=False):
+                st.write(_("admin_login"))
+                password = st.text_input("Password", type="password")
+                submitted = st.form_submit_button(_("login"))
+                
+                if submitted:
+                    if password == ADMIN_PASS:
+                        st.session_state.admin = True
+                        st.session_state.logged_in_user = "Admin"
+                        st.session_state.show_login_form = False
+                        safe_rerun()
+                    else:
+                        # 오류 메시지 숨김 처리
+                        pass
+
+
+# --- 탭 구성 ---
+tab1, tab2 = st.tabs([_("tab_notice"), _("tab_map")])
+
+# =============================================================================
+# 탭 1: 공지사항 (Notice)
+# =============================================================================
+with tab1:
+    
+    # 1. 관리자 공지사항 관리
+    if st.session_state.admin:
+        st.subheader(f"🔔 {_('existing_notices')} (관리자 모드)")
+        
+        # --- 관리자: 공지사항 등록/수정 폼 ---
+        with st.expander(_("register"), expanded=False):
+            with st.form("notice_form", clear_on_submit=True):
+                notice_title = st.text_input(_("title_cantata"))
+                notice_content = st.text_area(_("note"))
+                
+                uploaded_files = st.file_uploader(
+                    _("file_attachment"),
+                    type=["png", "jpg", "jpeg", "pdf", "txt", "zip"],
+                    accept_multiple_files=True,
+                    key="notice_file_uploader"
+                )
+                
+                type_options = {"General": _("general"), "Urgent": _("urgent")}
+                selected_display_type = st.radio(_("type"), list(type_options.values()))
+                notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
+                
+                submitted = st.form_submit_button(_("register"))
+                
+                if submitted and notice_title and notice_content:
+                    file_info_list = save_uploaded_files(uploaded_files)
+                    
+                    new_notice = {
+                        "id": str(uuid.uuid4()),
+                        "title": notice_title,
+                        "content": notice_content,
+                        "type": notice_type,
+                        "files": file_info_list, # 파일 정보 저장
+                        "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                    tour_notices.insert(0, new_notice)
+                    save_json(NOTICE_FILE, tour_notices)
+                    safe_rerun()
+                elif submitted:
+                    pass
+        
+        # --- 관리자: 공지사항 목록 및 수정/삭제 ---
+        valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('id') and n.get('title')]
+        notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+        type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
+        
+        for notice in notices_to_display:
+            notice_id = notice['id']
+            notice_type_key = notice.get('type', 'General')
+            translated_type = type_options_rev.get(notice_type_key, _("general"))
+            notice_title = notice['title']
+            
+            # 긴급 공지의 색상 처리 (HTML 제거)
+            prefix = "🚨 " if notice_type_key == "Urgent" else ""
+            header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
+            
+            # 수정: st.expander에 HTML 인수를 제거합니다.
+            with st.expander(header_text, expanded=False):
+                col_del, col_title = st.columns([1, 4])
+                with col_del:
+                    if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
+                        for file_info in notice.get('files', []):
+                            if os.path.exists(file_info['path']):
+                                os.remove(file_info['path'])
+                        
+                        tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
+                        save_json(NOTICE_FILE, tour_notices)
+                        safe_rerun()
+                
+                with col_title:
+                    st.markdown(f"**{_('content')}:** {notice.get('content', _('no_content'))}")
+                    
+                    attached_files = notice.get('files', [])
+                    if attached_files:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        for file_info in attached_files:
+                            display_and_download_file(file_info, notice_id, is_admin=True, is_user_post=False)
+                    else:
+                        st.markdown(f"**{_('attached_files')}:** {_('no_files')}")
+                
+                with st.form(f"update_notice_{notice_id}", clear_on_submit=True):
+                    current_type_index = list(type_options_rev.keys()).index(notice_type_key)
+                    updated_display_type = st.radio(_("type"), list(type_options_rev.values()), index=current_type_index, key=f"update_type_{notice_id}")
+                    updated_type_key = list(type_options_rev.keys())[list(type_options_rev.values()).index(updated_display_type)]
+                    
+                    updated_content = st.text_area(_("update_content"), value=notice.get('content', ''))
+                    
+                    if st.form_submit_button(_("update")):
+                        for n in tour_notices:
+                            if n.get('id') == notice_id:
+                                n['content'] = updated_content
+                                n['type'] = updated_type_key
+                                save_json(NOTICE_FILE, tour_notices)
+                                safe_rerun()
+        
+    # 2. 일반 사용자 공지사항 & 포스트 보기
+    if not st.session_state.admin:
+        st.subheader(f"📢 {_('tab_notice')}")
+        
+        # --- 공지사항 목록 ---
+        valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('title')]
+        if not valid_notices:
+            st.write(_("no_notices")) # st.write로 변경하여 CSS에 숨겨지지 않도록 함
+        else:
+            notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+            type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
+            
+            for notice in notices_to_display:
+                notice_id = notice.get('id')
+                notice_type_key = notice.get('type', 'General')
+                translated_type = type_options_rev.get(notice_type_key, _("general"))
+                notice_title = notice.get('title', _("no_title"))
+                notice_content = notice.get('content', _("no_content"))
+                
+                # 긴급 공지의 색상 처리 (HTML 제거)
+                prefix = "🚨 " if notice_type_key == "Urgent" else ""
+                header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
+                
+                # 수정: st.expander에 HTML 인수를 제거합니다.
+                with st.expander(header_text, expanded=False): 
+                    
+                    # st.info 대신 custom markdown 사용 (숨겨지는 문제 방지)
+                    st.markdown(f'<div class="notice-content-box">{notice_content}</div>', unsafe_allow_html=True)
+
+                    # --- 파일 첨부 표시 (이미지/비디오 인라인, 파일 다운로드) ---
+                    attached_files = notice.get('files', [])
+                    if attached_files:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        for file_info in attached_files:
+                            display_and_download_file(file_info, notice_id, is_admin=False, is_user_post=False)
+    
+    # 3. 사용자 포스트 섹션 (관리자/일반 사용자 공통)
+    st.subheader(f"📸 {_('user_posts')}") 
+    
+    # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
+    with st.expander(_("new_post"), expanded=False):
+        with st.form("user_post_form", clear_on_submit=True):
+            post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
+            uploaded_media = st.file_uploader(
+                _("media_attachment"),
+                type=["png", "jpg", "jpeg", "mp4", "mov"], # 이미지 및 동영상 허용
+                accept_multiple_files=True,
+                key="user_media_uploader"
+            )
+            
+            post_submitted = st.form_submit_button(_("register"))
+            
+            if post_submitted and (post_content or uploaded_media):
+                # 파일 저장 및 정보 수집 (클라우드 저장소에 저장된다고 가정)
+                media_info_list = save_uploaded_files(uploaded_media) 
+                
+                new_post = {
+                    "id": str(uuid.uuid4()),
+                    "content": post_content,
+                    "files": media_info_list, 
+                    "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                }
+                user_posts.insert(0, new_post)
+                save_json(USER_POST_FILE, user_posts)
+                safe_rerun()
+            elif post_submitted:
+                pass
+    
+    # --- 사용자 포스트 목록 표시 ---
+    valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
+    
+    if st.session_state.admin:
+        # 관리자 모드: 모든 포스트 표시
+        posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+        st.markdown(f"**관리자**는 총 {len(posts_to_display)}개의 사용자 포스트를 확인할 수 있습니다.")
+        for post in posts_to_display:
+            post_id = post['id']
+            
+            with st.expander(f"익명 사용자 포스트 - *{post.get('date', 'N/A')[:16]}*", expanded=False):
+                st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                
+                attached_media = post.get('files', [])
+                if attached_media:
+                    for file_info in attached_media:
+                        # 관리자는 파일 확인 가능
+                        display_and_download_file(file_info, post_id, is_admin=True, is_user_post=True)
+    
+    else:
+        # 일반 사용자 모드: 포스트 목록만 표시 (첨부 파일은 관리자만 확인 가능)
+        posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+        
+        if not posts_to_display:
+            st.write(_("no_posts"))
+        else:
+            for post in posts_to_display:
+                post_id = post['id']
+                
+                st.markdown(f"**익명 사용자** - *{post.get('date', 'N/A')[:16]}*")
+                st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                
+                # 일반 사용자는 파일이 첨부되었는지 여부와 함께 경고 메시지 표시
+                attached_media = post.get('files', [])
+                if attached_media:
+                    # display_and_download_file 함수 내에서 is_user_post=True 로직을 통해 경고 텍스트 표시
+                    # 첨부된 파일이 여러 개일 수 있으므로 첫 번째 파일 정보를 전달 (경고 메시지 표시용)
+                    display_and_download_file(attached_media[0], post_id, is_admin=False, is_user_post=True)
+                
+
+# =============================================================================
+# 탭 2: 투어 경로 (Map)
+# =============================================================================
+with tab2:
+    st.subheader(f"🗺️ {_('tab_map')}")
+    
+    # --- 관리자: 투어 일정 관리 ---
+    if st.session_state.admin:
+        st.markdown(f"**{_('register')} {_('tab_map')} {_('set_data')}**")
+        
+        # 초기 상태: 닫힘 (요청 반영)
+        with st.expander(_("add_city"), expanded=False):
+            with st.form("schedule_form", clear_on_submit=True):
+                col_c, col_d, col_v = st.columns(3)
+                
+                # "공연없음"이 제거된 city_options 사용
+                city_name_input = col_c.selectbox(_('city_name'), options=city_options, index=0, key="new_city_select")
+                schedule_date = col_d.date_input(_("date"), key="new_date_input")
+                venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
+                
+                # NEW: 가능성(%) 필드 추가
+                col_l, col_s, col_n, col_p = st.columns(4)
+                
+                type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"} # Display -> Internal Key
+                selected_display_type = col_l.radio(_("type"), list(type_options_map.keys()))
+                type_sel = type_options_map[selected_display_type] # Internal key
+                
+                # 예상인원 기본값을 500으로, step을 50으로 변경
+                expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
+                google_link = col_n.text_input(_("google_link"), placeholder=_("google_link_placeholder"))
+                
+                # NEW: 가능성 슬라이더
+                probability = col_p.slider(_("probability"), min_value=0, max_value=100, value=100, step=5)
+
+
+                note = st.text_area(_("note"), placeholder=_("note_placeholder"))
+                
+                submitted = st.form_submit_button(_("register"))
+                
+                if submitted:
+                    if not city_name_input or not venue_name or not schedule_date:
+                        pass
+                    elif city_name_input not in city_dict:
+                        pass
+                    else:
+                        # NEW: 도시/날짜 중복 검사
+                        is_duplicate = any(
+                            s.get('city') == city_name_input and s.get('date') == schedule_date.strftime("%Y-%m-%d")
+                            for s in tour_schedule
+                        )
+                        
+                        if is_duplicate:
+                            # 중복 시 경고 메시지 없이 등록 취소
+                            pass
+                        else:
+                            city_coords = city_dict[city_name_input]
+                            new_schedule_entry = {
+                                "id": str(uuid.uuid4()),
+                                "city": city_name_input,
+                                "venue": venue_name,
+                                "lat": city_coords["lat"],
+                                "lon": coords["lon"],
+                                "date": schedule_date.strftime("%Y-%m-%d"),
+                                "type": type_sel, # Internal key로 저장
+                                "seats": str(expected_seats),
+                                "note": note,
+                                "google_link": google_link,
+                                "probability": probability, # NEW: 가능성 저장
+                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                            }
+                            tour_schedule.append(new_schedule_entry)
+                            save_json(CITY_FILE, tour_schedule)
+                            safe_rerun()
+                        
+        
+        # --- 관리자: 일정 보기 및 수정/삭제 (안정성 강화) ---
+        valid_schedule = [
+            item 
+            for item in tour_schedule 
+            if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')
+        ]
+        
+        if valid_schedule:
+            st.subheader(_("tour_schedule_management"))
+            schedule_dict = {item['id']: item for item in valid_schedule}
+            sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
+            type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")} # Internal Key -> Display
+
+            for item_id, item in sorted_schedule_items:
+                translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+                probability_val = item.get('probability', 100) # NEW: 확률 값 가져오기
+                
+                header_text = f"[{item.get('date', 'N/A')}] {item['city']} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}%"
+
+                with st.expander(header_text, expanded=False):
+                    col_u, col_d = st.columns([1, 5])
+                    
+                    with col_u:
+                        if st.button(_("update"), key=f"upd_s_{item_id}"):
+                            st.session_state[f"edit_mode_{item_id}"] = True
+                            safe_rerun()
+                        if st.button(_("remove"), key=f"del_s_{item_id}"):
+                            tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
+                            save_json(CITY_FILE, tour_schedule)
+                            safe_rerun()
+
+                    if st.session_state.get(f"edit_mode_{item_id}"):
+                        with st.form(f"edit_form_{item_id}"):
+                            col_uc, col_ud, col_uv = st.columns(3)
+                            
+                            updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]))
+                            
+                            try:
+                                initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
+                            except ValueError:
+                                initial_date = date.today()
+                                
+                            updated_date = col_ud.date_input(_("date"), value=initial_date)
+                            updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'))
+                            
+                            col_ul, col_us, col_ug, col_up = st.columns(4) # NEW: 4개 컬럼
+                            current_map_type = item.get('type', 'outdoor')
+                            current_map_index = 0 if current_map_type == "indoor" else 1
+                            map_type_list = list(type_options_map_rev.values())
+                            updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
+                            updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
+                            
+                            seats_value = item.get('seats', '0')
+                            updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50)
+                            updated_google = col_ug.text_input(_("google_link"), value=item.get('google_link', ''))
+
+                            # NEW: 가능성 슬라이더
+                            updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5)
+
+                            updated_note = st.text_area(_("note"), value=item.get('note'))
+                            
+                            if st.form_submit_button(_("update")):
+                                for idx, s in enumerate(tour_schedule):
+                                    if s.get('id') == item_id:
+                                        coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
+                                        
+                                        # 중복 검사는 수정 모드에서 건너뜁니다. (도시/날짜가 동일한 경우만 허용)
+
+                                        tour_schedule[idx] = {
+                                            "id": item_id,
+                                            "city": updated_city,
+                                            "venue": updated_venue,
+                                            "lat": coords["lat"],
+                                            "lon": coords["lon"],
+                                            "date": updated_date.strftime("%Y-%m-%d"),
+                                            "type": updated_type,
+                                            "seats": str(updated_seats),
+                                            "note": updated_note,
+                                            "google_link": updated_google,
+                                            "probability": updated_probability, # NEW: 가능성 저장
+                                            "reg_date": s.get('reg_date', datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S"))
+                                        }
+                                        save_json(CITY_FILE, tour_schedule)
+                                        st.session_state[f"edit_mode_{item_id}"] = False
+                                        safe_rerun()
+                            
+                    if not st.session_state.get(f"edit_mode_{item_id}"):
+                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} ({item.get('reg_date', '')})")
+                        st.markdown(f"**{_('venue')}:** {item.get('venue', 'N/A')}")
+                        st.markdown(f"**{_('seats')}:** {item.get('seats', 'N/A')}")
+                        st.markdown(f"**{_('type')}:** {translated_type}")
+                        st.markdown(f"**{_('probability')}:** {probability_val}%") # NEW: 가능성 표시
+                        if item.get('google_link'):
+                            google_link_url = item['google_link']
+                            st.markdown(f"**{_('google_link')}:** [{_('google_link')}]({google_link_url})")
+                        st.markdown(f"**{_('note')}:** {item.get('note', 'N/A')}")
+        else:
+            st.write(_("no_schedule"))
+
+    # --- 지도 표시 (사용자 & 관리자 공통) ---
+    current_date = date.today()
+    schedule_for_map = sorted([
+        s for s in tour_schedule 
+        if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')
+    ], key=lambda x: x['date'])
+    
+    # 수정: 기본 중심 좌표를 Aurangabad로 설정
+    AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
+    start_coords = [AURANGABAD_COORDS['lat'], AURANGABAD_COORDS['lon']]
+    
+    m = folium.Map(location=start_coords, zoom_start=8)
+    locations = []
+    
+    for item in schedule_for_map:
+        lat = item['lat']
+        lon = item['lon']
+        date_str = item['date']
+        
+        try:
+            event_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            event_date = current_date + timedelta(days=365)
+        
+        is_past = event_date < current_date
+        
+        # 요청 반영: 아이콘 색상은 항상 빨간색
+        icon_color = '#BB3333' # 버건디 레드 계열
+        
+        # 요청 반영: 지난 도시는 25% 투명도
+        opacity_val = 0.25 if is_past else 1.0
+        
+        # 팝업 내용 (번역 및 실내/실외, 구글맵 포함)
+        type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")} # Internal Key -> Display
+        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+        map_type_icon = '🏠' if item.get('type') == 'indoor' else '🌳'
+        probability_val = item.get('probability', 100) # NEW: 확률 값 가져오기
+        
+        # --- 수정된 부분: 도시 이름을 빨간색으로 표시 ---
+        city_name_display = item.get('city', 'N/A')
+        red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
+        
+        # NEW: 가능성 막대 그래프 HTML 생성
+        # 막대 색상을 가능성(probability)에 따라 동적으로 변경
+        bar_color = "red" if probability_val < 50 else "gold" if probability_val < 90 else "#66BB66" # Green
+        
+        prob_bar_html = f"""
+        <div style="margin-top: 5px;">
+            <b>{_('probability')}:</b>
+            <div style="width: 100%; height: 10px; background-color: #333; border-radius: 5px; overflow: hidden; margin-top: 3px;">
+                <div style="width: {probability_val}%; height: 100%; background-color: {bar_color};"></div>
+            </div>
+            <span style="font-size: 12px; font-weight: bold; color: {bar_color};">{probability_val}%</span>
+        </div>
+        """
+        
+        popup_html = f"""
+        <div style="color: #FAFAFA; background-color: #1A1A1A; padding: 10px; border-radius: 8px;">
+            <b>{_('city')}:</b> {red_city_name}<br>
+            <b>{_('date')}:</b> {date_str}<br>
+            <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
+            <b>{_('type')}:</b> {map_type_icon} {translated_type}<br>
+            {prob_bar_html}
+        """
+        # -----------------------------------------------
+        
+        if item.get('google_link'):
+            google_link_url = item['google_link'] 
+            popup_html += f'<a href="{google_link_url}" target="_blank" style="color: #FFD700; text-decoration: none; display: block; margin-top: 5px;">{_("google_link")}</a>'
+        
+        popup_html += "</div>" # 팝업 전체 닫기
+        
+        # 요청 반영: DivIcon을 사용하여 2/3 크기 (scale 0.666) 아이콘으로 조정 (항상 빨간색)
+        city_initial = item.get('city', 'A')[0]
+        marker_icon_html = f"""
+            <div style="
+                transform: scale(0.666); 
+                opacity: {opacity_val};
+                text-align: center;
+                white-space: nowrap;
+            ">
+                <i class="fa fa-map-marker fa-3x" style="color: {icon_color};"></i>
+                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
+            </div>
+        """
+        
+        # 요청 반영: 말풍선 터치 시 나오는 작은 말풍선 제거 (tooltip 제거)
+        folium.Marker(
+            [lat, lon],
+            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.DivIcon(
+                icon_size=(30, 45),
+                icon_anchor=(15, 45),
+                html=marker_icon_html
+            )
+        ).add_to(m)
+        
+        locations.append([lat, lon])
+
+    # 4. AntPath (경로 애니메이션) - 과거/미래 분리 및 스타일 적용
+    if len(locations) > 1:
+        current_index = -1
+        for i, item in enumerate(schedule_for_map):
+            try:
+                event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
+                if event_date >= current_date:
+                    current_index = i
+                    break
+            except ValueError:
+                continue
+        
+        if current_index == -1: 
+            past_segments = locations
+            future_segments = []
+        elif current_index == 0: 
+            past_segments = []
+            future_segments = locations
+        else: 
+            past_segments = locations[:current_index + 1]
+            future_segments = locations[current_index:]
+
+        # 요청 반영: 지난 도시/라인 25% 투명도의 빨간색 선
+        if len(past_segments) > 1:
+            folium.PolyLine(
+                locations=past_segments,
+                color="#BB3333",
+                weight=5,
+                opacity=0.25, # 25% 투명도
+                tooltip=_("past_route")
+            ).add_to(m)
+            
+        # Future segments (animated line and individual PolyLines for tooltip)
+        if len(future_segments) > 1:
+            # 1. AntPath for the continuous animation effect (속도 1/2 조정)
+            AntPath(
+                future_segments, 
+                use="regular", 
+                # dash_array를 수정하여 화살표 모양으로 시뮬레이션
+                dash_array='30, 20', # 화살표 모양을 위한 점선 길이 조정
+                color='#BB3333', 
+                weight=5, 
+                opacity=0.8,
+                # dash_factor를 음수로 설정하여 역방향 이동 효과 (<<<<< 모양) 시뮬레이션
+                options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"} 
+            ).add_to(m)
+
+            # 2. Add invisible PolyLines for hover tooltips on each segment
+            for i in range(len(future_segments) - 1):
+                p1 = future_segments[i]
+                p2 = future_segments[i+1]
+                
+                # 거리 및 시간 계산
+                segment_info = calculate_distance_and_time(p1, p2)
+                
+                # 투명한 PolyLine을 생성하여 툴팁 영역으로 사용 (쉬운 터치/호버 감지)
+                folium.PolyLine(
+                    locations=[p1, p2],
+                    color="transparent", 
+                    weight=15, # 두껍게 하여 호버 영역 확장
+                    opacity=0, 
+                    tooltip=folium.Tooltip(
+                        segment_info, 
+                        permanent=False, 
+                        direction="top", 
+                        sticky=True,
+                        style="background-color: #2D2D2D; color: #FAFAFA; padding: 5px; border-radius: 5px;"
+                    )
+                ).add_to(m)
+            
+    elif locations:
+        # 단일 도시일 때도 25% 투명도 적용
+        try:
+            single_item_date = datetime.strptime(schedule_for_map[0]['date'], "%Y-%m-%d").date()
+            single_is_past = single_item_date < current_date
+        except ValueError:
+            single_is_past = False
+            
+        folium.Circle(
+            location=locations[0],
+            radius=1000,
+            color='#BB3333',
+            fill=True,
+            fill_color='#BB3333',
+            fill_opacity=0.25 if single_is_past else 0.8,
+            tooltip=_("single_location")
+        ).add_to(m)
+
+    # 지도 표시
+    st_folium(m, width=1000, height=600)
+    
+    # 지도 아래 불필요한 텍스트 제거 완료
+
+
+# --- CSS 적용 (최하단에 위치시켜야 함) ---
+st.markdown(f"""
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Snowfall animation inspired by the holidays. -->
+<style>
+/* Snowfall animation setup */
+@keyframes snowfall {{
+    0% {{ background-position: 0% 0%, 0% 0%, 0% 0% }}
+    100% {{ background-position: 500px 1000px, 250px 500px, -100px 300px }}
+}}
+
+/* Dark Christmas Theme Colors */
+:root {{
+    --bg-dark: #1A1A1A; /* Deep Dark */
+    --accent-red: #BB3333; /* Burgundy Red */
+    --accent-gold: #FFD700; /* Gold/Yellow */
+    --text-light: #FAFAFA; /* Light Text */
+    --form-bg: #2D2D2D;
+    --expander-bg: #333333;
+}}
+
+/* Snow effect applied to the root container */
+.stApp {{
+    background-color: var(--bg-dark); 
+    color: var(--text-light); 
+    font-family: Arial, sans-serif;
+    
+    /* Snow effect layer */
+    background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='none'/><circle cx='5' cy='5' r='1.5' fill='rgba(255, 255, 255, 0.9)'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='none'/><circle cx='10' cy='10' r='2' fill='rgba(255, 255, 255, 0.7)'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect width='100' height='100' fill='none'/><circle cx='15' cy='15' r='2.5' fill='rgba(255, 255, 255, 0.5)'/></svg>");
+    
+    /* Snow positioning and size */
+    background-size: 500px 500px, 250px 250px, 150px 150px; 
+    
+    /* Snow animation speed (slower for gentle fall) */
+    animation: snowfall 40s linear infinite; 
+}}
+
+/* Header Styling */
+.main-title {{
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}}
+
+/* 탭 배경색/글꼴색 */
+.stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {{
+    color: var(--text-light) !important;
+}}
+
+/* 폼 배경색 */
+.stForm {{
+    padding: 15px;
+    border: 1px solid #444444; /* Darker border */
+    border-radius: 10px;
+    background-color: var(--form-bg);
+}}
+
+/* Expander 배경색 */
+.streamlit-expanderHeader {{
+    background-color: var(--expander-bg);
+    color: var(--text-light);
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--accent-red); /* Subtle Red underline */
+}}
+
+/* 긴급 공지 제목 색상 (🚨 이모지를 사용하도록 변경했으므로, CSS 색상 설정은 제거) */
+.streamlit-expanderHeader span {{
+    font-weight: bold;
+}}
+
+
+/* 버튼 스타일 */
+.stButton>button {{
+    background-color: var(--accent-red); /* Burgundy Red */
+    color: white;
+    border-radius: 8px;
+    border: 1px solid var(--accent-red);
+    padding: 8px 16px;
+    transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}}
+.stButton>button:hover {{
+    background-color: #CC4444; /* Slightly brighter red */
+    border-color: #FFD700; /* Gold hover effect */
+}}
+
+/* Custom Content Box Style (공지/포스트 내용 박스) */
+.notice-content-box {{
+    border-left: 5px solid var(--accent-gold); /* Gold accent for info box */
+    background-color: rgba(255, 215, 0, 0.05); /* Very subtle light gold background */
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #FAFAFA;
+}}
+
+/* Streamlit Alert 메시지 숨기기 (사용자 요청 반영: 모든 상태 알림 숨김) */
+div[data-testid="stAlert"] {{
+    display: none !important;
+}}
+
+/* Selectbox/Input Label Color */
+.stSelectbox>label, .stTextInput>label, .stTextArea>label, .stNumberInput>label {{
+    color: var(--text-light);
+}}
+.stSelectbox div[data-baseweb="select"] {{
+    background-color: #333333;
+}}
+</style>
+""", unsafe_allow_html=True)
