@@ -117,8 +117,8 @@ LANG = {
         "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें", "google_link_placeholder": "गू글맵 URL दर्ज करें",
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
-        "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "पोस्ट सामग्री",
-        "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
+        "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
+        "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना"
     }
 }
@@ -532,7 +532,7 @@ with tab_map:
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
                 # 도시 이름 중복 방지 로직 (등록된 도시 제외)
-                registered_cities = {s['city'] for s in tour_schedule}
+                registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
                 available_cities = [c for c in city_options if c not in registered_cities]
 
                 city_name_input = col_c.selectbox(_('city_name'), options=available_cities, index=0 if available_cities else None, key="new_city_select")
@@ -644,6 +644,8 @@ with tab_map:
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
 
+                    # The existing schedule details display block below the form
+                    # This block is for display purposes only when not in edit mode
                     if not st.session_state.get(f"edit_mode_{item_id}"):
                         st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
                         st.markdown(f"**<span style='color: orange;'>{_('city')}</span>:** <span style='color: orange;'>{item.get('city', 'N/A')}</span>", unsafe_allow_html=True)
