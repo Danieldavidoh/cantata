@@ -758,7 +758,8 @@ with tab_map:
                 p1 = future_segments[i]; p2 = future_segments[i+1]
                 segment_info = calculate_distance_and_time(p1, p2)
                 mid_lat, mid_lon = (p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2
-                bearing = math.degrees(math.atan2(p2[1] - p1[1], p2[0] - p1[0]))
+                # math.atan2는 y, x 순서로 인자를 받습니다.
+                bearing = degrees(atan2(p2[1] - p1[1], p2[0] - p1[0]))
                 
                 # 텍스트 마커 (DivIcon) 생성
                 folium.Marker(
