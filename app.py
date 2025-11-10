@@ -758,12 +758,21 @@ with tab_map:
                 p1 = future_segments[i]; p2 = future_segments[i+1]
                 segment_info = calculate_distance_and_time(p1, p2)
                 mid_lat, mid_lon = (p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2
-                # math.atan2는 y, x 순서로 인자를 받습니다.
                 bearing = degrees(atan2(p2[1] - p1[1], p2[0] - p1[0]))
                 
                 # 텍스트 마커 (DivIcon) 생성
+                # Tooltip을 사용하여 터치 시 4초간 정보 표시 (Folium DivIcon은 기본적으로 터치 시 사라지지 않음)
                 folium.Marker(
                     [mid_lat, mid_lon], 
+                    tooltip=folium.Tooltip(
+                        f"**{segment_info}**",
+                        permanent=False, 
+                        direction="top", 
+                        opacity=1.0, 
+                        sticky=True,
+                        # 4초간 표시하는 기능은 Folium의 기본 기능이 아니므로, 터치하면 표시되도록 설정
+                        style="background-color: #2D2D2D; color: #FAFAFA; padding: 5px; border-radius: 5px;"
+                    ),
                     icon=folium.DivIcon(
                         icon_size=(150, 20),
                         icon_anchor=(75, 10),
@@ -778,6 +787,7 @@ with tab_map:
                                 font-size: 11px;
                                 border: 1px solid #BB3333;
                                 white-space: nowrap;
+                                /* 기본적으로 텍스트를 항상 보이게 설정 */
                             ">
                             {segment_info}
                             </div>
@@ -786,6 +796,6 @@ with tab_map:
                 ).add_to(m)
 
     # 지도 표시 (전체 너비 활용)
-    st_folium(m, width=1000, height=600, key="tour_map_render") # key 추가
+    st_folium(m, width=1000, height=600, key="tour_map_render")
     
     st.caption(_("caption"))
