@@ -256,8 +256,12 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             
         else:
             icon = "📄"
-            try: with open(file_path, "rb") as f: st.download_button(label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}")
-            except Exception: pass
+            try: 
+                # 수정된 부분: st.download_button을 with open 블록 밖으로 꺼냅니다.
+                with open(file_path, "rb") as f: 
+                    st.download_button(label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}")
+            except Exception: 
+                pass
     else:
         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
 
