@@ -9,8 +9,11 @@ import folium
 from streamlit_folium import st_folium
 from folium.plugins import AntPath
 from pytz import timezone
-from math import radians, cos, sin, asin, sqrt, atan2, degrees
+# from math import radians, cos, sin, asin, sqrt, atan2, degrees # 주석 처리
 import requests
+import math # Added import math
+from math import radians, cos, sin, asin, sqrt # 기존 math import 유지
+from math import atan2, degrees # 필요한 함수를 math에서 직접 import
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -179,16 +182,16 @@ LANG = {
         "schedule_reg_success": "कार्यक्रम पंजीकृत हुआ।",
         "schedule_del_success": "कार्यक्रम प्रविष्टि हटा दी गई।",
         "schedule_upd_success": "कार्यक्रम सफलतापूर्वक अपडेट किया गया।",
-        "venue_placeholder": "स्थल का नाम दर्ज करें",
-        "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें",
-        "google_link_placeholder": "गूगल मैप्स URL दर्ज करें",
-        "seats_tooltip": "अपेक्षित दर्शक संख्या",
+        "venue_placeholder": "Enter venue name",
+        "note_placeholder": "Enter notes/special remarks",
+        "google_link_placeholder": "Enter Google Maps URL",
+        "seats_tooltip": "Expected audience count",
         "file_attachment": "फ़ाइल संलग्नक",
         "attached_files": "संलग्न फ़ाइलें",
         "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट",
         "new_post": "नई पोस्ट बनाएं",
-        "post_content": "पोस्ट सामग्री",
+        "post_content": "Post Content",
         "media_attachment": "फोटो/वीडियो संलग्न करें",
         "post_success": "Post uploaded successfully!",
         "no_posts": "No posts available.",
@@ -260,8 +263,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
                 # 수정된 부분: st.download_button을 with open 블록 밖으로 꺼냅니다.
                 with open(file_path, "rb") as f:
                     st.download_button(label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}")
-            except Exception:
-                pass
+                except Exception:
+                    pass
     else:
         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
 
@@ -767,7 +770,7 @@ with tab_map:
         folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
         locations.append([lat, lon])
 
-    # 4. AntPath (경로 애니메이션) 및 거리/時間 라벨)
+    # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
     if len(locations) > 1:
         current_index = -1
         for i, item in enumerate(schedule_for_map):
