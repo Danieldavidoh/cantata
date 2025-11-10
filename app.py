@@ -9,7 +9,7 @@ import folium
 from streamlit_folium import st_folium
 from folium.plugins import AntPath
 from pytz import timezone
-from math import radians, cos, sin, asin, sqrt # <-- 거리 계산을 위해 추가
+from math import radians, cos, sin, asin, sqrt
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -20,7 +20,6 @@ try:
     from streamlit_autorefresh import st_autorefresh
 except ImportError:
     st_autorefresh = lambda **kwargs: None
-    # st.warning("`streamlit_autorefresh` 라이브러리가 설치되지 않았습니다. 자동 새로고침이 작동하지 않을 수 있습니다.")
 
 st.set_page_config(page_title="칸타타 투어 2025", layout="wide")
 
@@ -32,7 +31,7 @@ if not st.session_state.get("admin", False):
 # --- 파일 경로 ---
 NOTICE_FILE = "notice.json"
 CITY_FILE = "cities.json"
-USER_POST_FILE = "user_posts.json" # <-- 사용자 포스트 저장소
+USER_POST_FILE = "user_posts.json"
 
 # --- 다국어 설정 ---
 LANG = {
@@ -80,14 +79,14 @@ LANG = {
         "file_attachment": "파일 첨부",
         "attached_files": "첨부 파일",
         "no_files": "없음",
-        "user_posts": "사용자 포스트", # <-- 추가
-        "new_post": "새 포스트 작성", # <-- 추가
-        "post_content": "포스트 내용", # <-- 추가
-        "media_attachment": "사진/동영상 첨부", # <-- 추가
-        "post_success": "포스트가 성공적으로 업로드되었습니다!", # <-- 추가
-        "no_posts": "현재 포스트가 없습니다.", # <-- 추가
-        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", # <-- 추가
-        "probability": "가능성 (%)" # <-- NEW: 가능성 필드 추가
+        "user_posts": "사용자 포스트",
+        "new_post": "새 포스트 작성",
+        "post_content": "포스트 내용",
+        "media_attachment": "사진/동영상 첨부",
+        "post_success": "포스트가 성공적으로 업로드되었습니다!",
+        "no_posts": "현재 포스트가 없습니다.",
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.",
+        "probability": "가능성 (%)"
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -140,7 +139,7 @@ LANG = {
         "post_success": "Post uploaded successfully!",
         "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
-        "probability": "Probability (%)" # <-- NEW
+        "probability": "Probability (%)"
     },
     "hi": {
         "title_cantata": "कैंटाटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
@@ -193,7 +192,7 @@ LANG = {
         "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!",
         "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "संलग्न फ़ाइलें केवल व्यवस्थापक द्वारा देखी जा सकती हैं।",
-        "probability": "संभावना (%)" # <-- NEW
+        "probability": "संभावना (%)"
     }
 }
 
@@ -285,7 +284,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
                         )
                 except Exception:
                     pass
-        
+            
         # 2. 비디오 파일은 st.video로 표시
         elif file_type.startswith('video/'):
             st.video(open(file_path, 'rb').read(), format=file_type, start_time=0)
@@ -372,7 +371,7 @@ def calculate_distance_and_time(p1, p2):
     return f"거리: {distance_str} | 예상 시간: {time_str}"
 
 
-# --- 도시 목록 및 좌표 정의 (원래 코드에서 가져옴) ---
+# --- 도시 목록 및 좌표 정의 (원본 코드를 유지) ---
 city_dict = {
     "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
     "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
@@ -467,7 +466,7 @@ if not tour_schedule:
             "note": "Initial Data",
             "google_link": "",
             "probability": 100, # NEW: 초기값 100%
-            "reg_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
         })
     save_json(CITY_FILE, initial_schedule)
     tour_schedule = initial_schedule
@@ -480,10 +479,8 @@ ADMIN_PASS = "0009" # 비밀번호: '0009'
 title_html = f"""
     <div class="header-container">
         <h1 class="main-title">
-            <span style="color: #BB3333;">{_('title_cantata')}</span> <!-- 크리스마스 레드 -->
-            <span style="color: #FAFAFA;">{_('title_year')}</span>
-            <span style="color: #66BB66; font-size: 0.66em;">{_('title_region')}</span> <!-- 크리스마스 그린 -->
-        </h1>
+            <span style="color: #BB3333;">{_('title_cantata')}</span> <span style="color: #FAFAFA;">{_('title_year')}</span>
+            <span style="color: #66BB66; font-size: 0.66em;">{_('title_region')}</span> </h1>
     </div>
 """
 st.markdown(title_html, unsafe_allow_html=True)
@@ -696,7 +693,7 @@ with tab1:
                         st.markdown(f"**{_('attached_files')}:**")
                         for file_info in attached_files:
                             display_and_download_file(file_info, notice_id, is_admin=False, is_user_post=False)
-    
+        
     # 3. 사용자 포스트 섹션 (관리자/일반 사용자 공통)
     st.subheader(f"📸 {_('user_posts')}") 
     
@@ -728,7 +725,7 @@ with tab1:
                 safe_rerun()
             elif post_submitted:
                 pass
-    
+        
     # --- 사용자 포스트 목록 표시 ---
     valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
     
@@ -830,7 +827,7 @@ with tab2:
                                 "city": city_name_input,
                                 "venue": venue_name,
                                 "lat": city_coords["lat"],
-                                "lon": coords["lon"],
+                                "lon": city_coords["lon"],
                                 "date": schedule_date.strftime("%Y-%m-%d"),
                                 "type": type_sel, # Internal key로 저장
                                 "seats": str(expected_seats),
@@ -1140,7 +1137,6 @@ with tab2:
 st.markdown(f"""
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Snowfall animation inspired by the holidays. -->
 <style>
 /* Snowfall animation setup */
 @keyframes snowfall {{
@@ -1253,3 +1249,4 @@ div[data-testid="stAlert"] {{
 }}
 </style>
 """, unsafe_allow_html=True)
+```
