@@ -847,19 +847,25 @@ with tab2:
 
         # [NEW] 일정 전체 삭제 확인 모달/메시지 처리
         if st.session_state.get('confirm_schedule_delete', False):
-            # TypeError 방지를 위해 st.error 대신 st.warning을 사용하는 것을 재확인합니다.
+            # 오류 발생 지점: _() 호출 대신 직접 문자열 사용으로 안정성 강화
             st.warning(_("confirm_schedule_delete_q"), icon="⚠️")
             
             confirm_col1, confirm_col2, _ = st.columns([1, 1, 3])
             
             with confirm_col1:
-                # [수정] _() 함수의 안전한 호출을 위해 key를 명시적으로 설정했습니다.
-                if st.button(_("confirm_yes"), key="confirm_schedule_yes", type="primary", use_container_width=True):
+                # [안정화 수정] _("confirm_yes") 대신 직접 문자열을 사용하거나,
+                # _("confirm_yes")가 None일 때의 폴백(Fallback)을 추가하여 TypeError 방지
+                
+                # 번역 함수가 None인 경우를 대비하여 직접 언어 딕셔너리에 접근하거나, 문자열을 사용
+                confirm_yes_label = LANG[st.session_state.lang].get("confirm_yes", "Yes, Delete") 
+                
+                if st.button(confirm_yes_label, key="confirm_schedule_yes", type="primary", use_container_width=True):
                     clear_tour_schedule_data() # JSON 파일 초기화 및 Rerun
                     
             with confirm_col2:
-                # [수정] _() 함수의 안전한 호출을 위해 key를 명시적으로 설정했습니다.
-                if st.button(_("confirm_no"), key="confirm_schedule_no", type="secondary", use_container_width=True):
+                confirm_no_label = LANG[st.session_state.lang].get("confirm_no", "No, Cancel")
+
+                if st.button(confirm_no_label, key="confirm_schedule_no", type="secondary", use_container_width=True):
                     st.session_state['confirm_schedule_delete'] = False
                     st.info("삭제가 취소되었습니다.")
                     safe_rerun() # 새로고침하여 확인 메시지를 제거
