@@ -87,7 +87,7 @@ LANG = {
         "post_success": "포스트가 성공적으로 업로드되었습니다!", 
         "no_posts": "현재 포스트가 없습니다.", 
         "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", 
-        "probability": "가능성 (%)" 
+        "probability": "가능성" 
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -140,7 +140,7 @@ LANG = {
         "post_success": "Post uploaded successfully!",
         "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
-        "probability": "Probability (%)" 
+        "probability": "Probability" 
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
@@ -193,7 +193,7 @@ LANG = {
         "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!",
         "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "Attached files can only be viewed by Admin.",
-        "probability": "संभावना (%)" 
+        "probability": "संभावना" 
     }
 }
 
@@ -570,7 +570,7 @@ with tab_notice:
 # =============================================================================
 with tab_map:
     
-    # --- 1. 관리자: 일정 관리 섹션 (도시 박스 제거) ---
+    # --- 관리자: 일정 관리 섹션 (도시 박스 제거) ---
     if st.session_state.admin:
         st.subheader(f"⚙️ {_('tour_schedule_management')}")
         
@@ -705,32 +705,38 @@ with tab_map:
         type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
         translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor")); map_type_icon = '🏠' if item.get('type') == 'indoor' else '🌳'
         probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
+        # 팝업 UI 수정: 흰색 배경, 빨간색 도시명
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
         
         prob_bar_color = "red" if probability_val < 50 else "gold" if probability_val < 90 else "#66BB66"
         prob_bar_html = f"""
-        <div style="margin-top: 5px;">
+        <div style="margin-top: 5px; color: #1A1A1A;">
             <b>{_('probability')}:</b>
-            <div style="width: 100%; height: 10px; background-color: #333; border-radius: 5px; overflow: hidden; margin-top: 3px;">
+            <div style="width: 100%; height: 10px; background-color: #DDD; border-radius: 5px; overflow: hidden; margin-top: 3px;">
                 <div style="width: {probability_val}%; height: 100%; background-color: {prob_bar_color};"></div>
             </div>
-            <span style="font-size: 12px; font-weight: bold; color: {prob_bar_color};">{probability_val}%</span>
+            <span style="font-size: 12px; font-weight: bold; color: #1A1A1A;">{probability_val}%</span>
         </div>
         """
         
+        # 팝업 HTML 전체를 흰색 배경으로 설정
         popup_html = f"""
-        <div style="color: #FAFAFA; background-color: #1A1A1A; padding: 10px; border-radius: 8px;">
-            <b>{_('city')}:</b> {red_city_name}<br>
-            <b>{_('date')}:</b> {date_str_map}<br>
-            <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
-            <b>{_('type')}:</b> {map_type_icon} {translated_type}<br>
-            {prob_bar_html}
-        </div>
+        <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px;">
+            <div style="color: #1A1A1A;">
+                <b>{_('city')}:</b> {red_city_name}<br>
+                <b>{_('date')}:</b> {date_str_map}<br>
+                <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
+                <b>{_('type')}:</b> {map_type_icon} {translated_type}<br>
+                {prob_bar_html}
+            </div>
         """
         
         if item.get('google_link'):
             google_link_url = item['google_link']
-            popup_html += f'<a href="{google_link_url}" target="_blank" style="color: #FFD700; text-decoration: none; display: block; margin-top: 5px;">{_("google_link")}</a>'
+            # 지도 팝업 내 구글 링크
+            popup_html += f'<a href="{google_link_url}" target="_blank" style="color: #1A73E8; text-decoration: none; display: block; margin-top: 5px; font-weight: bold;">{_("google_link")}</a>'
+        
+        popup_html += "</div>" # 팝업 전체 닫기
         
         city_initial = item.get('city', 'A')[0]
         marker_icon_html = f"""
