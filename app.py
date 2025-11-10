@@ -185,7 +185,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             icon = "📄"
             try:
                 with open(file_path, "rb") as f:
-                    st.download_button(label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}")
+                    st.download_button(label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)", data=f.read(), file_name=file_name, mime=file_type, key=f"downloader_{key_prefix}_{notice_id}_{file_name}")
             except Exception:
                 pass
     else:
@@ -557,7 +557,7 @@ with tab_map:
                     if not city_name_input or not venue_name or not schedule_date: st.warning(_("fill_in_fields"))
                     elif city_name_input not in city_dict: st.warning(_("city_coords_error"))
                     else:
-                        city_coords = city_dict[city_name_input]
+                        city_coords = city_dict.get(city_name_input, {'lat': 0, 'lon': 0}) # Added .get() with default value
                         new_schedule_entry = {"id": str(uuid.uuid4()), "city": city_name_input, "venue": venue_name, "lat": city_coords["lat"], "lon": city_coords["lon"], "date": schedule_date.strftime("%Y-%m-%d"), "type": type_sel, "seats": str(expected_seats), "note": note, "google_link": google_link, "probability": probability, "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
                         tour_schedule.append(new_schedule_entry); save_json(CITY_FILE, tour_schedule); st.success(_("schedule_reg_success")); safe_rerun()
 
@@ -574,8 +574,11 @@ with tab_map:
                 translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
                 probability_val = item.get('probability', 100)
 
-                # 수정됨: (%) 제거
-                header_text = f"[{item.get('date', 'N/A')}] {item['city']} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}"
+                # Apply orange color to city name and add (%) to probability
+                city_name_display = item.get('city', 'N/A')
+                colored_city_name = f'<span style="color: orange;">{city_name_display}</span>'
+                header_text = f"[{item.get('date', 'N/A')}] {colored_city_name} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}(%)"
+
 
                 with st.expander(header_text, expanded=False):
 
@@ -639,9 +642,12 @@ with tab_map:
 
                     if not st.session_state.get(f"edit_mode_{item_id}"):
                         st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
+                        st.markdown(f"**<span style='color: orange;'>{_('city')}</span>:** <span style='color: orange;'>{item.get('city', 'N/A')}</span>", unsafe_allow_html=True)
                         st.markdown(f"**{_('venue')}:** {item.get('venue', 'N/A')}")
                         st.markdown(f"**{_('seats')}:** {item.get('seats', 'N/A')}")
-                        st.markdown(f"**{_('type')}:** {translated_type}")
+                        # Apply color to type text
+                        type_color = "blue" if item.get('type') == 'indoor' else "yellow"
+                        st.markdown(f"**{_('type')}:** <span style='color: {type_color};'>{translated_type}</span>", unsafe_allow_html=True)
                         st.markdown(f"**{_('probability')}:** {probability_val}%")
                         if item.get('google_link'):
                             google_link_url = item['google_link']
@@ -685,8 +691,8 @@ with tab_map:
         lightness = 80 - (60 * probability_val / 100)
         prob_bar_color = f"hsl(0, 100%, {lightness}%)"
 
-        # 실내/실외 텍스트 색상 설정
-        type_color = "#1E90FF" if item.get('type') == 'indoor' else "#FFD700" # 파란색 또는 노란색
+        # Apply color to type text in popup
+        type_color = "blue" if item.get('type') == 'indoor' else "yellow"
 
 
         # 팝업 HTML 전체를 흰색 배경으로 설정
@@ -725,7 +731,7 @@ with tab_map:
         folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
         locations.append([lat, lon])
 
-    # 4. AntPath (경로 애니메이션) 및 거리/時間 텍스트 배치
+    # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
     if len(locations) > 1:
         current_index = -1
 
