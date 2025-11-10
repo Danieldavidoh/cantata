@@ -118,7 +118,7 @@ LANG = {
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "पोस्ट सामग्री",
-        "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
+        "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना"
     }
 }
@@ -132,7 +132,6 @@ for k, v in defaults.items():
 # --- 번역 함수 ---
 def _(key):
     lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
-    # 수정: 함수 호출 시 딕셔너리 접근 대신 함수 형태로 사용
     return LANG.get(lang, LANG["ko"]).get(key, key)
 
 # --- 파일 첨부/저장 함수 ---
@@ -577,7 +576,12 @@ with tab_map:
                 # Apply orange color to city name and add (%) to probability
                 city_name_display = item.get('city', 'N/A')
                 colored_city_name = f'<span style="color: orange;">{city_name_display}</span>'
-                header_text = f"[{item.get('date', 'N/A')}] {colored_city_name} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}(%)"
+
+                # Apply color to type text in header
+                type_color = "blue" if item.get('type') == 'indoor' else "yellow"
+                colored_type = f'<span style="color: {type_color};">{translated_type}</span>'
+
+                header_text = f"[{item.get('date', 'N/A')}] {colored_city_name} - {item['venue']} ({colored_type}) | {_('probability')}: {probability_val}(%)"
 
 
                 with st.expander(header_text, expanded=False):
