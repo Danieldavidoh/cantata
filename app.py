@@ -59,14 +59,14 @@ LANG = {
         "venue_placeholder": "공연 장소를 입력하세요", "note_placeholder": "특이사항을 입력하세요",
         "google_link_placeholder": "구글맵 URL을 입력하세요", "seats_tooltip": "예상 관객 인원",
         "file_attachment": "파일 첨부", "attached_files": "첨부 파일", "no_files": "없음",
-        "user_posts": "사용자 포스트", # <-- 추가
-        "new_post": "새 포스트 작성", # <-- 추가
-        "post_content": "포스트 내용", # <-- 추가
-        "media_attachment": "사진/동영상 첨부", # <-- 추가
-        "post_success": "포스트가 성공적으로 업로드되었습니다!", # <-- 추가
-        "no_posts": "현재 포스트가 없습니다.", # <-- 추가
-        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", # <-- 추가
-        "probability": "가능성" # <-- 수정됨: (%) 제거
+        "user_posts": "사용자 포스트", 
+        "new_post": "새 포스트 작성", 
+        "post_content": "포스트 내용", 
+        "media_attachment": "사진/동영상 첨부", 
+        "post_success": "포스트가 성공적으로 업로드되었습니다!", 
+        "no_posts": "현재 포스트가 없습니다.", 
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", 
+        "probability": "가능성" 
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -92,7 +92,7 @@ LANG = {
         "seats_tooltip": "Expected audience count", "file_attachment": "File Attachment", "attached_files": "Attached Files",
         "no_files": "None", "user_posts": "User Posts", "new_post": "Create New Post", "post_content": "Post Content",
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
-        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "Probability" # <-- 수정됨
+        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "Probability" 
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
@@ -119,7 +119,7 @@ LANG = {
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "पोस्ट सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
-        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना" # <-- 수정됨
+        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना" 
     }
 }
 
@@ -132,7 +132,6 @@ for k, v in defaults.items():
 # --- 번역 함수 ---
 def _(key):
     lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
-    # 수정: 함수 호출 시 딕셔너리 접근 대신 함수 형태로 사용
     return LANG.get(lang, LANG["ko"]).get(key, key)
 
 # --- 파일 첨부/저장 함수 ---
@@ -172,7 +171,6 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             else:
                 st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
                 try: 
-                    # 수정됨: with open 구문 분리 및 들여쓰기
                     with open(file_path, "rb") as f: 
                         st.download_button(label=f"⬇️ {file_name} 다운로드", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}_imgfallback")
                 except Exception: 
@@ -185,7 +183,6 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
         else:
             icon = "📄"
             try: 
-                # 수정됨: with open 구문 분리 및 들여쓰기
                 with open(file_path, "rb") as f: 
                     st.download_button(label=f"⬇️ {icon} {file_name} ({file_size_kb} KB)", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}")
             except Exception: 
@@ -233,7 +230,6 @@ def calculate_distance_and_time(p1, p2):
     lat2, lon2 = p2
     distance_km = haversine(lat1, lon1, lat2, lon2)
     
-    # 거리에 따라 예상 평균 속도 적용
     avg_speed_kmh = 60 if distance_km < 500 else 80
         
     travel_time_h = distance_km / avg_speed_kmh
@@ -581,71 +577,68 @@ with tab_map:
                 header_text = f"[{item.get('date', 'N/A')}] {item['city']} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}"
 
                 with st.expander(header_text, expanded=False):
-                    col_u, col_d = st.columns([1, 5])
                     
-                    with col_u:
-                        if st.button(_("update"), key=f"upd_s_{item_id}"):
-                            st.session_state[f"edit_mode_{item_id}"] = True
-                            safe_rerun()
-                        if st.button(_("remove"), key=f"del_s_{item_id}"):
-                            tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
-                            save_json(CITY_FILE, tour_schedule)
-                            st.success(_("schedule_del_success"))
-                            safe_rerun()
+                    # --- 수정/제거 버튼을 등록 폼 대신 여기에 배치 ---
+                    with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
+                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')}")
+                        
+                        col_u, col_r, col_p = st.columns([1, 1, 4])
+                        
+                        # [수정됨] 등록 버튼 (실제로는 수정 후 저장)
+                        with col_u:
+                            if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
+                                st.session_state[f"edit_mode_{item_id}"] = False # 등록 시 창 접기
+                                # 수정 로직은 수정 폼에서 처리되므로 여기서는 창 닫는 기능만 구현
+                                safe_rerun() 
+                        
+                        # [수정됨] 제거 버튼
+                        with col_r:
+                            if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
+                                tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
+                                save_json(CITY_FILE, tour_schedule)
+                                st.success(_("schedule_del_success"))
+                                safe_rerun()
+                                
+                        st.markdown("---")
+                        st.markdown(f"### {_('update_content')}")
+                        
+                        # --- 수정 폼 필드 ---
+                        col_uc, col_ud, col_uv = st.columns(3)
+                        updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
+                        try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
+                        except ValueError: initial_date = date.today()
+                        updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
+                        updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
+                        
+                        col_ul, col_us, col_ug, col_up = st.columns(4)
+                        current_map_type = item.get('type', 'outdoor')
+                        current_map_index = 0 if current_map_type == "indoor" else 1
+                        map_type_list = list(type_options_map_rev.values())
+                        updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
+                        updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
+                        
+                        seats_value = item.get('seats', '0')
+                        updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
+                        updated_google = col_ug.text_input(_("google_link"), value=item.get('google_link', ''), key=f"upd_google_{item_id}")
+                        updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}")
 
-                    if st.session_state.get(f"edit_mode_{item_id}"):
-                        with st.form(f"edit_form_{item_id}"):
-                            st.write(f"**{item['city']}** {_('update_content')}")
-                            col_uc, col_ud, col_uv = st.columns(3)
-                            
-                            updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
-                            
-                            try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
-                            except ValueError: initial_date = date.today()
-                            
-                            updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
-                            updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
-                            
-                            col_ul, col_us, col_ug, col_up = st.columns(4)
-                            current_map_type = item.get('type', 'outdoor')
-                            current_map_index = 0 if current_map_type == "indoor" else 1
-                            map_type_list = list(type_options_map_rev.values())
-                            updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
-                            updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
-                            
-                            seats_value = item.get('seats', '0')
-                            updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
-                            updated_google = col_ug.text_input(_("google_link"), value=item.get('google_link', ''), key=f"upd_google_{item_id}")
-                            
-                            updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}")
-
-                            updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
-                            
-                            if st.form_submit_button(_("update")):
-                                for idx, s in enumerate(tour_schedule):
-                                    if s.get('id') == item_id:
-                                        coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
-                                        
-                                        tour_schedule[idx].update({
-                                            "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
-                                            "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
-                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability,
-                                        })
-                                        save_json(CITY_FILE, tour_schedule)
-                                        st.session_state[f"edit_mode_{item_id}"] = False
-                                        st.success(_("schedule_upd_success"))
-                                        safe_rerun()
+                        updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
+                        
+                        # 수정 폼의 Submit 버튼 (실제 저장 로직)
+                        if st.form_submit_button(_("update")):
+                            for idx, s in enumerate(tour_schedule):
+                                if s.get('id') == item_id:
+                                    coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
+                                    
+                                    tour_schedule[idx].update({
+                                        "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
+                                        "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
+                                        "note": updated_note, "google_link": updated_google, "probability": updated_probability,
+                                    })
+                                    save_json(CITY_FILE, tour_schedule)
+                                    st.success(_("schedule_upd_success"))
+                                    safe_rerun()
                     
-                    if not st.session_state.get(f"edit_mode_{item_id}"):
-                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
-                        st.markdown(f"**{_('venue')}:** {item.get('venue', 'N/A')}")
-                        st.markdown(f"**{_('seats')}:** {item.get('seats', 'N/A')}")
-                        st.markdown(f"**{_('type')}:** {translated_type}")
-                        st.markdown(f"**{_('probability')}:** {probability_val}%")
-                        if item.get('google_link'):
-                            google_link_url = item['google_link']
-                            st.markdown(f"**{_('google_link')}:** [{_('google_link')}]({google_link_url})")
-                        st.markdown(f"**{_('note')}:** {item.get('note', 'N/A')}")
         else: st.write(_("no_schedule"))
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
@@ -679,38 +672,19 @@ with tab_map:
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
         
         # NEW: 가능성 막대바 색상 로직 (0-100% 빨간색 농도)
-        # 0% (밝은 빨강/핑크) -> 100% (짙은 빨강/버건디)
-        # R (255) G (0-51) B (0-51) -> R:255, G:0-51, B:0-51
-        # R (187) G (51) B (51) -> #BB3333 (기본 짙은 빨강)
+        # HSL 색상 모델을 사용하여 L을 80%(밝음)에서 20%(어두움)로 변경
+        # L 값 계산 (80 -> 20)
+        lightness = 80 - (60 * probability_val / 100)
         
-        # Red HSL: Hue=0, Sat=100%, Lightness=L (50% ~ 25%)
-        # 0% -> L=80% (옅은 빨강)
-        # 100% -> L=20% (짙은 빨강)
-        
-        # 팝업에서 막대바 색상 계산 (RBG Hex 코드)
-        # 100%일 때 #BB3333
-        # 0%일 때 #FFBBBB
-        r = 255 - int(51 * (probability_val / 100))
-        g = 51 + int(136 * (1 - (probability_val / 100))) # 51 -> 187
-        b = 51 + int(136 * (1 - (probability_val / 100))) # 51 -> 187
-        
-        def hex_color(r, g, b):
-            return f"#{max(0, min(255, r)):02x}{max(0, min(255, g)):02x}{max(0, min(255, b)):02x}"
-        
-        # 이 로직은 복잡하므로 간단한 빨간색 계열로 대체합니다.
-        
-        # 팝업에서 막대바 색상 계산
-        # 0%일 때 #FFBBBB (밝은 빨강) -> 100%일 때 #CC0000 (짙은 빨강)
-        red_component = int(255 - 100 * (1 - probability_val / 100)) # 155->255
-        red_hex = f"#{max(155, min(255, red_component)):02x}0000"
+        prob_bar_color = f"hsl(0, 100%, {lightness}%)" # 빨간색 계열의 밝기만 조절
         
         prob_bar_html = f"""
         <div style="margin-top: 5px; color: #1A1A1A;">
             <b>{_('probability')}:</b>
             <div style="width: 100%; height: 10px; background-color: #DDD; border-radius: 5px; overflow: hidden; margin-top: 3px;">
-                <div style="width: {probability_val}%; height: 100%; background-color: #BB3333;"></div>
+                <div style="width: {probability_val}%; height: 100%; background-color: {prob_bar_color};"></div>
             </div>
-            <span style="font-size: 12px; font-weight: bold; color: #1A73E8;">{probability_val}%</span>
+            <span style="font-size: 12px; font-weight: bold; color: #66BB66;">{probability_val}%</span>
         </div>
         """
         
@@ -776,7 +750,7 @@ with tab_map:
             # --- 연결선 위에 거리/시간 텍스트 배치 ---
             for i in range(len(future_segments) - 1):
                 p1 = future_segments[i]; p2 = future_segments[i+1]
-                segment_info = calculate_distance_and_time(p1, p2) # 예: "320.1 km / 5.3h"
+                segment_info = calculate_distance_and_time(p1, p2) # 예: "320 km / 5.5h"
                 
                 # 중앙점 계산
                 mid_lat, mid_lon = (p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2
@@ -793,7 +767,6 @@ with tab_map:
                         direction="top", 
                         opacity=1.0, 
                         sticky=True,
-                        # 툴팁 스타일은 CSS에 의해 제어됨
                         style="background-color: #2D2D2D; color: #FAFAFA; padding: 5px; border-radius: 5px;"
                     ),
                     icon=folium.DivIcon(
@@ -810,7 +783,6 @@ with tab_map:
                                 font-size: 11px;
                                 border: 1px solid #BB3333;
                                 white-space: nowrap;
-                                /* 툴팁이 터치될 때만 나오도록 하려면, 이 텍스트 라벨은 항상 보이게 설정 */
                             ">
                             {segment_info}
                             </div>
