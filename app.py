@@ -646,19 +646,10 @@ with tab_map:
 
                     # The existing schedule details display block below the form
                     # This block is for display purposes only when not in edit mode
-                    if not st.session_state.get(f"edit_mode_{item_id}"):
-                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
-                        st.markdown(f"**<span style='color: orange;'>{_('city')}</span>:** <span style='color: orange;'>{item.get('city', 'N/A')}</span>", unsafe_allow_html=True)
-                        st.markdown(f"**{_('venue')}:** {item.get('venue', 'N/A')}")
-                        st.markdown(f"**{_('seats')}:** {item.get('seats', 'N/A')}")
-                        # Apply color to type text
-                        type_color = "blue" if item.get('type') == 'indoor' else "yellow"
-                        st.markdown(f"**{_('type')}:** <span style='color: {type_color};'>{translated_type}</span>", unsafe_allow_html=True)
-                        st.markdown(f"**{_('probability')}:** {probability_val}%")
-                        if item.get('google_link'):
-                            google_link_url = item['google_link']
-                            st.markdown(f"**{_('google_link')}:** [{_('google_link')}]({google_link_url})")
-                        st.markdown(f"**{_('note')}:** {item.get('note', 'N/A')}")
+                    # This block is for display purposes only when not in edit mode (removed duplicate display logic)
+                    pass # Keep the form logic, but remove the redundant display below it
+
+
         else: st.write(_("no_schedule"))
 
 
@@ -756,8 +747,8 @@ with tab_map:
             folium.PolyLine(locations=past_segments, color="#BB3333", weight=5, opacity=0.25, tooltip=_("past_route")).add_to(m)
 
         # 2. 미래 경로 (AntPath 애니메이션 및 거리/시간 라벨)
+        # Only add tooltip to the AntPath to avoid duplicate text
         if len(future_segments) > 1:
-            # AntPath (애니메이션 선)
             ant_path_tooltip_future = "<br>".join([calculate_distance_and_time(future_segments[i], future_segments[i+1]) for i in range(len(future_segments)-1)])
             AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}, tooltip=ant_path_tooltip_future).add_to(m)
 
