@@ -228,7 +228,7 @@ def haversine(lat1, lon1, lat2, lon2):
     return distance
 
 def calculate_distance_and_time(p1, p2):
-    """두 좌표 사이의 거리와 예상 소요 시간을 문자열로 반환합니다."""
+    """두 좌표 사이의 거리와 예상 소요 시간을 문자열로 반환합니다. (320 km / 5.5h 형식)"""
     lat1, lon1 = p1
     lat2, lon2 = p2
     distance_km = haversine(lat1, lon1, lat2, lon2)
@@ -238,17 +238,11 @@ def calculate_distance_and_time(p1, p2):
         
     travel_time_h = distance_km / avg_speed_kmh
     
-    # 거리 형식 지정
-    distance_str = f"{distance_km:.1f} km"
-    
-    # 시간 형식 지정 (HH시간 MM분)
-    hours = int(travel_time_h)
-    minutes = int((travel_time_h - hours) * 60)
-    
-    # 한국어로 거리 및 시간 정보 문자열 구성
-    time_str = f"{hours}시간 {minutes}분" if hours > 0 else f"{minutes}분"
+    # 거리와 시간 포맷 변경 (km / X.Xh)
+    distance_str = f"{distance_km:.0f} km" # 소수점 없이 km
+    time_str = f"{travel_time_h:.1f}h"     # 소수점 한 자리까지 h
 
-    return f"거리: {distance_str} | 예상 시간: {time_str}"
+    return f"{distance_str} / {time_str}"
 
 # --- 5. 도시 목록 및 좌표 정의 ---
 city_dict = {
@@ -502,7 +496,7 @@ with tab_notice:
         # --- 사용자 포스트 섹션 ---
         st.subheader(f"📸 {_('user_posts')}")
         
-        # --- 사용자 포스트 작성 フォーム (일반 사용자 모두 허용) ---
+        # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
         with st.expander(_("new_post"), expanded=False):
             with st.form("user_post_form", clear_on_submit=True):
                 post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
@@ -583,7 +577,8 @@ with tab_map:
                 translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
                 probability_val = item.get('probability', 100)
                 
-                header_text = f"[{item.get('date', 'N/A')}] {item['city']} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}%"
+                # 수정됨: (%) 제거
+                header_text = f"[{item.get('date', 'N/A')}] {item['city']} - {item['venue']} ({translated_type}) | {_('probability')}: {probability_val}"
 
                 with st.expander(header_text, expanded=False):
                     col_u, col_d = st.columns([1, 5])
@@ -682,19 +677,44 @@ with tab_map:
         
         # 팝업 UI 수정: 흰색 배경, 빨간색 도시명
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
-        prob_bar_color = "red" if probability_val < 50 else "gold" if probability_val < 90 else "#66BB66"
         
-        # 수정됨: 가능성 옆의 (%) 제거
+        # NEW: 가능성 막대바 색상 로직 (0-100% 빨간색 농도)
+        # 0% (밝은 빨강/핑크) -> 100% (짙은 빨강/버건디)
+        # R (255) G (0-51) B (0-51) -> R:255, G:0-51, B:0-51
+        # R (187) G (51) B (51) -> #BB3333 (기본 짙은 빨강)
+        
+        # Red HSL: Hue=0, Sat=100%, Lightness=L (50% ~ 25%)
+        # 0% -> L=80% (옅은 빨강)
+        # 100% -> L=20% (짙은 빨강)
+        
+        # 팝업에서 막대바 색상 계산 (RBG Hex 코드)
+        # 100%일 때 #BB3333
+        # 0%일 때 #FFBBBB
+        r = 255 - int(51 * (probability_val / 100))
+        g = 51 + int(136 * (1 - (probability_val / 100))) # 51 -> 187
+        b = 51 + int(136 * (1 - (probability_val / 100))) # 51 -> 187
+        
+        def hex_color(r, g, b):
+            return f"#{max(0, min(255, r)):02x}{max(0, min(255, g)):02x}{max(0, min(255, b)):02x}"
+        
+        # 이 로직은 복잡하므로 간단한 빨간색 계열로 대체합니다.
+        
+        # 팝업에서 막대바 색상 계산
+        # 0%일 때 #FFBBBB (밝은 빨강) -> 100%일 때 #CC0000 (짙은 빨강)
+        red_component = int(255 - 100 * (1 - probability_val / 100)) # 155->255
+        red_hex = f"#{max(155, min(255, red_component)):02x}0000"
+        
         prob_bar_html = f"""
         <div style="margin-top: 5px; color: #1A1A1A;">
             <b>{_('probability')}:</b>
             <div style="width: 100%; height: 10px; background-color: #DDD; border-radius: 5px; overflow: hidden; margin-top: 3px;">
-                <div style="width: {probability_val}%; height: 100%; background-color: {prob_bar_color};"></div>
+                <div style="width: {probability_val}%; height: 100%; background-color: #BB3333;"></div>
             </div>
-            <span style="font-size: 12px; font-weight: bold; color: {prob_bar_color};">{probability_val}</span>
+            <span style="font-size: 12px; font-weight: bold; color: #1A73E8;">{probability_val}%</span>
         </div>
         """
         
+        # 팝업 HTML 전체를 흰색 배경으로 설정
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px;">
             <div style="color: #1A1A1A;">
@@ -756,21 +776,24 @@ with tab_map:
             # --- 연결선 위에 거리/시간 텍스트 배치 ---
             for i in range(len(future_segments) - 1):
                 p1 = future_segments[i]; p2 = future_segments[i+1]
-                segment_info = calculate_distance_and_time(p1, p2)
+                segment_info = calculate_distance_and_time(p1, p2) # 예: "320.1 km / 5.3h"
+                
+                # 중앙점 계산
                 mid_lat, mid_lon = (p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2
+                
+                # 각도 계산 (텍스트를 선에 평행하게 회전시키기 위함)
                 bearing = degrees(atan2(p2[1] - p1[1], p2[0] - p1[0]))
                 
                 # 텍스트 마커 (DivIcon) 생성
-                # Tooltip을 사용하여 터치 시 4초간 정보 표시 (Folium DivIcon은 기본적으로 터치 시 사라지지 않음)
                 folium.Marker(
                     [mid_lat, mid_lon], 
                     tooltip=folium.Tooltip(
-                        f"**{segment_info}**",
+                        f"{segment_info}",
                         permanent=False, 
                         direction="top", 
                         opacity=1.0, 
                         sticky=True,
-                        # 4초간 표시하는 기능은 Folium의 기본 기능이 아니므로, 터치하면 표시되도록 설정
+                        # 툴팁 스타일은 CSS에 의해 제어됨
                         style="background-color: #2D2D2D; color: #FAFAFA; padding: 5px; border-radius: 5px;"
                     ),
                     icon=folium.DivIcon(
@@ -787,7 +810,7 @@ with tab_map:
                                 font-size: 11px;
                                 border: 1px solid #BB3333;
                                 white-space: nowrap;
-                                /* 기본적으로 텍스트를 항상 보이게 설정 */
+                                /* 툴팁이 터치될 때만 나오도록 하려면, 이 텍스트 라벨은 항상 보이게 설정 */
                             ">
                             {segment_info}
                             </div>
