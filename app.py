@@ -132,6 +132,7 @@ for k, v in defaults.items():
 # --- 번역 함수 ---
 def _(key):
     lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
+    # 수정: 함수 호출 시 딕셔너리 접근 대신 함수 형태로 사용
     return LANG.get(lang, LANG["ko"]).get(key, key)
 
 # --- 파일 첨부/저장 함수 ---
@@ -531,7 +532,11 @@ with tab_map:
         with st.expander(_("add_city"), expanded=False):
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
-                city_name_input = col_c.selectbox(_('city_name'), options=city_options, index=0, key="new_city_select")
+                # 도시 이름 중복 방지 로직 (등록된 도시 제외)
+                registered_cities = {s['city'] for s in tour_schedule}
+                available_cities = [c for c in city_options if c not in registered_cities]
+                
+                city_name_input = col_c.selectbox(_('city_name'), options=available_cities, index=0 if available_cities else None, key="new_city_select")
                 schedule_date = col_d.date_input(_("date"), key="new_date_input")
                 venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
                 
@@ -552,15 +557,11 @@ with tab_map:
                     if not city_name_input or not venue_name or not schedule_date: st.warning(_("fill_in_fields"))
                     elif city_name_input not in city_dict: st.warning(_("city_coords_error"))
                     else:
-                        is_duplicate = any(s.get('city') == city_name_input and s.get('date') == schedule_date.strftime("%Y-%m-%d") for s in tour_schedule)
-                        
-                        if is_duplicate: st.warning(f"{city_name_input}에 {schedule_date.strftime('%Y-%m-%d')} 일정이 이미 등록되어 있습니다.")
-                        else:
-                            city_coords = city_dict[city_name_input]
-                            new_schedule_entry = {"id": str(uuid.uuid4()), "city": city_name_input, "venue": venue_name, "lat": city_coords["lat"], "lon": city_coords["lon"], "date": schedule_date.strftime("%Y-%m-%d"), "type": type_sel, "seats": str(expected_seats), "note": note, "google_link": google_link, "probability": probability, "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                            tour_schedule.append(new_schedule_entry); save_json(CITY_FILE, tour_schedule); st.success(_("schedule_reg_success")); safe_rerun()
+                        city_coords = city_dict[city_name_input]
+                        new_schedule_entry = {"id": str(uuid.uuid4()), "city": city_name_input, "venue": venue_name, "lat": city_coords["lat"], "lon": city_coords["lon"], "date": schedule_date.strftime("%Y-%m-%d"), "type": type_sel, "seats": str(expected_seats), "note": note, "google_link": google_link, "probability": probability, "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
+                        tour_schedule.append(new_schedule_entry); save_json(CITY_FILE, tour_schedule); st.success(_("schedule_reg_success")); safe_rerun()
         
-        # --- 관리자: 일정 보기 및 수정/삭제 (폼만) ---
+        # --- 관리자: 일정 보기 및 수정/삭제 ---
         valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
         
         if valid_schedule:
@@ -578,35 +579,19 @@ with tab_map:
 
                 with st.expander(header_text, expanded=False):
                     
-                    # --- 수정/제거 버튼을 등록 폼 대신 여기에 배치 ---
+                    # [수정 2] 위쪽 '수정', '제거' 버튼 제거됨 (폼 안에 통합)
+                    
+                    # --- 수정 폼 (수정된 수정/등록 및 제거 버튼 포함) ---
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
-                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')}")
+                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
                         
-                        col_u, col_r, col_p = st.columns([1, 1, 4])
-                        
-                        # [수정됨] 등록 버튼 (실제로는 수정 후 저장)
-                        with col_u:
-                            if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
-                                st.session_state[f"edit_mode_{item_id}"] = False # 등록 시 창 접기
-                                # 수정 로직은 수정 폼에서 처리되므로 여기서는 창 닫는 기능만 구현
-                                safe_rerun() 
-                        
-                        # [수정됨] 제거 버튼
-                        with col_r:
-                            if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
-                                tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
-                                save_json(CITY_FILE, tour_schedule)
-                                st.success(_("schedule_del_success"))
-                                safe_rerun()
-                                
-                        st.markdown("---")
-                        st.markdown(f"### {_('update_content')}")
-                        
-                        # --- 수정 폼 필드 ---
                         col_uc, col_ud, col_uv = st.columns(3)
+                        
                         updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
+                        
                         try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
                         except ValueError: initial_date = date.today()
+                        
                         updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
                         updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
                         
@@ -624,21 +609,44 @@ with tab_map:
 
                         updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
                         
-                        # 수정 폼의 Submit 버튼 (실제 저장 로직)
-                        if st.form_submit_button(_("update")):
-                            for idx, s in enumerate(tour_schedule):
-                                if s.get('id') == item_id:
-                                    coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
-                                    
-                                    tour_schedule[idx].update({
-                                        "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
-                                        "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
-                                        "note": updated_note, "google_link": updated_google, "probability": updated_probability,
-                                    })
-                                    save_json(CITY_FILE, tour_schedule)
-                                    st.success(_("schedule_upd_success"))
-                                    safe_rerun()
+                        st.markdown("---")
+                        col_save, col_del, col_space = st.columns([1, 1, 4])
+                        
+                        # [수정 5] "등록" 버튼 (수정 내용을 저장하고 창을 접음)
+                        with col_save:
+                            if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
+                                for idx, s in enumerate(tour_schedule):
+                                    if s.get('id') == item_id:
+                                        coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
+                                        
+                                        tour_schedule[idx].update({
+                                            "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
+                                            "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
+                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability,
+                                        })
+                                        save_json(CITY_FILE, tour_schedule)
+                                        st.success(_("schedule_upd_success"))
+                                        # 창 접기 로직은 submit 후 자동으로 이루어짐
+                                        safe_rerun()
+                                        
+                        # [수정 5] "제거" 버튼
+                        with col_del:
+                            if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
+                                tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
+                                save_json(CITY_FILE, tour_schedule)
+                                st.success(_("schedule_del_success"))
+                                safe_rerun()
                     
+                    if not st.session_state.get(f"edit_mode_{item_id}"):
+                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
+                        st.markdown(f"**{_('venue')}:** {item.get('venue', 'N/A')}")
+                        st.markdown(f"**{_('seats')}:** {item.get('seats', 'N/A')}")
+                        st.markdown(f"**{_('type')}:** {translated_type}")
+                        st.markdown(f"**{_('probability')}:** {probability_val}%")
+                        if item.get('google_link'):
+                            google_link_url = item['google_link']
+                            st.markdown(f"**{_('google_link')}:** [{_('google_link')}]({google_link_url})")
+                        st.markdown(f"**{_('note')}:** {item.get('note', 'N/A')}")
         else: st.write(_("no_schedule"))
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
@@ -672,12 +680,14 @@ with tab_map:
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
         
         # NEW: 가능성 막대바 색상 로직 (0-100% 빨간색 농도)
-        # HSL 색상 모델을 사용하여 L을 80%(밝음)에서 20%(어두움)로 변경
-        # L 값 계산 (80 -> 20)
+        # 팝업에서 막대바 색상 계산
         lightness = 80 - (60 * probability_val / 100)
+        prob_bar_color = f"hsl(0, 100%, {lightness}%)"
         
-        prob_bar_color = f"hsl(0, 100%, {lightness}%)" # 빨간색 계열의 밝기만 조절
+        # 실내/실외 텍스트 색상 설정
+        type_color = "#1E90FF" if item.get('type') == 'indoor' else "#FFD700" # 파란색 또는 노란색
         
+        # NEW: 막대바 아래 숫자는 녹색 (#66BB66)
         prob_bar_html = f"""
         <div style="margin-top: 5px; color: #1A1A1A;">
             <b>{_('probability')}:</b>
@@ -695,14 +705,13 @@ with tab_map:
                 <b>{_('city')}:</b> {red_city_name}<br>
                 <b>{_('date')}:</b> {date_str_map}<br>
                 <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
-                <b>{_('type')}:</b> {map_type_icon} {translated_type}<br>
+                <b>{_('type')}:</b> <span style="color: {type_color};">{map_type_icon} {translated_type}</span><br>
                 {prob_bar_html}
             </div>
         """
         
         if item.get('google_link'):
             google_link_url = item['google_link']
-            # 지도 팝업 내 구글 링크
             popup_html += f'<a href="{google_link_url}" target="_blank" style="color: #1A73E8; text-decoration: none; display: block; margin-top: 5px; font-weight: bold;">{_("google_link")}</a>'
         
         popup_html += "</div>" # 팝업 전체 닫기
@@ -747,7 +756,7 @@ with tab_map:
             # AntPath (애니메이션 선)
             AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}).add_to(m)
 
-            # --- 연결선 위에 거리/시간 텍스트 배치 ---
+            # --- 요청 반영: 연결선 위에 거리/시간 텍스트 배치 (지도와 수평 유지) ---
             for i in range(len(future_segments) - 1):
                 p1 = future_segments[i]; p2 = future_segments[i+1]
                 segment_info = calculate_distance_and_time(p1, p2) # 예: "320 km / 5.5h"
@@ -756,27 +765,20 @@ with tab_map:
                 mid_lat, mid_lon = (p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2
                 
                 # 각도 계산 (텍스트를 선에 평행하게 회전시키기 위함)
-                bearing = degrees(atan2(p2[1] - p1[1], p2[0] - p1[0]))
+                bearing = degrees(atan2(p2[1] - p1[1], p2[0] - p1[0])) # math.degrees/atan2는 이미 코드 상단에서 import됨
                 
-                # 텍스트 마커 (DivIcon) 생성
+                # 텍스트 마커 (DivIcon) 생성: 툴팁 대신 항상 보이는 라벨 사용
+                # 툴팁은 호버/터치 시 나타나는 기능이므로, 텍스트가 라인 위에 항상 보이게 하려면 DivIcon을 사용해야 합니다.
                 folium.Marker(
                     [mid_lat, mid_lon], 
-                    tooltip=folium.Tooltip(
-                        f"{segment_info}",
-                        permanent=False, 
-                        direction="top", 
-                        opacity=1.0, 
-                        sticky=True,
-                        style="background-color: #2D2D2D; color: #FAFAFA; padding: 5px; border-radius: 5px;"
-                    ),
                     icon=folium.DivIcon(
                         icon_size=(150, 20),
                         icon_anchor=(75, 10),
                         html=f'''
                             <div style="
                                 transform: translate(-50%,-50%) rotate({bearing}deg); 
-                                background-color: rgba(45, 45, 45, 0.7); 
-                                color: #FAFAFA; 
+                                background-color: rgba(45, 45, 45, 0.7); /* 어두운 배경 */
+                                color: #FAFAFA; /* 밝은 글자 */
                                 padding: 3px 8px;
                                 border-radius: 5px;
                                 font-weight: bold;
