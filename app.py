@@ -535,6 +535,7 @@ with tab_map:
                 registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
                 available_cities = [c for c in city_options if c not in registered_cities]
 
+                # Ensure 'city_name' is correctly translated in the selectbox label
                 city_name_input = col_c.selectbox(_('city_name'), options=available_cities, index=0 if available_cities else None, key="new_city_select")
                 schedule_date = col_d.date_input(_("date"), key="new_date_input")
                 venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
@@ -577,10 +578,11 @@ with tab_map:
                 city_name_display = item.get('city', 'N/A')
                 colored_city_name = f'<span style="color: orange;">{city_name_display}</span>'
 
-                # Apply color to type text in header
+                # Apply color to type text
                 type_color = "blue" if item.get('type') == 'indoor' else "yellow"
                 colored_type = f'<span style="color: {type_color};">{translated_type}</span>'
 
+                # Construct the header text for the expander with desired formatting
                 header_text = f"[{item.get('date', 'N/A')}] {colored_city_name} - {item['venue']} ({colored_type}) | {_('probability')}: {probability_val}(%)"
 
 
@@ -643,12 +645,6 @@ with tab_map:
                                 save_json(CITY_FILE, tour_schedule)
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
-
-                    # The existing schedule details display block below the form
-                    # This block is for display purposes only when not in edit mode
-                    # This block is for display purposes only when not in edit mode (removed duplicate display logic)
-                    pass # Keep the form logic, but remove the redundant display below it
-
 
         else: st.write(_("no_schedule"))
 
@@ -729,6 +725,7 @@ with tab_map:
         locations.append([lat, lon])
 
     # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
+    # Removed the calculation and display of distance and time on the lines
     if len(locations) > 1:
         current_index = -1
 
@@ -746,11 +743,9 @@ with tab_map:
         if len(past_segments) > 1:
             folium.PolyLine(locations=past_segments, color="#BB3333", weight=5, opacity=0.25, tooltip=_("past_route")).add_to(m)
 
-        # 2. 미래 경로 (AntPath 애니메이션 및 거리/시간 라벨)
-        # Only add tooltip to the AntPath to avoid duplicate text
+        # 2. 미래 경로 (AntPath animation without distance/time tooltip)
         if len(future_segments) > 1:
-            ant_path_tooltip_future = "<br>".join([calculate_distance_and_time(future_segments[i], future_segments[i+1]) for i in range(len(future_segments)-1)])
-            AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}, tooltip=ant_path_tooltip_future).add_to(m)
+            AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}).add_to(m)
 
 
     # 지도 표시 (전체 너비 활용)
