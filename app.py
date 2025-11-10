@@ -1249,4 +1249,3 @@ div[data-testid="stAlert"] {{
 }}
 </style>
 """, unsafe_allow_html=True)
-```
