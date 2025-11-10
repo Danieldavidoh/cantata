@@ -230,8 +230,15 @@ for k, v in defaults.items():
 
 # --- 번역 함수 ---
 def _(key):
-    lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
+    # [FIX] st.session_state가 없을 경우 대비하여 'ko'를 기본 언어로 사용
+    if 'lang' not in st.session_state:
+        lang = "ko"
+    else:
+        lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
+        
+    # 키가 없을 경우 키 문자열 자체를 반환
     return LANG.get(lang, LANG["ko"]).get(key, key)
+
 
 # --- Streamlit Rerun 헬퍼 함수 ---
 def safe_rerun():
@@ -640,7 +647,9 @@ with tab1:
         st.subheader(f"🔔 {_('existing_notices')} (관리자 모드)")
         
         # --- 관리자: 공지사항 등록/수정 폼 ---
-        with st.expander(_("register"), expanded=False):
+        # [FIX] expander 레이블을 안전하게 호출하기 위해 _()가 아닌 문자열을 먼저 가져와 사용
+        register_label = _("register")
+        with st.expander(register_label, expanded=False):
             with st.form("notice_form", clear_on_submit=True):
                 notice_title = st.text_input(_("title_cantata"))
                 notice_content = st.text_area(_("note"))
@@ -764,7 +773,9 @@ with tab1:
     st.subheader(f"📸 {_('user_posts')}") 
     
     # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
-    with st.expander(_("new_post"), expanded=False):
+    # [FIX] expander 레이블을 안전하게 호출하기 위해 _()가 아닌 문자열을 먼저 가져와 사용
+    new_post_label = _("new_post")
+    with st.expander(new_post_label, expanded=False):
         with st.form("user_post_form", clear_on_submit=True):
             post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
             uploaded_media = st.file_uploader(
@@ -853,17 +864,14 @@ with tab2:
             confirm_col1, confirm_col2, _ = st.columns([1, 1, 3])
             
             with confirm_col1:
-                # [안정화 수정] _("confirm_yes") 대신 직접 문자열을 사용하거나,
-                # _("confirm_yes")가 None일 때의 폴백(Fallback)을 추가하여 TypeError 방지
-                
-                # 번역 함수가 None인 경우를 대비하여 직접 언어 딕셔너리에 접근하거나, 문자열을 사용
-                confirm_yes_label = LANG[st.session_state.lang].get("confirm_yes", "Yes, Delete") 
+                # [안정화 수정] 직접 언어 딕셔너리에 접근하여 TypeError 방지
+                confirm_yes_label = LANG.get(st.session_state.lang, LANG["ko"]).get("confirm_yes", "Yes, Delete")
                 
                 if st.button(confirm_yes_label, key="confirm_schedule_yes", type="primary", use_container_width=True):
                     clear_tour_schedule_data() # JSON 파일 초기화 및 Rerun
                     
             with confirm_col2:
-                confirm_no_label = LANG[st.session_state.lang].get("confirm_no", "No, Cancel")
+                confirm_no_label = LANG.get(st.session_state.lang, LANG["ko"]).get("confirm_no", "No, Cancel")
 
                 if st.button(confirm_no_label, key="confirm_schedule_no", type="secondary", use_container_width=True):
                     st.session_state['confirm_schedule_delete'] = False
@@ -871,7 +879,9 @@ with tab2:
                     safe_rerun() # 새로고침하여 확인 메시지를 제거
         
         
-        with st.expander(_("add_city"), expanded=False):
+        # [FIXED] 오류 발생 지점 수정: st.expander(_("add_city"), expanded=False)
+        add_city_label = _("add_city")
+        with st.expander(add_city_label, expanded=False):
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
                 
