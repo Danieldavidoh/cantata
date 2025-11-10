@@ -243,8 +243,12 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
                 st.image(f"data:{file_type};base64,{base64_data}", caption=f"🖼️ {file_name} ({file_size_kb} KB)", use_column_width=True)
             else:
                 st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
-                try: with open(file_path, "rb") as f: st.download_button(label=f"⬇️ {file_name} 다운로드", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}_imgfallback")
-                except Exception: pass
+                try: 
+                    # 수정된 부분: download_button을 with open 블록 밖으로 꺼냅니다.
+                    with open(file_path, "rb") as f: 
+                        st.download_button(label=f"⬇️ {file_name} 다운로드", data=f.read(), file_name=file_name, mime=file_type, key=f"{key_prefix}_download_{notice_id}_{file_name}_imgfallback")
+                except Exception: 
+                    pass
             
         elif file_type.startswith('video/'):
             st.video(open(file_path, 'rb').read(), format=file_type, start_time=0)
@@ -570,7 +574,7 @@ with tab_notice:
 # =============================================================================
 with tab_map:
     
-    # --- 관리자: 일정 관리 섹션 (도시 박스 제거) ---
+    # --- 1. 관리자: 일정 관리 섹션 (도시 박스 제거) ---
     if st.session_state.admin:
         st.subheader(f"⚙️ {_('tour_schedule_management')}")
         
@@ -715,7 +719,7 @@ with tab_map:
             <div style="width: 100%; height: 10px; background-color: #DDD; border-radius: 5px; overflow: hidden; margin-top: 3px;">
                 <div style="width: {probability_val}%; height: 100%; background-color: {prob_bar_color};"></div>
             </div>
-            <span style="font-size: 12px; font-weight: bold; color: #1A1A1A;">{probability_val}%</span>
+            <span style="font-size: 12px; font-weight: bold; color: #1A1A1A;">{probability_val}</span>
         </div>
         """
         
