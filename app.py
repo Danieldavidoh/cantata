@@ -100,7 +100,7 @@ LANG = {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
         "tab_notice": "सूचना", "tab_map": "टूर रूट", "indoor": "इनडोर", "outdoor": "आउटडोर",
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
-        "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "ल로그아웃",
+        "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
         "date": "तारीख", "city_name": "शहर का नाम", "search_placeholder": "शहर/स्थल खोजें...",
 
@@ -327,17 +327,19 @@ ADMIN_PASS = "0009"
 # ----------------------------------------------------------------------
 # 6. 제목
 # ----------------------------------------------------------------------
-# Restore "2025 마하라스트라" in the title
-title_text = f"{_('title_cantata')} {_('title_year')} {_('title_region')}"
-if st.session_state.lang == "ko":
-    parts = title_text.split()
-    # Ensure all parts are included
-    title_html = f'<span class="main">{parts[0]}</span> <span class="year">{" ".join(parts[1:])}</span>'
-else:
-    # Keep existing English logic if preferred, or adjust for other languages
-    parts = title_text.rsplit(" ", 1)
-    title_html = f'<span class="main">{parts[0]}</span> <span class="year">{parts[1] if len(parts)>1 else ""}</span>'
+# === 수정된 부분 1: 제목 서식 ===
+title_cantata = _('title_cantata')
+title_year = _('title_year')
+title_region = _('title_region')
+
+# 요청된 스타일 적용 (빨강, 흰색, 녹색/축소)
+title_html = f"""
+    <span style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
+    <span style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
+    <span style="color: #66BB66; font-size: 66%;">{title_region}</span>
+"""
 st.markdown(f'<h1 class="christmas-title">{title_html}</h1>', unsafe_allow_html=True)
+# === 수정 끝 ===
 
 
 # 언어 선택 버튼 (상단 고정)
@@ -695,11 +697,6 @@ with tab_map:
         # 팝업 UI 수정: 흰색 배경, 빨간색 도시명
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
-        # NEW: 가능성 막대바 색상 로직 (0-100% 빨간색 농도)
-        # 팝업에서 막대바 색상 계산
-        lightness = 80 - (60 * probability_val / 100)
-        prob_bar_color = f"hsl(0, 100%, {lightness}%)"
-
         # Apply color to type text in popup
         type_color = "blue" if item.get('type') == 'indoor' else "yellow"
 
@@ -713,7 +710,11 @@ with tab_map:
                 <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
                 <b>{_('type')}:</b> <span style="color: {type_color};">{map_type_icon} {translated_type}</span><br>
                 <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
-            </div>
+                
+                <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
+                    <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
+                </div>
+                </div>
         """
 
         if item.get('google_link'):
@@ -756,35 +757,37 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
-        # === 수정된 부분: 툴팁에서 도시 이름 제거 ===
+        # === 수정된 부분 2: 툴팁을 라인 중앙에 고정 (sticky=False) ===
         # 1. 과거 경로 (25% 투명도, 구간별 툴팁)
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
                 segment = [past_segments[i], past_segments[i+1]]
                 dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
-                
-                # 도시 이름을 툴팁에서 제거
                 tooltip_text = f"{dist_time}"
+                
+                # Tooltip 객체를 생성하고 sticky=False로 설정 (라인 중앙 고정)
+                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
                 
                 folium.PolyLine(
                     locations=segment, 
                     color="#BB3333", 
                     weight=5, 
                     opacity=0.25, 
-                    tooltip=tooltip_text # 수정된 툴팁 적용
+                    tooltip=tooltip_obj # Tooltip 객체 전달
                 ).add_to(m)
         # === 수정 끝 ===
 
-        # === 수정된 부분: 툴팁에서 도시 이름 제거 ===
+        # === 수정된 부분 2: 툴팁을 라인 중앙에 고정 (sticky=False) ===
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
         if len(future_segments) > 1:
             for i in range(len(future_segments) - 1):
                 segment = [future_segments[i], future_segments[i+1]]
                 dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
-
-                # 도시 이름을 툴팁에서 제거
                 tooltip_text = f"{dist_time}"
-                
+
+                # Tooltip 객체를 생성하고 sticky=False로 설정 (라인 중앙 고정)
+                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
+
                 AntPath(
                     segment, 
                     use="regular", 
@@ -793,7 +796,7 @@ with tab_map:
                     weight=5, 
                     opacity=0.8, 
                     options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
-                    tooltip=tooltip_text # 수정된 툴팁 적용
+                    tooltip=tooltip_obj # Tooltip 객체 전달
                 ).add_to(m)
         # === 수정 끝 ===
 
