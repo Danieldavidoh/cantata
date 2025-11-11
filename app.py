@@ -109,7 +109,7 @@ LANG = {
         "existing_notices": "मौजूदा सूचनाएं", "no_notices": "कोई सूचना उपलब्ध नहीं है।", "content": "सामग्री",
         "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", "tour_schedule_management": "टूर अनुसूची प्रबंधन",
         "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
-        "single_location": "एकल स्थान", "legend": "किंवदंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
+        "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
         "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।", "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
         "logged_out_success": "लॉग आउट किया गया।", "incorrect_password": "गलत पासवर्ड।",
         "fill_in_fields": "कृपया शीर्षक और सामग्री भरें।", "notice_reg_success": "सूचना सफलतापूर्वक पंजीकृत हुई!",
@@ -582,7 +582,6 @@ with tab_map:
                 translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
                 probability_val = item.get('probability', 100)
 
-                # === 수정된 부분 1: HTML 태그 대신 마크다운 색상 문법 사용 ===
                 # Apply formatting for the expander header using Markdown
                 city_name_display = item.get('city', 'N/A')
                 
@@ -590,9 +589,7 @@ with tab_map:
                 type_color_md = "blue" if item.get('type') == 'indoor' else "orange" # 가독성을 위해 yellow 대신 orange 사용
                 
                 # Construct the header text for the expander with Markdown formatting
-                # This ensures colors are rendered, not shown as raw HTML
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
-                # === 수정 끝 ===
 
                 with st.expander(header_text, expanded=False):
 
@@ -759,17 +756,66 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
-        # === 수정된 부분 2: PolyLine 툴팁 제거 ===
-        # 1. 과거 경로 (25% 투명도)
+        # === 수정된 부분: 툴팁을 포함하여 과거 경로(PolyLine)를 구간별로 그리기 ===
+        # 1. 과거 경로 (25% 투명도, 구간별 툴팁)
         if len(past_segments) > 1:
-            folium.PolyLine(locations=past_segments, color="#BB3333", weight=5, opacity=0.25).add_to(m)
+            for i in range(len(past_segments) - 1):
+                segment = [past_segments[i], past_segments[i+1]]
+                dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
+                
+                # city_names_for_map 리스트에서 도시 이름 가져오기
+                start_city = city_names_for_map[i]
+                end_city = city_names_for_map[i+1]
+                
+                tooltip_text = f"{start_city} ➡️ {end_city}: {dist_time}"
+                
+                folium.PolyLine(
+                    locations=segment, 
+                    color="#BB3333", 
+                    weight=5, 
+                    opacity=0.25, 
+                    tooltip=tooltip_text
+                ).add_to(m)
         # === 수정 끝 ===
 
-        # === 수정된 부분 3: AntPath 툴팁 및 관련 로직 제거 ===
-        # 2. 미래 경로 (AntPath animation) - 툴팁 제거됨
+        # === 수정된 부분: 툴팁을 포함하여 미래 경로(AntPath)를 구간별로 그리기 ===
+        # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
         if len(future_segments) > 1:
-            # 툴팁 생성 로직(future_tooltips, ant_path_tooltip_future)이 제거되었습니다.
-            AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}).add_to(m)
+            for i in range(len(future_segments) - 1):
+                segment = [future_segments[i], future_segments[i+1]]
+                dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
+
+                # 'future_segments' 목록 내의 인덱스(i)를
+                # 전체 'locations' 및 'city_names_for_map' 목록의
+                # 올바른 인덱스로 변환합니다.
+                
+                start_city_index_in_map_list = 0
+                if current_index == 0: # 모든 일정이 미래인 경우
+                    start_city_index_in_map_list = i
+                elif current_index > 0: # 과거와 미래가 혼합된 경우
+                    start_city_index_in_map_list = current_index + i
+                
+                # current_index == -1 (모든 일정이 과거)인 경우
+                # future_segments가 비어있어 이 루프는 실행되지 않습니다.
+                
+                if current_index != -1: 
+                    end_city_index_in_map_list = start_city_index_in_map_list + 1
+
+                    if end_city_index_in_map_list < len(city_names_for_map):
+                        start_city = city_names_for_map[start_city_index_in_map_list]
+                        end_city = city_names_for_map[end_city_index_in_map_list]
+                        tooltip_text = f"{start_city} ➡️ {end_city}: {dist_time}"
+
+                        AntPath(
+                            segment, 
+                            use="regular", 
+                            dash_array='30, 20', 
+                            color='#BB3333', 
+                            weight=5, 
+                            opacity=0.8, 
+                            options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
+                            tooltip=tooltip_text
+                        ).add_to(m)
         # === 수정 끝 ===
 
     # 지도 표시 (전체 너비 활용)
