@@ -553,8 +553,8 @@ with tab_map:
 
                 col_l, col_s, col_ug, col_up = st.columns(4)
                 type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                selected_display_type = col_l.radio(_("type"), list(type_options_map.keys()))
-                type_sel = type_options_map[selected_display_type]
+                selected_display_type = col_l.radio(_("type"), list(type_options_map.values())) # Display values directly
+                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] # Get key from selected value
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
@@ -585,11 +585,14 @@ with tab_map:
 
             # Display current schedule entries with distance/time between them
             for i, (item_id, item) in enumerate(sorted_schedule_items):
-                translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+                current_type_key = item.get('type', 'outdoor')
+                translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
                 probability_val = item.get('probability', 100)
 
                 city_name_display = item.get('city', 'N/A')
-                type_color_md = "blue" if item.get('type') == 'indoor' else "orange" 
+                
+                # --- 실내/실외 색상 변경 ---
+                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" 
                 
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
 
@@ -691,11 +694,15 @@ with tab_map:
         icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
 
         type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
-        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor")); map_type_icon = '🏠' if item.get('type') == 'indoor' else '🌳'
+        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+        
+        # --- 실내/실외 색상 및 아이콘 변경 ---
+        type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
+        map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' # FontAwesome 아이콘
+        
         probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
-        type_color = "blue" if item.get('type') == 'indoor' else "yellow"
 
         # 팝업 HTML (최소 높이 190px)
         popup_html = f"""
@@ -704,7 +711,7 @@ with tab_map:
                 <b>{_('city')}:</b> {red_city_name}<br>
                 <b>{_('date')}:</b> {date_str_map}<br>
                 <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
-                <b>{_('type')}:</b> <span style="color: {type_color};">{map_type_icon} {translated_type}</span><br>
+                <b>{_('type')}:</b> <span style="color: {type_color_html};"><i class="fa {map_type_icon_fa}" style="margin-right: 5px;"></i> {translated_type}</span><br>
                 <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
                 
                 <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
@@ -725,13 +732,12 @@ with tab_map:
             else:
                 # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination=?daddr={encoded_query}" # maps/15 -> maps/4?daddr=
+                final_google_link = f"http://maps.google.com/maps?daddr={encoded_query}" # maps/15 -> maps/4?daddr=
 
             # 아이콘(빨간색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
                 <span style="display: block; margin-top: 5px; font-weight: bold;">
-                    <i class="fa fa-car" style="color: #BB3333; margin-right: 5px;"></i>
-                    <a href="{final_google_link}" target="_blank" 
+                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> <a href="{final_google_link}" target="_blank" 
                        style="color: #1A73E8; text-decoration: none;">
                        {_("google_link")}
                     </a>
