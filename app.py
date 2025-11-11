@@ -36,22 +36,19 @@ CITY_FILE = "cities.json"
 USER_POST_FILE = "user_posts.json"
 
 # --- 1. 다국어 설정 ---
-# === 수정된 부분: 탭 이름 및 소제목 변경 ===
 LANG = {
     "ko": {
         "title_cantata": "칸타타 투어", "title_year": "2025", "title_region": "마하라스트라",
-        "tab_notice": "공지", "tab_map": "칸타타 투어", "indoor": "실내", "outdoor": "실외", # '투어 경로' -> '칸타타 투어'
+        "tab_notice": "공지", "tab_map": "칸타타 투어", "indoor": "실내", "outdoor": "실외", 
         "venue": "공연 장소", "seats": "예상 인원", "note": "특이사항", "google_link": "구글맵",
         "warning": "도시와 장소를 입력하세요", "delete": "제거", "menu": "메뉴", "login": "로그인", "logout": "로그아웃",
         "add_city": "추가", "register": "등록", "update": "수정", "remove": "제거",
         "date": "날짜", "city_name": "도시 이름", "search_placeholder": "도시/장소 검색...",
-
-        # 추가 번역 (모든 UI 요소 포함)
         "general": "일반", "urgent": "긴급", "admin_login": "관리자 로그인", "update_content": "내용 수정",
         "existing_notices": "기존 공지사항", "no_notices": "공지사항이 없습니다.", "content": "내용",
         "no_content": "내용 없음", "no_title": "제목 없음", 
-        "tour_schedule_management": "공연도시 정보 입력", # '투어 일정 관리' -> '공연도시 정보 입력'
-        "venue_list_title": "공연 도시 목록", # 새로 추가된 키
+        "tour_schedule_management": "공연도시 정보 입력", 
+        "venue_list_title": "공연 도시 목록", 
         "set_data": "데이터 설정", "type": "유형", "city": "도시", "link": "링크", "past_route": "지난 경로",
         "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다.",
         "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
@@ -76,18 +73,16 @@ LANG = {
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
-        "tab_notice": "Notice", "tab_map": "Cantata Tour", "indoor": "Indoor", "outdoor": "Outdoor", # 'Tour Route' -> 'Cantata Tour'
+        "tab_notice": "Notice", "tab_map": "Cantata Tour", "indoor": "Indoor", "outdoor": "Outdoor", 
         "venue": "Venue", "seats": "Expected", "note": "Note", "google_link": "Google Maps",
         "warning": "Enter city and venue", "delete": "Remove", "menu": "Menu", "login": "Login", "logout": "Logout",
         "add_city": "Add", "register": "Register", "update": "Update", "remove": "Remove",
         "date": "Date", "city_name": "City Name", "search_placeholder": "Search City/Venue...",
-
-        # Additional translations
         "general": "General", "urgent": "Urgent", "admin_login": "Admin Login", "update_content": "Update Content",
         "existing_notices": "Existing Notices", "no_notices": "No notices available.", "content": "Content",
         "no_content": "No Content", "no_title": "No Title", 
-        "tour_schedule_management": "Venue Information Input", # 'Tour Schedule Management' -> 'Venue Information Input'
-        "venue_list_title": "Venue City List", # 새로 추가된 키
+        "tour_schedule_management": "Venue Information Input", 
+        "venue_list_title": "Venue City List", 
         "set_data": "Set Data", "type": "Type", "city": "City", "link": "Link", "past_route": "Past Route",
         "single_location": "Single Location", "legend": "Legend", "no_schedule": "No schedule available.",
         "city_coords_error": "Coordinates not found. Please add to city_dict.", "logged_in_success": "Logged in as Admin.",
@@ -106,18 +101,16 @@ LANG = {
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
-        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", # 'टूर रूट' -> 'कंटटा टूर'
+        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", 
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
         "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
         "date": "तारीख", "city_name": "शहर का नाम", "search_placeholder": "शहर/स्थल खोजें...",
-
-        # Additional translations
         "general": "सामान्य", "urgent": "तत्काल", "admin_login": "व्यवस्थापक लॉगिन", "update_content": "सामग्री अपडेट करें",
         "existing_notices": "मौजूदा सूचनाएं", "no_notices": "कोई सूचना उपलब्ध नहीं है।", "content": "सामग्री",
         "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", 
-        "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", # 'टूर अनुसूची प्रबंधन' -> 'प्रदर्शन शहर की जानकारी इनपुट'
-        "venue_list_title": "प्रदर्शन शहर की सूची", # 새로 추가된 키
+        "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", 
+        "venue_list_title": "प्रदर्शन शहर की सूची", 
         "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
         "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
         "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।", "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
@@ -407,9 +400,7 @@ with col_auth:
                     else: st.warning(_("incorrect_password"))
 
 # --- 탭 구성 ---
-# === 수정된 부분: _("tab_map")이 새 값("칸타타 투어")을 자동으로 가져옴 ===
 tab_notice, tab_map = st.tabs([_("tab_notice"), _("tab_map")])
-# === 수정 끝 ===
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -546,19 +537,16 @@ with tab_map:
 
     # --- 1. 관리자: 일정 관리 섹션 ---
     if st.session_state.admin:
-        # === 수정된 부분: 소제목 (1) 변경 ===
         st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
-        # === 수정 끝 ===
 
         # --- 도시/일정 등록 폼 (Admin Only) ---
-        with st.expander(_("add_city"), expanded=False): # <--- 기본값 False
+        with st.expander(_("add_city"), expanded=False): 
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
                 # 도시 이름 중복 방지 로직 (등록된 도시 제외)
                 registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
                 available_cities = [c for c in city_options if c not in registered_cities]
 
-                # Ensure 'city_name' is correctly translated in the selectbox label
                 city_name_input = col_c.selectbox(_('city_name'), options=available_cities, index=0 if available_cities else None, key="new_city_select")
                 schedule_date = col_d.date_input(_("date"), key="new_date_input")
                 venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
@@ -570,9 +558,7 @@ with tab_map:
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
-                # === 수정된 부분: 관리자 폼 레이블/placeholder 수정 ===
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
-                # === 수정 끝 ===
 
                 probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5)
 
@@ -584,7 +570,7 @@ with tab_map:
                     if not city_name_input or not venue_name or not schedule_date: st.warning(_("fill_in_fields"))
                     elif city_name_input not in city_dict: st.warning(_("city_coords_error"))
                     else:
-                        city_coords = city_dict.get(city_name_input, {'lat': 0, 'lon': 0}) # Added .get() with default value
+                        city_coords = city_dict.get(city_name_input, {'lat': 0, 'lon': 0}) 
                         new_schedule_entry = {"id": str(uuid.uuid4()), "city": city_name_input, "venue": venue_name, "lat": city_coords["lat"], "lon": city_coords["lon"], "date": schedule_date.strftime("%Y-%m-%d"), "type": type_sel, "seats": str(expected_seats), "note": note, "google_link": google_link, "probability": probability, "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
                         tour_schedule.append(new_schedule_entry); save_json(CITY_FILE, tour_schedule); st.success(_("schedule_reg_success")); safe_rerun()
 
@@ -592,9 +578,7 @@ with tab_map:
         valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
 
         if valid_schedule:
-            # === 수정된 부분: 소제목 (2) 변경 ===
             st.subheader(_("venue_list_title")) # '공연 도시 목록'
-            # === 수정 끝 ===
             schedule_dict = {item['id']: item for item in valid_schedule}
             sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
             type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
@@ -604,16 +588,12 @@ with tab_map:
                 translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
                 probability_val = item.get('probability', 100)
 
-                # Apply formatting for the expander header using Markdown
                 city_name_display = item.get('city', 'N/A')
+                type_color_md = "blue" if item.get('type') == 'indoor' else "orange" 
                 
-                # Set markdown color for type
-                type_color_md = "blue" if item.get('type') == 'indoor' else "orange" # 가독성을 위해 yellow 대신 orange 사용
-                
-                # Construct the header text for the expander with Markdown formatting
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
 
-                with st.expander(header_text, expanded=False): # <--- 기본값 False
+                with st.expander(header_text, expanded=False): 
 
                     # --- 수정 폼 (수정된 수정/등록 및 제거 버튼 포함) ---
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
@@ -639,9 +619,7 @@ with tab_map:
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
                         
-                        # === 수정된 부분: 관리자 폼 레이블/placeholder 수정 ===
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
-                        # === 수정 끝 ===
                         
                         updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}")
 
@@ -690,9 +668,7 @@ with tab_map:
 
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
-    # === 수정된 부분: _("tab_map")이 새 값("칸타타 투어")을 자동으로 가져옴 ===
     st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
-    # === 수정 끝 ===
     current_date = date.today()
     schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
 
@@ -701,33 +677,27 @@ with tab_map:
 
     m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
     locations = []
-    city_names_for_map = [] # 도시 이름 저장은 팝업을 위해 유지
+    city_names_for_map = [] 
  
     for item in schedule_for_map:
         lat = item['lat']; lon = item['lon']; date_str_map = item['date']
-        city_name_map = item.get('city', 'N/A') # 도시 이름은 여기서 계속 저장
+        city_name_map = item.get('city', 'N/A') 
 
         try: event_date = datetime.strptime(date_str_map, "%Y-%m-%d").date()
         except ValueError: event_date = current_date + timedelta(days=365)
 
         is_past = event_date < current_date
 
-        # 아이콘 설정
         icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
 
-        # 팝업 내용
         type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
         translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor")); map_type_icon = '🏠' if item.get('type') == 'indoor' else '🌳'
         probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
 
-        # 팝업 UI 수정: 흰색 배경, 빨간색 도시명
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
-
-        # Apply color to type text in popup
         type_color = "blue" if item.get('type') == 'indoor' else "yellow"
 
-
-        # 팝업 HTML 전체를 흰색 배경으로 설정 (최소 높이 지정)
+        # 팝업 HTML (최소 높이 190px)
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
@@ -740,11 +710,10 @@ with tab_map:
                 <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
                     <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
-
             </div>
         """
 
-        # === 수정된 부분 2: 구글맵 링크/내비게이션 처리 ===
+        # === 수정된 부분: 내비게이션 링크 생성 (maps.google.com/4?daddr=) ===
         if item.get('google_link'):
             google_link_data = item['google_link']
             final_google_link = ""
@@ -754,9 +723,9 @@ with tab_map:
                 # URL이면, 기존처럼 링크
                 final_google_link = google_link_data
             else:
-                # URL이 아니면 (장소 이름이면), 내비게이션 URL 생성
+                # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
+                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination=?daddr={encoded_query}" # maps/15 -> maps/4?daddr=
 
             # 아이콘(빨간색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
@@ -771,7 +740,6 @@ with tab_map:
         # === 수정 끝 ===
 
         popup_html += "</div>" # 팝업 전체 닫기
-
 
         # 마커 아이콘
         city_initial = item.get('city', 'A')[0]
@@ -789,7 +757,7 @@ with tab_map:
 
         folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
         locations.append([lat, lon])
-        city_names_for_map.append(city_name_map) # 팝업을 위해 도시 이름 리스트는 유지
+        city_names_for_map.append(city_name_map) 
 
 
     # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
@@ -813,14 +781,13 @@ with tab_map:
                 dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
                 tooltip_text = f"{dist_time}"
                 
-                # 툴팁을 라인 중앙에 고정 (sticky=False)
                 tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
                 
                 folium.PolyLine(
                     locations=segment, 
                     color="#BB3333", 
                     weight=5, 
-                    opacity=0.125, # <--- 투명도 수정됨
+                    opacity=0.125, 
                     tooltip=tooltip_obj 
                 ).add_to(m)
 
@@ -831,7 +798,6 @@ with tab_map:
                 dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
                 tooltip_text = f"{dist_time}"
 
-                # 툴팁을 라인 중앙에 고정 (sticky=False)
                 tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
 
                 AntPath(
@@ -842,7 +808,7 @@ with tab_map:
                     weight=5, 
                     opacity=0.8, 
                     options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
-                    tooltip=tooltip_obj # Tooltip 객체 전달
+                    tooltip=tooltip_obj 
                 ).add_to(m)
 
     # 지도 표시 (전체 너비 활용)
