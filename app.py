@@ -130,7 +130,7 @@ LANG = {
 defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False}
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
-    elif k == "lang" and not isinstance(st.session_state.lang, str): st.session_state[k] = "ko"
+    elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
 
 # --- 번역 함수 ---
 def _(key):
@@ -553,7 +553,11 @@ with tab_map:
                 type_sel = type_options_map[selected_display_type]
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
-                google_link = col_ug.text_input(_("google_link"), placeholder=_("google_link_placeholder"))
+                
+                # === 수정된 부분 1: 관리자 폼 레이블에 아이콘 추가 ===
+                google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
+                # === 수정 끝 ===
+
                 probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5)
 
                 note = st.text_area(_("note"), placeholder=_("note_placeholder"))
@@ -616,7 +620,11 @@ with tab_map:
 
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
-                        updated_google = col_ug.text_input(_("google_link"), value=item.get('google_link', ''), key=f"upd_google_{item_id}")
+                        
+                        # === 수정된 부분 1: 관리자 폼 레이블에 아이콘 추가 ===
+                        updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
+                        # === 수정 끝 ===
+                        
                         updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}")
 
                         updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
@@ -699,9 +707,9 @@ with tab_map:
         type_color = "blue" if item.get('type') == 'indoor' else "yellow"
 
 
-        # 팝업 HTML 전체를 흰색 배경으로 설정
+        # 팝업 HTML 전체를 흰색 배경으로 설정 (최소 높이 지정)
         popup_html = f"""
-        <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px;">
+        <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
                 <b>{_('city')}:</b> {red_city_name}<br>
                 <b>{_('date')}:</b> {date_str_map}<br>
@@ -716,15 +724,18 @@ with tab_map:
             </div>
         """
 
-        # === 수정된 부분: 구글맵 링크에 'fa-car' 아이콘 추가 ===
+        # === 수정된 부분 2: 아이콘을 빨간색으로 변경하고 링크와 분리 ===
         if item.get('google_link'):
             google_link_url = item['google_link']
-            # 아이콘(<i ...>)과 텍스트(_("google_link")) 모두 <a> 태그 안에 위치시킴
+            # 아이콘(빨간색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
-                <a href="{google_link_url}" target="_blank" 
-                   style="color: #1A73E8; text-decoration: none; display: block; margin-top: 5px; font-weight: bold;">
-                   <i class="fa fa-car"></i> {_("google_link")}
-                </a>
+                <span style="display: block; margin-top: 5px; font-weight: bold;">
+                    <i class="fa fa-car" style="color: #BB3333; margin-right: 5px;"></i>
+                    <a href="{google_link_url}" target="_blank" 
+                       style="color: #1A73E8; text-decoration: none;">
+                       {_("google_link")}
+                    </a>
+                </span>
             """
         # === 수정 끝 ===
 
@@ -764,7 +775,8 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
-        # 1. 과거 경로 (25% 투명도, 구간별 툴팁)
+        # === 수정된 부분 1: 지난 경로 투명도(opacity) 수정 ===
+        # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
                 segment = [past_segments[i], past_segments[i+1]]
@@ -778,9 +790,10 @@ with tab_map:
                     locations=segment, 
                     color="#BB3333", 
                     weight=5, 
-                    opacity=0.25, 
-                    tooltip=tooltip_obj # Tooltip 객체 전달
+                    opacity=0.125, # 0.25에서 0.125로 수정
+                    tooltip=tooltip_obj 
                 ).add_to(m)
+        # === 수정 끝 ===
 
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
         if len(future_segments) > 1:
