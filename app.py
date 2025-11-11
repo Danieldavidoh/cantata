@@ -36,10 +36,11 @@ CITY_FILE = "cities.json"
 USER_POST_FILE = "user_posts.json"
 
 # --- 1. 다국어 설정 ---
+# === 수정된 부분: 탭 이름 및 소제목 변경 ===
 LANG = {
     "ko": {
         "title_cantata": "칸타타 투어", "title_year": "2025", "title_region": "마하라스트라",
-        "tab_notice": "공지", "tab_map": "투어 경로", "indoor": "실내", "outdoor": "실외",
+        "tab_notice": "공지", "tab_map": "칸타타 투어", "indoor": "실내", "outdoor": "실외", # '투어 경로' -> '칸타타 투어'
         "venue": "공연 장소", "seats": "예상 인원", "note": "특이사항", "google_link": "구글맵",
         "warning": "도시와 장소를 입력하세요", "delete": "제거", "menu": "메뉴", "login": "로그인", "logout": "로그아웃",
         "add_city": "추가", "register": "등록", "update": "수정", "remove": "제거",
@@ -48,7 +49,9 @@ LANG = {
         # 추가 번역 (모든 UI 요소 포함)
         "general": "일반", "urgent": "긴급", "admin_login": "관리자 로그인", "update_content": "내용 수정",
         "existing_notices": "기존 공지사항", "no_notices": "공지사항이 없습니다.", "content": "내용",
-        "no_content": "내용 없음", "no_title": "제목 없음", "tour_schedule_management": "투어 일정 관리",
+        "no_content": "내용 없음", "no_title": "제목 없음", 
+        "tour_schedule_management": "공연도시 정보 입력", # '투어 일정 관리' -> '공연도시 정보 입력'
+        "venue_list_title": "공연 도시 목록", # 새로 추가된 키
         "set_data": "데이터 설정", "type": "유형", "city": "도시", "link": "링크", "past_route": "지난 경로",
         "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다.",
         "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
@@ -58,9 +61,7 @@ LANG = {
         "notice_upd_success": "공지사항이 수정되었습니다.", "schedule_reg_success": "일정이 등록되었습니다.",
         "schedule_del_success": "일정 항목이 제거되었습니다.", "schedule_upd_success": "일정이 성공적으로 수정되었습니다.",
         "venue_placeholder": "공연 장소를 입력하세요", "note_placeholder": "특이사항을 입력하세요",
-        # === 수정된 부분 2: 내비게이션 안내를 위한 placeholder 수정 ===
         "google_link_placeholder": "장소 이름(예: Dagdusheth Halwai Ganpati) 또는 URL", 
-        # === 수정 끝 ===
         "seats_tooltip": "예상 관객 인원",
         "file_attachment": "파일 첨부", "attached_files": "첨부 파일", "no_files": "없음",
         "user_posts": "사용자 포스트",
@@ -71,11 +72,11 @@ LANG = {
         "no_posts": "현재 포스트가 없습니다.",
         "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.",
         "probability": "가능성",
-        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요." # 캡션 추가
+        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요."
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
-        "tab_notice": "Notice", "tab_map": "Tour Route", "indoor": "Indoor", "outdoor": "Outdoor",
+        "tab_notice": "Notice", "tab_map": "Cantata Tour", "indoor": "Indoor", "outdoor": "Outdoor", # 'Tour Route' -> 'Cantata Tour'
         "venue": "Venue", "seats": "Expected", "note": "Note", "google_link": "Google Maps",
         "warning": "Enter city and venue", "delete": "Remove", "menu": "Menu", "login": "Login", "logout": "Logout",
         "add_city": "Add", "register": "Register", "update": "Update", "remove": "Remove",
@@ -84,7 +85,9 @@ LANG = {
         # Additional translations
         "general": "General", "urgent": "Urgent", "admin_login": "Admin Login", "update_content": "Update Content",
         "existing_notices": "Existing Notices", "no_notices": "No notices available.", "content": "Content",
-        "no_content": "No Content", "no_title": "No Title", "tour_schedule_management": "Tour Schedule Management",
+        "no_content": "No Content", "no_title": "No Title", 
+        "tour_schedule_management": "Venue Information Input", # 'Tour Schedule Management' -> 'Venue Information Input'
+        "venue_list_title": "Venue City List", # 새로 추가된 키
         "set_data": "Set Data", "type": "Type", "city": "City", "link": "Link", "past_route": "Past Route",
         "single_location": "Single Location", "legend": "Legend", "no_schedule": "No schedule available.",
         "city_coords_error": "Coordinates not found. Please add to city_dict.", "logged_in_success": "Logged in as Admin.",
@@ -94,18 +97,16 @@ LANG = {
         "schedule_reg_success": "Schedule registered.", "schedule_del_success": "Schedule entry removed.",
         "schedule_upd_success": "Schedule updated successfully.", "venue_placeholder": "Enter venue name",
         "note_placeholder": "Enter notes/special remarks",
-        # === 수정된 부분 2: 내비게이션 안내를 위한 placeholder 수정 ===
         "google_link_placeholder": "Venue Name (e.g., Dagdusheth Halwai Ganpati) or URL",
-        # === 수정 끝 ===
         "seats_tooltip": "Expected audience count", "file_attachment": "File Attachment", "attached_files": "Attached Files",
         "no_files": "None", "user_posts": "User Posts", "new_post": "Create New Post", "post_content": "Post Content",
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "Probability",
-        "caption": "Click icons or routes on the map for details." # 캡션 추가
+        "caption": "Click icons or routes on the map for details."
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
-        "tab_notice": "सूचना", "tab_map": "टूर रूट", "indoor": "इनडोर", "outdoor": "आउटडोर",
+        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", # 'टूर रूट' -> 'कंटटा टूर'
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
         "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
@@ -114,7 +115,9 @@ LANG = {
         # Additional translations
         "general": "सामान्य", "urgent": "तत्काल", "admin_login": "व्यवस्थापक लॉगिन", "update_content": "सामग्री अपडेट करें",
         "existing_notices": "मौजूदा सूचनाएं", "no_notices": "कोई सूचना उपलब्ध नहीं है।", "content": "सामग्री",
-        "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", "tour_schedule_management": "टूर अनुसूची प्रबंधन",
+        "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", 
+        "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", # 'टूर अनुसूची प्रबंधन' -> 'प्रदर्शन शहर की जानकारी इनपुट'
+        "venue_list_title": "प्रदर्शन शहर की सूची", # 새로 추가된 키
         "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
         "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
         "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।", "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
@@ -124,23 +127,22 @@ LANG = {
         "schedule_reg_success": "कार्यक्रम पंजीकृत हुआ।", "schedule_del_success": "कार्यक्रम प्रविष्टि हटा दी गई।",
         "schedule_upd_success": "कार्यक्रम सफलतापूर्वक अपडेट किया गया।", "venue_placeholder": "स्थल का नाम दर्ज करें",
         "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें",
-        # === 수정된 부분 2: 내비게이션 안내를 위한 placeholder 수정 ===
         "google_link_placeholder": "स्थल का नाम (उदा: दगडूशेठ हलवाई गणपति) या URL",
-        # === 수정 끝 ===
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।" # 캡션 추가
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।"
     }
 }
+# === 수정 끝 ===
 
 # --- 세션 초기화 ---
 defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False}
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
-    elif k == "lang" and not isinstance(st.session_state.lang, str): st.session_state[k] = "ko"
+    elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
 
 # --- 번역 함수 ---
 def _(key):
@@ -405,13 +407,13 @@ with col_auth:
                     else: st.warning(_("incorrect_password"))
 
 # --- 탭 구성 ---
+# === 수정된 부분: _("tab_map")이 새 값("칸타타 투어")을 자동으로 가져옴 ===
 tab_notice, tab_map = st.tabs([_("tab_notice"), _("tab_map")])
+# === 수정 끝 ===
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
 # =============================================================================
-# === 수정된 부분 1: 모든 expander의 expanded=False 확인 ===
-# (모두 False로 설정되어 있어 코드 변경 없음)
 with tab_notice:
 
     # 1. 관리자 공지사항 관리
@@ -419,7 +421,7 @@ with tab_notice:
         st.subheader(f"🔔 {_('existing_notices')} (관리자 모드)")
 
         # --- 관리자: 공지사항 등록/수정 폼 ---
-        with st.expander(_("register"), expanded=False): # <--- 기본값 False
+        with st.expander(_("register"), expanded=False): 
             with st.form("notice_form", clear_on_submit=True):
                 notice_title = st.text_input("제목")
                 notice_content = st.text_area(_("note"))
@@ -456,7 +458,7 @@ with tab_notice:
             prefix = "🚨 " if notice_type_key == "Urgent" else ""
             header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
 
-            with st.expander(header_text, expanded=False): # <--- 기본값 False
+            with st.expander(header_text, expanded=False): 
                 col_del, col_title = st.columns([1, 4])
                 with col_del:
                     if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
@@ -501,7 +503,7 @@ with tab_notice:
                 translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
                 prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
 
-                with st.expander(header_text, expanded=False): # <--- 기본값 False
+                with st.expander(header_text, expanded=False): 
                     st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                     attached_files = notice.get('files', [])
                     if attached_files:
@@ -512,7 +514,7 @@ with tab_notice:
         st.subheader(f"📸 {_('user_posts')}")
 
         # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
-        with st.expander(_("new_post"), expanded=False): # <--- 기본값 False
+        with st.expander(_("new_post"), expanded=False): 
             with st.form("user_post_form", clear_on_submit=True):
                 post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
                 uploaded_media = st.file_uploader(_("media_attachment"), type=["png", "jpg", "jpeg", "mp4", "mov"], accept_multiple_files=True, key="user_media_uploader")
@@ -538,13 +540,15 @@ with tab_notice:
                 st.markdown("---")
 
 # =============================================================================
-# 탭 2: 투어 경로 (Map) - 지도만 표시 (관리자 모드 박스 제거 완료)
+# 탭 2: 칸타타 투어 (Map)
 # =============================================================================
 with tab_map:
 
     # --- 1. 관리자: 일정 관리 섹션 ---
     if st.session_state.admin:
-        st.subheader(f"⚙️ {_('tour_schedule_management')}")
+        # === 수정된 부분: 소제목 (1) 변경 ===
+        st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
+        # === 수정 끝 ===
 
         # --- 도시/일정 등록 폼 (Admin Only) ---
         with st.expander(_("add_city"), expanded=False): # <--- 기본값 False
@@ -566,7 +570,7 @@ with tab_map:
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
-                # === 수정된 부분 2: 관리자 폼 레이블에 아이콘 추가 ===
+                # === 수정된 부분: 관리자 폼 레이블/placeholder 수정 ===
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
                 # === 수정 끝 ===
 
@@ -588,7 +592,9 @@ with tab_map:
         valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
 
         if valid_schedule:
-            st.subheader(_("tour_schedule_management"))
+            # === 수정된 부분: 소제목 (2) 변경 ===
+            st.subheader(_("venue_list_title")) # '공연 도시 목록'
+            # === 수정 끝 ===
             schedule_dict = {item['id']: item for item in valid_schedule}
             sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
             type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
@@ -633,7 +639,7 @@ with tab_map:
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
                         
-                        # === 수정된 부분 2: 관리자 폼 레이블에 아이콘 추가 ===
+                        # === 수정된 부분: 관리자 폼 레이블/placeholder 수정 ===
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         # === 수정 끝 ===
                         
@@ -681,10 +687,12 @@ with tab_map:
                                 st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
-# === (expander=False) 수정 끝 ===
+
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
-    st.subheader(f"🗺️ {_('tab_map')} 보기")
+    # === 수정된 부분: _("tab_map")이 새 값("칸타타 투어")을 자동으로 가져옴 ===
+    st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
+    # === 수정 끝 ===
     current_date = date.today()
     schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
 
@@ -747,8 +755,8 @@ with tab_map:
                 final_google_link = google_link_data
             else:
                 # URL이 아니면 (장소 이름이면), 내비게이션 URL 생성
-                encoded_query = quote(google_link_data) # URL 인코딩
-                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
+                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
+                final_google_link = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
 
             # 아이콘(빨간색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
