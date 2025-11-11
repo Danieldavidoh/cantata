@@ -66,7 +66,8 @@ LANG = {
         "post_success": "포스트가 성공적으로 업로드되었습니다!",
         "no_posts": "현재 포스트가 없습니다.",
         "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.",
-        "probability": "가능성"
+        "probability": "가능성",
+        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요." # 캡션 추가
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -92,7 +93,8 @@ LANG = {
         "seats_tooltip": "Expected audience count", "file_attachment": "File Attachment", "attached_files": "Attached Files",
         "no_files": "None", "user_posts": "User Posts", "new_post": "Create New Post", "post_content": "Post Content",
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
-        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "Probability"
+        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "Probability",
+        "caption": "Click icons or routes on the map for details." # 캡션 추가
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
@@ -114,12 +116,13 @@ LANG = {
         "notice_del_success": "सूचना हटा दी गई।", "notice_upd_success": "सूचना अपडेट की गई।",
         "schedule_reg_success": "कार्यक्रम पंजीकृत हुआ।", "schedule_del_success": "कार्यक्रम प्रविष्टि हटा दी गई।",
         "schedule_upd_success": "कार्यक्रम सफलतापूर्वक अपडेट किया गया।", "venue_placeholder": "स्थल का नाम दर्ज करें",
-        "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें", "google_link_placeholder": "गू글맵 URL दर्ज करें",
+        "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें", "google_link_placeholder": "गूगल मैप्स URL दर्ज करें",
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
-        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना"
+        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना",
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।" # 캡션 추가
     }
 }
 
@@ -579,16 +582,17 @@ with tab_map:
                 translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
                 probability_val = item.get('probability', 100)
 
-                # Apply orange color to city name and add (%) to probability
+                # === 수정된 부분 1: HTML 태그 대신 마크다운 색상 문법 사용 ===
+                # Apply formatting for the expander header using Markdown
                 city_name_display = item.get('city', 'N/A')
-                colored_city_name = f'<span style="color: orange;">{city_name_display}</span>'
-
-                # Apply color to type text
-                type_color = "blue" if item.get('type') == 'indoor' else "yellow"
-                colored_type = f'<span style="color: {type_color};">{translated_type}</span>'
-
-                # Construct the header text for the expander with desired formatting
-                header_text = f"[{item.get('date', 'N/A')}] {colored_city_name} - {item['venue']} ({colored_type}) | {_('probability')}: {probability_val}(%)"
+                
+                # Set markdown color for type
+                type_color_md = "blue" if item.get('type') == 'indoor' else "orange" # 가독성을 위해 yellow 대신 orange 사용
+                
+                # Construct the header text for the expander with Markdown formatting
+                # This ensures colors are rendered, not shown as raw HTML
+                header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
+                # === 수정 끝 ===
 
                 with st.expander(header_text, expanded=False):
 
@@ -647,17 +651,17 @@ with tab_map:
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
 
-                # Display distance/time between current city and the next city in the expander
-                if i < len(sorted_schedule_items) - 1:
-                    current_city_coords = (item.get('lat'), item.get('lon'))
-                    next_item = sorted_schedule_items[i+1][1]
-                    next_city_coords = (next_item.get('lat'), next_item.get('lon'))
+                    # Display distance/time between current city and the next city in the expander
+                    if i < len(sorted_schedule_items) - 1:
+                        current_city_coords = (item.get('lat'), item.get('lon'))
+                        next_item = sorted_schedule_items[i+1][1]
+                        next_city_coords = (next_item.get('lat'), next_item.get('lon'))
 
-                    if all(current_city_coords) and all(next_city_coords):
-                        distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                        st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>{distance_time_info}</span>", unsafe_allow_html=True)
-                    else:
-                         st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
+                        if all(current_city_coords) and all(next_city_coords):
+                            distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
+                            st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                        else:
+                                st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
 
@@ -755,24 +759,18 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
+        # === 수정된 부분 2: PolyLine 툴팁 제거 ===
         # 1. 과거 경로 (25% 투명도)
         if len(past_segments) > 1:
-            folium.PolyLine(locations=past_segments, color="#BB3333", weight=5, opacity=0.25, tooltip=_("past_route")).add_to(m)
+            folium.PolyLine(locations=past_segments, color="#BB3333", weight=5, opacity=0.25).add_to(m)
+        # === 수정 끝 ===
 
-        # 2. 미래 경로 (AntPath animation with distance/city tooltip)
+        # === 수정된 부분 3: AntPath 툴팁 및 관련 로직 제거 ===
+        # 2. 미래 경로 (AntPath animation) - 툴팁 제거됨
         if len(future_segments) > 1:
-            # Generate tooltip text for each segment
-            future_tooltips = []
-            for i in range(len(future_segments)-1):
-                start_city = city_names_for_map[current_index + i if current_index != -1 else i]
-                end_city = city_names_for_map[current_index + i + 1 if current_index != -1 else i + 1]
-                distance_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
-                future_tooltips.append(f"{start_city} ➡️ {end_city}: {distance_time}")
-
-            ant_path_tooltip_future = "<br>".join(future_tooltips)
-
-            AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}, tooltip=ant_path_tooltip_future).add_to(m)
-
+            # 툴팁 생성 로직(future_tooltips, ant_path_tooltip_future)이 제거되었습니다.
+            AntPath(future_segments, use="regular", dash_array='30, 20', color='#BB3333', weight=5, opacity=0.8, options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"}).add_to(m)
+        # === 수정 끝 ===
 
     # 지도 표시 (전체 너비 활용)
     st_folium(m, width=1000, height=600, key="tour_map_render")
