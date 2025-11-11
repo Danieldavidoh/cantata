@@ -12,6 +12,7 @@ from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
 from requests.utils import quote # URL 인코딩을 위해 import
+import textwrap # <<< 수정: 들여쓰기 문제 해결을 위해 import
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -67,7 +68,7 @@ LANG = {
         "media_attachment": "사진/동영상 첨부",
         "post_success": "포스트가 성공적으로 업로드되었습니다!",
         "no_posts": "현재 포스트가 없습니다.",
-        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.",
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", # 이 키는 이제 관리자 뷰에서만 사용됨
         "probability": "가능성",
         "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요."
     },
@@ -96,7 +97,8 @@ LANG = {
         "seats_tooltip": "Expected audience count", "file_attachment": "File Attachment", "attached_files": "Attached Files",
         "no_files": "None", "user_posts": "User Posts", "new_post": "Create New Post", "post_content": "Post Content",
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
-        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "Probability",
+        "admin_only_files": "Attached files can only be viewed by Admin.",
+        "probability": "Probability",
         "caption": "Click icons or routes on the map for details."
     },
     "hi": {
@@ -125,7 +127,8 @@ LANG = {
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
-        "admin_only_files": "Attached files can only be viewed by Admin.", "probability": "संभावना",
+        "admin_only_files": "Attached files can only be viewed by Admin.",
+        "probability": "संभावना",
         "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।"
     }
 }
@@ -161,17 +164,16 @@ def get_file_as_base64(file_path):
     except Exception: return None
 
 # --- 미디어 인라인 표시 및 다운로드 헬퍼 함수 ---
-# === 수정된 부분: "admin_only_files" 로직 제거 ===
 def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post=False):
     file_size_kb = round(file_info['size'] / 1024, 1)
     file_type = file_info['type']; file_path = file_info['path']; file_name = file_info['name']
     key_prefix = "admin" if is_admin else "user"
 
-    # --- 이 로직을 제거하여 모든 사용자가 사용자 포스트의 첨부파일을 볼 수 있게 함 ---
-    # if is_user_post and not is_admin:
-    #     st.markdown(f"**{_('attached_files')}:** {_('admin_only_files')}")
-    #     return
-    # --- 제거 끝 ---
+    # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
+    if is_user_post and not is_admin and not os.path.exists(file_path):
+         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+         return
+    # === 수정 끝 ===
 
     if os.path.exists(file_path):
         if file_type.startswith('image/'):
@@ -198,8 +200,11 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             except Exception:
                 pass
     else:
-        st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-# === 수정 끝 ===
+        # 파일이 존재하지 않는 경우 메시지 표시
+        if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
+             st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+        # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
+
 
 # --- JSON 헬퍼 ---
 def load_json(f):
@@ -336,8 +341,9 @@ ADMIN_PASS = "0009"
 # ----------------------------------------------------------------------
 
 # --- 크리스마스 테마 CSS 및 애니메이션 (추가) ---
+# === 수정된 부분: textwrap.dedent()를 사용하여 들여쓰기 오류 수정 ===
 st.markdown(
-    """
+    textwrap.dedent("""
     <style>
     /* 1. '거룩한 밤' 테마: 어두운 배경 및 텍스트 색상 */
     body {
@@ -552,9 +558,10 @@ st.markdown(
     </style>
     
     <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
-    """,
+    """),
     unsafe_allow_html=True
 )
+# === 수정 끝 ===
 
 # --- 크리스마스 아이콘 목록 ---
 christmas_icons_list = [
@@ -571,14 +578,16 @@ def generate_christmas_icons(num_icons=15):
         delay = random.uniform(0, 15) # 애니메이션 시작 지연
         duration = random.uniform(10, 20) # 애니메이션 지속 시간 (느리게)
 
-        icons_html += f"""
-        <span class="christmas-icon" style="
-            font-size: {size}px;
-            left: {left}%;
-            animation-duration: {duration}s;
-            animation-delay: {delay}s;
-        ">{icon}</span>
-        """
+        # === 수정된 부분: textwrap.dedent() 적용 ===
+        icons_html += textwrap.dedent(f"""
+            <span class="christmas-icon" style="
+                font-size: {size}px;
+                left: {left}%;
+                animation-duration: {duration}s;
+                animation-delay: {delay}s;
+            ">{icon}</span>
+        """)
+        # === 수정 끝 ===
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # --- 눈 결정체 생성 (CSS 기반) ---
@@ -589,32 +598,37 @@ def generate_snowflakes(num_flakes=100):
         left = random.randint(0, 100) # % 위치
         duration = random.uniform(10, 30) # 떨어지는 시간 (느리게)
         delay = random.uniform(0, 20) # 애니메이션 시작 지연
-        horizontal_drift = random.uniform(-5, 5) # 좌우 흔들림
 
-        snowflakes_html += f"""
-        <div class="snowflake" style="
-            font-size: {size}em;
-            left: {left}vw;
-            animation-duration: {duration}s;
-            animation-delay: {delay}s;
-            animation-name: fall;
-        ">❄</div>
-        """
-    # 키프레임을 동적으로 만들어서 좌우 흔들림 추가 (더 자연스러움)
-    # CSS에서 @keyframes fall의 100% transform에 translateX(5vw)를 추가하여 약간의 흔들림을 줌
+        # === 수정된 부분: textwrap.dedent() 적용 ===
+        snowflakes_html += textwrap.dedent(f"""
+            <div class="snowflake" style="
+                font-size: {size}em;
+                left: {left}vw;
+                animation-duration: {duration}s;
+                animation-delay: {delay}s;
+                animation-name: fall;
+            ">❄</div>
+        """)
+        # === 수정 끝 ===
     return f'<div class="snowflakes">{snowflakes_html}</div>'
 
 # --- 제목 렌더링 ---
 st.markdown(generate_christmas_icons(), unsafe_allow_html=True)
 st.markdown(generate_snowflakes(), unsafe_allow_html=True)
 
-title_html = f"""
+title_cantata = _('title_cantata')
+title_year = _('title_year')
+title_region = _('title_region')
+
+# === 수정된 부분: textwrap.dedent() 적용 ===
+title_html = textwrap.dedent(f"""
     <div class="christmas-title-container">
         <span style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
         <span style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
         <span style="color: #66BB66; font-size: 0.66em;">{title_region}</span>
     </div>
-"""
+""")
+# === 수정 끝 ===
 st.markdown(f'<h1 class="christmas-title">{title_html}</h1>', unsafe_allow_html=True)
 
 
@@ -754,40 +768,40 @@ with tab_notice:
                             if n.get('id') == notice_id:
                                 n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
-        # === 수정된 부분: 관리자용 사용자 포스트 뷰 ===
+        # === 수정된 부분: 관리자용 사용자 포스트 뷰 (새 섹션) ===
         st.subheader(f"📸 {_('user_posts')} (관리자 모드)")
-        valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
-        if not valid_posts: 
+        valid_posts_admin = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
+        if not valid_posts_admin: 
             st.write(_("no_posts"))
         else:
-            posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
-            for post in posts_to_display:
+            posts_to_display_admin = sorted(valid_posts_admin, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+            for post in posts_to_display_admin:
                 post_id = post['id']
-                st.markdown(f"**익명 사용자** - *{post.get('date', 'N/A')[:16]}*")
-                st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                 
-                attached_media = post.get('files', [])
-                if attached_media:
-                    # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
-                    for media_file in attached_media:
-                        display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
-                
-                # 관리자용 삭제 버튼
-                if st.button(f"포스트 삭제 (ID: {post_id[:8]})", key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
-                    # 파일 먼저 삭제
-                    for file_info in post.get('files', []):
-                        if os.path.exists(file_info['path']):
-                            try:
-                                os.remove(file_info['path'])
-                            except Exception as e:
-                                st.warning(f"파일 삭제 실패: {e}")
-                    # 목록에서 포스트 제거
-                    user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
-                    save_json(USER_POST_FILE, user_posts)
-                    st.success("포스트가 삭제되었습니다.")
-                    safe_rerun()
-                
-                st.markdown("---")
+                with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
+                    st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                    
+                    attached_media = post.get('files', [])
+                    if attached_media:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
+                        for media_file in attached_media:
+                            display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
+                    
+                    # 관리자용 삭제 버튼
+                    if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
+                        # 파일 먼저 삭제
+                        for file_info in post.get('files', []):
+                            if os.path.exists(file_info['path']):
+                                try:
+                                    os.remove(file_info['path'])
+                                except Exception as e:
+                                    st.warning(f"파일 삭제 실패: {e}")
+                        # 목록에서 포스트 제거
+                        user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
+                        save_json(USER_POST_FILE, user_posts)
+                        st.success("포스트가 삭제되었습니다.")
+                        safe_rerun()
         # === 수정 끝 ===
 
     # 2. 일반 사용자 공지사항 & 포스트 보기
@@ -833,17 +847,18 @@ with tab_notice:
         else:
             posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
             for post in posts_to_display:
-                post_id = post['id']; st.markdown(f"**익명 사용자** - *{post.get('date', 'N/A')[:16]}*")
-                st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                
-                # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
-                attached_media = post.get('files', [])
-                if attached_media:
-                    # is_user_post=True를 전달하여 (수정된) display_and_download_file 함수가 파일을 표시하도록 함
-                    for media_file in attached_media:
-                        display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
-                # === 수정 끝 ===
-                st.markdown("---")
+                post_id = post['id']
+                with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
+                    st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                    
+                    # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
+                    attached_media = post.get('files', [])
+                    if attached_media:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        # is_user_post=True를 전달하여 (수정된) display_and_download_file 함수가 파일을 표시하도록 함
+                        for media_file in attached_media:
+                            display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
+                    # === 수정 끝 ===
 
 # =============================================================================
 # 탭 2: 칸타타 투어 (Map)
@@ -1045,7 +1060,7 @@ with tab_map:
                 # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
                 # saddr=Current+Location은 모바일에서 자동으로 현위치를 잡도록 함
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"https://www.google.com/maps?saddr=Current+Location&daddr={encoded_query}"
+                final_google_link = f"https://www.google.com/maps?saddr=Current+Location&daddr={encoded_query}" # maps/15 -> maps/4?daddr=
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
