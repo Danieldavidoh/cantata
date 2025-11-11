@@ -327,7 +327,6 @@ ADMIN_PASS = "0009"
 # ----------------------------------------------------------------------
 # 6. 제목
 # ----------------------------------------------------------------------
-# === 수정된 부분 1: 제목 서식 ===
 title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
@@ -339,7 +338,6 @@ title_html = f"""
     <span style="color: #66BB66; font-size: 66%;">{title_region}</span>
 """
 st.markdown(f'<h1 class="christmas-title">{title_html}</h1>', unsafe_allow_html=True)
-# === 수정 끝 ===
 
 
 # 언어 선택 버튼 (상단 고정)
@@ -714,12 +712,21 @@ with tab_map:
                 <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
                     <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
-                </div>
+
+            </div>
         """
 
+        # === 수정된 부분: 구글맵 링크에 'fa-car' 아이콘 추가 ===
         if item.get('google_link'):
             google_link_url = item['google_link']
-            popup_html += f'<a href="{google_link_url}" target="_blank" style="color: #1A73E8; text-decoration: none; display: block; margin-top: 5px; font-weight: bold;">{_("google_link")}</a>'
+            # 아이콘(<i ...>)과 텍스트(_("google_link")) 모두 <a> 태그 안에 위치시킴
+            popup_html += f"""
+                <a href="{google_link_url}" target="_blank" 
+                   style="color: #1A73E8; text-decoration: none; display: block; margin-top: 5px; font-weight: bold;">
+                   <i class="fa fa-car"></i> {_("google_link")}
+                </a>
+            """
+        # === 수정 끝 ===
 
         popup_html += "</div>" # 팝업 전체 닫기
 
@@ -757,7 +764,6 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
-        # === 수정된 부분 2: 툴팁을 라인 중앙에 고정 (sticky=False) ===
         # 1. 과거 경로 (25% 투명도, 구간별 툴팁)
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
@@ -765,7 +771,7 @@ with tab_map:
                 dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
                 tooltip_text = f"{dist_time}"
                 
-                # Tooltip 객체를 생성하고 sticky=False로 설정 (라인 중앙 고정)
+                # 툴팁을 라인 중앙에 고정 (sticky=False)
                 tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
                 
                 folium.PolyLine(
@@ -775,9 +781,7 @@ with tab_map:
                     opacity=0.25, 
                     tooltip=tooltip_obj # Tooltip 객체 전달
                 ).add_to(m)
-        # === 수정 끝 ===
 
-        # === 수정된 부분 2: 툴팁을 라인 중앙에 고정 (sticky=False) ===
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
         if len(future_segments) > 1:
             for i in range(len(future_segments) - 1):
@@ -785,7 +789,7 @@ with tab_map:
                 dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
                 tooltip_text = f"{dist_time}"
 
-                # Tooltip 객체를 생성하고 sticky=False로 설정 (라인 중앙 고정)
+                # 툴팁을 라인 중앙에 고정 (sticky=False)
                 tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
 
                 AntPath(
@@ -798,7 +802,6 @@ with tab_map:
                     options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
                     tooltip=tooltip_obj # Tooltip 객체 전달
                 ).add_to(m)
-        # === 수정 끝 ===
 
     # 지도 표시 (전체 너비 활용)
     st_folium(m, width=1000, height=600, key="tour_map_render")
