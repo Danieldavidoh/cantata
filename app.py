@@ -335,11 +335,270 @@ title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
 
-# 요청된 스타일 적용 (빨강, 흰색, 녹색/축소)
+# --- 크리스마스 테마 CSS 및 애니메이션 (추가) ---
+st.markdown(
+    """
+    <style>
+    /* 전체 배경 및 텍스트 색상 */
+    body {
+        background-color: #0A0A1A; /* 어두운 남색 계열 */
+        color: #E0E0E0; /* 밝은 회색 텍스트 */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .stApp {
+        background-color: #0A0A1A; /* Streamlit 앱 배경도 동일하게 적용 */
+        background-image: url('https://i.imgur.com/B9B1Z8e.png'); /* 배경 이미지 추가 */
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    /* 사이드바 색상 */
+    .css-1lcbmhc, .css-1lcbmhc h2 { /* 사이드바 배경 및 제목 */
+        background-color: #1A1A3A; /* 더 어두운 남색 */
+        color: #E0E0E0;
+    }
+
+    /* 탭 메뉴 색상 */
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
+        font-size: 1.1em;
+        font-weight: bold;
+    }
+
+    .stTabs [data-baseweb="tab-list"] button {
+        background-color: #2A2A4A; /* 탭 버튼 배경 */
+        color: #E0E0E0;
+        border-radius: 8px 8px 0 0;
+        margin: 0 4px;
+        border-bottom: 2px solid #66BB66; /* 비활성 탭 하단 라인 */
+        transition: all 0.2s ease-in-out;
+    }
+
+    .stTabs [data-baseweb="tab-list"] button:hover {
+        background-color: #3A3A6A;
+        color: #FFFFFF;
+    }
+
+    .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
+        background-color: #BB3333; /* 활성 탭 배경 - 크리스마스 레드 */
+        color: #FFFFFF;
+        border-bottom: 3px solid #66BB66; /* 활성 탭 하단 라인 - 크리스마스 그린 */
+    }
+
+    /* 버튼 스타일 */
+    .stButton > button {
+        background-color: #BB3333; /* 크리스마스 레드 */
+        color: white;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: bold;
+        border: none;
+        transition: all 0.2s ease-in-out;
+    }
+    .stButton > button:hover {
+        background-color: #FF5555; /* 더 밝은 레드 */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .stButton > button:active {
+        background-color: #992222;
+        transform: translateY(0);
+        box-shadow: none;
+    }
+    
+    /* Input, Textarea, Selectbox 스타일 */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea,
+    .stSelectbox > div > div > button,
+    .stDateInput > div > div > input {
+        background-color: #2A2A4A; /* 어두운 배경 */
+        color: #E0E0E0;
+        border-radius: 8px;
+        border: 1px solid #4A4A6A;
+        padding: 8px;
+    }
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus,
+    .stSelectbox > div > div > button:focus,
+    .stDateInput > div > div > input:focus {
+        border-color: #66BB66; /* 포커스 시 그린 */
+        box-shadow: 0 0 0 0.1rem rgba(102, 187, 102, 0.25);
+    }
+    
+    /* Expander 스타일 */
+    .streamlit-expanderHeader {
+        background-color: #1F1F3F; /* 어두운 남색 */
+        color: #E0E0E0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-bottom: 5px;
+        border: 1px solid #3A3A5A;
+        transition: all 0.2s ease-in-out;
+    }
+    .streamlit-expanderHeader:hover {
+        background-color: #2A2A4A;
+        color: #FFFFFF;
+    }
+    .streamlit-expanderContent {
+        background-color: #1A1A3A; /* 내부 컨텐츠 배경 */
+        padding: 15px;
+        border-radius: 0 0 8px 8px;
+        border: 1px solid #3A3A5A;
+        border-top: none;
+    }
+
+    /* 제목 (h1) 스타일 */
+    .christmas-title {
+        text-align: center;
+        font-family: 'Christmas', sans-serif; /* 커스텀 폰트 (예시) */
+        font-size: 4.5em; /* 기존보다 크게 */
+        font-weight: bold;
+        color: #FFF; /* 기본 흰색 */
+        text-shadow: 
+            0 0 10px #BB3333, /* 빨강 네온 */
+            0 0 20px #BB3333,
+            0 0 30px #BB3333,
+            0 0 40px #BB3333,
+            0 0 70px #BB3333,
+            0 0 80px #BB3333,
+            0 0 100px #BB3333;
+        animation: neon-flicker 1.5s infinite alternate; /* 깜빡이는 네온 효과 */
+        position: relative;
+        z-index: 10; /* 아이콘보다 위에 */
+        margin-bottom: 20px; /* 아이콘 공간 확보 */
+    }
+
+    @keyframes neon-flicker {
+        0%, 100% { opacity: 1; text-shadow: 0 0 10px #BB3333, 0 0 20px #BB3333, 0 0 30px #BB3333; }
+        50% { opacity: 0.8; text-shadow: none; }
+    }
+
+    /* 크리스마스 아이콘 애니메이션 */
+    .christmas-icons {
+        position: absolute;
+        width: 100%;
+        height: 100px; /* 아이콘들이 움직일 공간 */
+        top: 0;
+        left: 0;
+        pointer-events: none; /* 클릭 방지 */
+        overflow: hidden; /* 영역 밖 아이콘 숨김 */
+        z-index: 5;
+    }
+
+    .christmas-icon {
+        position: absolute;
+        display: block;
+        color: #E0E0E0; /* 아이콘 색상 */
+        animation-name: float;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+        50% { transform: translateY(-10px) rotate(5deg); opacity: 1; }
+        100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+    }
+
+    /* 눈 결정체 애니메이션 */
+    .snowflake {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 */
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        animation-name: fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        z-index: 0; /* 가장 아래 */
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-10vh); opacity: 0; }
+        20% { opacity: 0.8; }
+        80% { opacity: 0.8; }
+        100% { transform: translateY(100vh); opacity: 0; }
+    }
+    
+    /* Folium 맵 내부 스타일 */
+    .st-bv { /* st_folium 컨테이너 */
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid #66BB66; /* 그린 테두리 */
+        box-shadow: 0 0 15px rgba(102, 187, 102, 0.4);
+    }
+    
+    .notice-content-box {
+        background-color: #2A2A4A;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #4A4A6A;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: #E0E0E0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# --- 크리스마스 아이콘 목록 ---
+christmas_icons_list = [
+    "🎁", "🎄", "🎅", "🦌", "🔔", "🍬", "🍭", "❄️", "🌟", "🕯️"
+]
+
+# --- 크리스마스 아이콘 생성 및 애니메이션 주입 ---
+def generate_christmas_icons(num_icons=10):
+    icons_html = ""
+    for _ in range(num_icons):
+        icon = random.choice(christmas_icons_list)
+        size = random.randint(20, 40) # 픽셀 크기
+        left = random.randint(0, 100) # % 위치
+        delay = random.uniform(0, 5) # 애니메이션 시작 지연
+        duration = random.uniform(8, 15) # 애니메이션 지속 시간 (느리게)
+
+        icons_html += f"""
+        <span class="christmas-icon" style="
+            font-size: {size}px;
+            left: {left}%;
+            top: {random.randint(0, 80)}px; /* 제목 상단에 위치 */
+            animation-duration: {duration}s;
+            animation-delay: {delay}s;
+        ">{icon}</span>
+        """
+    return f'<div class="christmas-icons">{icons_html}</div>'
+
+# --- 눈 결정체 생성 (CSS 기반) ---
+def generate_snowflakes(num_flakes=50):
+    snowflakes_html = ""
+    for _ in range(num_flakes):
+        size = random.randint(5, 15) # 눈 결정체 크기
+        left = random.randint(0, 100) # % 위치
+        duration = random.uniform(10, 30) # 떨어지는 시간 (느리게)
+        delay = random.uniform(0, 20) # 애니메이션 시작 지연
+
+        snowflakes_html += f"""
+        <div class="snowflake" style="
+            width: {size}px;
+            height: {size}px;
+            left: {left}vw;
+            animation-duration: {duration}s;
+            animation-delay: {delay}s;
+        "></div>
+        """
+    return snowflakes_html
+
+# --- 제목 렌더링 ---
+st.markdown(generate_christmas_icons(), unsafe_allow_html=True)
+st.markdown(generate_snowflakes(), unsafe_allow_html=True)
+
 title_html = f"""
-    <span style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
-    <span style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
-    <span style="color: #66BB66; font-size: 66%;">{title_region}</span>
+    <div class="christmas-title-container">
+        <span style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
+        <span style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
+        <span style="color: #66BB66; font-size: 0.66em;">{title_region}</span>
+    </div>
 """
 st.markdown(f'<h1 class="christmas-title">{title_html}</h1>', unsafe_allow_html=True)
 
