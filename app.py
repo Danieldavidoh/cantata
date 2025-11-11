@@ -161,14 +161,17 @@ def get_file_as_base64(file_path):
     except Exception: return None
 
 # --- 미디어 인라인 표시 및 다운로드 헬퍼 함수 ---
+# === 수정된 부분: "admin_only_files" 로직 제거 ===
 def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post=False):
     file_size_kb = round(file_info['size'] / 1024, 1)
     file_type = file_info['type']; file_path = file_info['path']; file_name = file_info['name']
     key_prefix = "admin" if is_admin else "user"
 
-    if is_user_post and not is_admin:
-        st.markdown(f"**{_('attached_files')}:** {_('admin_only_files')}")
-        return
+    # --- 이 로직을 제거하여 모든 사용자가 사용자 포스트의 첨부파일을 볼 수 있게 함 ---
+    # if is_user_post and not is_admin:
+    #     st.markdown(f"**{_('attached_files')}:** {_('admin_only_files')}")
+    #     return
+    # --- 제거 끝 ---
 
     if os.path.exists(file_path):
         if file_type.startswith('image/'):
@@ -196,7 +199,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
                 pass
     else:
         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-
+# === 수정 끝 ===
 
 # --- JSON 헬퍼 ---
 def load_json(f):
@@ -329,199 +332,206 @@ user_posts = load_json(USER_POST_FILE)
 ADMIN_PASS = "0009"
 
 # ----------------------------------------------------------------------
-# 6. 제목
+# 6. 제목 및 크리스마스 UI
 # ----------------------------------------------------------------------
-title_cantata = _('title_cantata')
-title_year = _('title_year')
-title_region = _('title_region')
 
 # --- 크리스마스 테마 CSS 및 애니메이션 (추가) ---
 st.markdown(
     """
     <style>
-    /* 전체 배경 및 텍스트 색상 */
+    /* 1. '거룩한 밤' 테마: 어두운 배경 및 텍스트 색상 */
     body {
-        background-color: #0A0A1A; /* 어두운 남색 계열 */
-        color: #E0E0E0; /* 밝은 회색 텍스트 */
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #0d1a26; /* 매우 어두운 파란색 (밤하늘) */
+        color: #f0f0f0; /* 밝은 텍스트 */
     }
 
     .stApp {
-        background-color: #0A0A1A; /* Streamlit 앱 배경도 동일하게 적용 */
-        background-image: url('https://i.imgur.com/B9B1Z8e.png'); /* 배경 이미지 추가 */
-        background-size: cover;
+        background: linear-gradient(to bottom, #0d1a26 0%, #1a3a52 100%);
         background-attachment: fixed;
     }
 
-    /* 사이드바 색상 */
-    .css-1lcbmhc, .css-1lcbmhc h2 { /* 사이드바 배경 및 제목 */
-        background-color: #1A1A3A; /* 더 어두운 남색 */
-        color: #E0E0E0;
-    }
-
-    /* 탭 메뉴 색상 */
+    /* 2. 탭 메뉴 스타일 */
     .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
         font-size: 1.1em;
         font-weight: bold;
     }
 
     .stTabs [data-baseweb="tab-list"] button {
-        background-color: #2A2A4A; /* 탭 버튼 배경 */
-        color: #E0E0E0;
+        background-color: rgba(255, 255, 255, 0.05); /* 반투명 버튼 */
+        color: #f0f0f0;
         border-radius: 8px 8px 0 0;
         margin: 0 4px;
-        border-bottom: 2px solid #66BB66; /* 비활성 탭 하단 라인 */
+        border-bottom: 3px solid #66BB66; /* 비활성 탭 하단 라인 (그린) */
         transition: all 0.2s ease-in-out;
     }
 
     .stTabs [data-baseweb="tab-list"] button:hover {
-        background-color: #3A3A6A;
+        background-color: rgba(255, 255, 255, 0.1);
         color: #FFFFFF;
     }
 
     .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
-        background-color: #BB3333; /* 활성 탭 배경 - 크리스마스 레드 */
+        background-color: #BB3333; /* 활성 탭 배경 (레드) */
         color: #FFFFFF;
-        border-bottom: 3px solid #66BB66; /* 활성 탭 하단 라인 - 크리스마스 그린 */
+        border-bottom: 3px solid #FFD700; /* 활성 탭 하단 라인 (골드) */
     }
 
-    /* 버튼 스타일 */
+    /* 3. 버튼 스타일 */
     .stButton > button {
-        background-color: #BB3333; /* 크리스마스 레드 */
+        background-color: #BB3333;
         color: white;
         border-radius: 8px;
         padding: 8px 16px;
         font-weight: bold;
         border: none;
         transition: all 0.2s ease-in-out;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
     .stButton > button:hover {
-        background-color: #FF5555; /* 더 밝은 레드 */
+        background-color: #D44444;
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
-    .stButton > button:active {
-        background-color: #992222;
-        transform: translateY(0);
-        box-shadow: none;
-    }
-    
-    /* Input, Textarea, Selectbox 스타일 */
+
+    /* 4. 입력 필드 스타일 */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea,
     .stSelectbox > div > div > button,
     .stDateInput > div > div > input {
-        background-color: #2A2A4A; /* 어두운 배경 */
-        color: #E0E0E0;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #f0f0f0;
         border-radius: 8px;
-        border: 1px solid #4A4A6A;
-        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus,
     .stSelectbox > div > div > button:focus,
     .stDateInput > div > div > input:focus {
-        border-color: #66BB66; /* 포커스 시 그린 */
-        box-shadow: 0 0 0 0.1rem rgba(102, 187, 102, 0.25);
+        border-color: #FFD700; /* 포커스 시 골드 */
+        box-shadow: 0 0 0 0.1rem rgba(255, 215, 0, 0.25);
     }
     
-    /* Expander 스타일 */
+    /* 5. Expander (접기/펴기) 스타일 */
     .streamlit-expanderHeader {
-        background-color: #1F1F3F; /* 어두운 남색 */
-        color: #E0E0E0;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #f0f0f0;
         border-radius: 8px;
-        padding: 10px 15px;
-        margin-bottom: 5px;
-        border: 1px solid #3A3A5A;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         transition: all 0.2s ease-in-out;
     }
     .streamlit-expanderHeader:hover {
-        background-color: #2A2A4A;
+        background-color: rgba(255, 255, 255, 0.1);
         color: #FFFFFF;
     }
     .streamlit-expanderContent {
-        background-color: #1A1A3A; /* 내부 컨텐츠 배경 */
-        padding: 15px;
+        background-color: rgba(0, 0, 0, 0.1);
         border-radius: 0 0 8px 8px;
-        border: 1px solid #3A3A5A;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-top: none;
     }
 
-    /* 제목 (h1) 스타일 */
+    /* 6. 제목 (h1) 네온사인 스타일 */
     .christmas-title {
         text-align: center;
-        font-family: 'Christmas', sans-serif; /* 커스텀 폰트 (예시) */
-        font-size: 4.5em; /* 기존보다 크게 */
-        font-weight: bold;
-        color: #FFF; /* 기본 흰색 */
-        text-shadow: 
-            0 0 10px #BB3333, /* 빨강 네온 */
-            0 0 20px #BB3333,
-            0 0 30px #BB3333,
-            0 0 40px #BB3333,
-            0 0 70px #BB3333,
-            0 0 80px #BB3333,
-            0 0 100px #BB3333;
-        animation: neon-flicker 1.5s infinite alternate; /* 깜빡이는 네온 효과 */
+        font-family: 'Mountains of Christmas', cursive; /* 구글 폰트 (느낌있는 폰트) */
+        font-size: 4.0em; /* 크기 조절 */
+        font-weight: 700;
+        color: #FFFFFF; /* 기본 흰색 */
         position: relative;
-        z-index: 10; /* 아이콘보다 위에 */
-        margin-bottom: 20px; /* 아이콘 공간 확보 */
+        z-index: 10;
+        padding-top: 60px; /* 아이콘을 위한 공간 확보 */
+        margin-bottom: 20px;
+        /* 네온사인 효과 (다중 그림자) */
+        text-shadow: 
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 15px #fff,
+            0 0 20px #BB3333, /* 빨간색 네온 */
+            0 0 35px #BB3333,
+            0 0 40px #BB3333,
+            0 0 50px #BB3333,
+            0 0 75px #BB3333;
+        animation: neon-flicker 2s infinite alternate; /* 깜빡이는 네온 효과 */
     }
 
     @keyframes neon-flicker {
-        0%, 100% { opacity: 1; text-shadow: 0 0 10px #BB3333, 0 0 20px #BB3333, 0 0 30px #BB3333; }
-        50% { opacity: 0.8; text-shadow: none; }
+        0%, 100% { 
+            opacity: 1; 
+            text-shadow: 
+                0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff,
+                0 0 20px #BB3333, 0 0 35px #BB3333, 0 0 40px #BB3333;
+        }
+        50% { 
+            opacity: 0.8; 
+            text-shadow: 
+                0 0 5px #fff, 0 0 8px #fff, 0 0 10px #fff,
+                0 0 15px #BB3333, 0 0 25px #BB3333;
+        }
+    }
+    
+    /* 제목 컨테이너 (h1 내부) */
+    .christmas-title-container {
+        display: block;
     }
 
-    /* 크리스마스 아이콘 애니메이션 */
+    /* 7. 크리스마스 아이콘 애니메이션 */
     .christmas-icons {
-        position: absolute;
+        position: fixed; /* 화면 상단에 고정 */
         width: 100%;
         height: 100px; /* 아이콘들이 움직일 공간 */
         top: 0;
         left: 0;
         pointer-events: none; /* 클릭 방지 */
-        overflow: hidden; /* 영역 밖 아이콘 숨김 */
-        z-index: 5;
+        overflow: hidden;
+        z-index: 999; /* 최상단 */
     }
 
     .christmas-icon {
         position: absolute;
         display: block;
-        color: #E0E0E0; /* 아이콘 색상 */
-        animation-name: float;
-        animation-timing-function: ease-in-out;
+        font-size: 20px; /* 기본 크기 */
+        color: #FFFFFF;
+        animation-name: float-across;
+        animation-timing-function: linear;
         animation-iteration-count: infinite;
         opacity: 0.8;
+        top: -50px; /* 위에서 시작 */
     }
 
-    @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
-        50% { transform: translateY(-10px) rotate(5deg); opacity: 1; }
-        100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+    @keyframes float-across {
+        0% { transform: translateX(0vw) translateY(-20px) rotate(0deg); }
+        100% { transform: translateX(100vw) translateY(120px) rotate(360deg); }
     }
 
-    /* 눈 결정체 애니메이션 */
+    /* 8. 눈 결정체 애니메이션 */
+    .snowflakes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 998; /* 아이콘보다 아래 */
+    }
+    
     .snowflake {
         position: absolute;
-        background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 */
-        border-radius: 50%;
+        color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 */
+        font-size: 1em;
         opacity: 0;
-        pointer-events: none;
         animation-name: fall;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
-        z-index: 0; /* 가장 아래 */
     }
 
     @keyframes fall {
-        0% { transform: translateY(-10vh); opacity: 0; }
-        20% { opacity: 0.8; }
-        80% { opacity: 0.8; }
-        100% { transform: translateY(100vh); opacity: 0; }
+        0% { transform: translateY(-10vh) translateX(0vw); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(100vh) translateX(5vw); opacity: 0; }
     }
     
-    /* Folium 맵 내부 스타일 */
+    /* 9. Folium 맵 스타일 */
     .st-bv { /* st_folium 컨테이너 */
         border-radius: 12px;
         overflow: hidden;
@@ -529,40 +539,42 @@ st.markdown(
         box-shadow: 0 0 15px rgba(102, 187, 102, 0.4);
     }
     
+    /* 10. 공지/포스트 박스 */
     .notice-content-box {
-        background-color: #2A2A4A;
+        background-color: rgba(0, 0, 0, 0.2);
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #4A4A6A;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         margin-top: 10px;
         margin-bottom: 10px;
-        color: #E0E0E0;
+        color: #f0f0f0;
     }
     </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
     """,
     unsafe_allow_html=True
 )
 
 # --- 크리스마스 아이콘 목록 ---
 christmas_icons_list = [
-    "🎁", "🎄", "🎅", "🦌", "🔔", "🍬", "🍭", "❄️", "🌟", "🕯️"
+    "🎁", "🎄", "🎅", "🦌", "🔔", "🍬", "🍭", "❄️", "🌟", "🕯️", "🧦", "☃️"
 ]
 
 # --- 크리스마스 아이콘 생성 및 애니메이션 주입 ---
-def generate_christmas_icons(num_icons=10):
+def generate_christmas_icons(num_icons=15):
     icons_html = ""
     for _ in range(num_icons):
         icon = random.choice(christmas_icons_list)
         size = random.randint(20, 40) # 픽셀 크기
-        left = random.randint(0, 100) # % 위치
-        delay = random.uniform(0, 5) # 애니메이션 시작 지연
-        duration = random.uniform(8, 15) # 애니메이션 지속 시간 (느리게)
+        left = random.randint(0, 100) # % 시작 위치
+        delay = random.uniform(0, 15) # 애니메이션 시작 지연
+        duration = random.uniform(10, 20) # 애니메이션 지속 시간 (느리게)
 
         icons_html += f"""
         <span class="christmas-icon" style="
             font-size: {size}px;
             left: {left}%;
-            top: {random.randint(0, 80)}px; /* 제목 상단에 위치 */
             animation-duration: {duration}s;
             animation-delay: {delay}s;
         ">{icon}</span>
@@ -570,24 +582,27 @@ def generate_christmas_icons(num_icons=10):
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # --- 눈 결정체 생성 (CSS 기반) ---
-def generate_snowflakes(num_flakes=50):
+def generate_snowflakes(num_flakes=100):
     snowflakes_html = ""
     for _ in range(num_flakes):
-        size = random.randint(5, 15) # 눈 결정체 크기
+        size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
         left = random.randint(0, 100) # % 위치
         duration = random.uniform(10, 30) # 떨어지는 시간 (느리게)
         delay = random.uniform(0, 20) # 애니메이션 시작 지연
+        horizontal_drift = random.uniform(-5, 5) # 좌우 흔들림
 
         snowflakes_html += f"""
         <div class="snowflake" style="
-            width: {size}px;
-            height: {size}px;
+            font-size: {size}em;
             left: {left}vw;
             animation-duration: {duration}s;
             animation-delay: {delay}s;
-        "></div>
+            animation-name: fall;
+        ">❄</div>
         """
-    return snowflakes_html
+    # 키프레임을 동적으로 만들어서 좌우 흔들림 추가 (더 자연스러움)
+    # CSS에서 @keyframes fall의 100% transform에 translateX(5vw)를 추가하여 약간의 흔들림을 줌
+    return f'<div class="snowflakes">{snowflakes_html}</div>'
 
 # --- 제목 렌더링 ---
 st.markdown(generate_christmas_icons(), unsafe_allow_html=True)
@@ -739,6 +754,42 @@ with tab_notice:
                             if n.get('id') == notice_id:
                                 n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
+        # === 수정된 부분: 관리자용 사용자 포스트 뷰 ===
+        st.subheader(f"📸 {_('user_posts')} (관리자 모드)")
+        valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
+        if not valid_posts: 
+            st.write(_("no_posts"))
+        else:
+            posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+            for post in posts_to_display:
+                post_id = post['id']
+                st.markdown(f"**익명 사용자** - *{post.get('date', 'N/A')[:16]}*")
+                st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                
+                attached_media = post.get('files', [])
+                if attached_media:
+                    # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
+                    for media_file in attached_media:
+                        display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
+                
+                # 관리자용 삭제 버튼
+                if st.button(f"포스트 삭제 (ID: {post_id[:8]})", key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
+                    # 파일 먼저 삭제
+                    for file_info in post.get('files', []):
+                        if os.path.exists(file_info['path']):
+                            try:
+                                os.remove(file_info['path'])
+                            except Exception as e:
+                                st.warning(f"파일 삭제 실패: {e}")
+                    # 목록에서 포스트 제거
+                    user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
+                    save_json(USER_POST_FILE, user_posts)
+                    st.success("포스트가 삭제되었습니다.")
+                    safe_rerun()
+                
+                st.markdown("---")
+        # === 수정 끝 ===
+
     # 2. 일반 사용자 공지사항 & 포스트 보기
     if not st.session_state.admin:
         st.subheader(f"📢 {_('tab_notice')}"); valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('title')]
@@ -784,8 +835,14 @@ with tab_notice:
             for post in posts_to_display:
                 post_id = post['id']; st.markdown(f"**익명 사용자** - *{post.get('date', 'N/A')[:16]}*")
                 st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                
+                # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
                 attached_media = post.get('files', [])
-                if attached_media: display_and_download_file(attached_media[0], post_id, is_admin=False, is_user_post=True)
+                if attached_media:
+                    # is_user_post=True를 전달하여 (수정된) display_and_download_file 함수가 파일을 표시하도록 함
+                    for media_file in attached_media:
+                        display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
+                # === 수정 끝 ===
                 st.markdown("---")
 
 # =============================================================================
@@ -918,9 +975,9 @@ with tab_map:
 
                         if all(current_city_coords) and all(next_city_coords):
                             distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                            st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                            st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
                         else:
-                                st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
+                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
 
@@ -986,8 +1043,9 @@ with tab_map:
                 final_google_link = google_link_data
             else:
                 # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
+                # saddr=Current+Location은 모바일에서 자동으로 현위치를 잡도록 함
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination=lat,lon4{encoded_query}" # maps/15 -> maps/4?daddr=
+                final_google_link = f"https://www.google.com/maps?saddr=Current+Location&daddr={encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
