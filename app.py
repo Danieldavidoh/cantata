@@ -129,7 +129,6 @@ LANG = {
         "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।"
     }
 }
-# === 수정 끝 ===
 
 # --- 세션 초기화 ---
 defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False}
@@ -543,7 +542,6 @@ with tab_map:
         with st.expander(_("add_city"), expanded=False): 
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
-                # 도시 이름 중복 방지 로직 (등록된 도시 제외)
                 registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
                 available_cities = [c for c in city_options if c not in registered_cities]
 
@@ -553,8 +551,8 @@ with tab_map:
 
                 col_l, col_s, col_ug, col_up = st.columns(4)
                 type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                selected_display_type = col_l.radio(_("type"), list(type_options_map.values())) # Display values directly
-                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] # Get key from selected value
+                selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
+                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
@@ -583,7 +581,6 @@ with tab_map:
             sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
             type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
 
-            # Display current schedule entries with distance/time between them
             for i, (item_id, item) in enumerate(sorted_schedule_items):
                 current_type_key = item.get('type', 'outdoor')
                 translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
@@ -592,13 +589,12 @@ with tab_map:
                 city_name_display = item.get('city', 'N/A')
                 
                 # --- 실내/실외 색상 변경 ---
-                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" 
+                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
                 
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
 
                 with st.expander(header_text, expanded=False): 
 
-                    # --- 수정 폼 (수정된 수정/등록 및 제거 버튼 포함) ---
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
                         st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
 
@@ -732,12 +728,13 @@ with tab_map:
             else:
                 # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"http://maps.google.com/maps?daddr={encoded_query}" # maps/15 -> maps/4?daddr=
+                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination=lat,lon4{encoded_query}" # maps/15 -> maps/4?daddr=
 
-            # 아이콘(빨간색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
+            # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
                 <span style="display: block; margin-top: 5px; font-weight: bold;">
-                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> <a href="{final_google_link}" target="_blank" 
+                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
+<a href="{final_google_link}" target="_blank" 
                        style="color: #1A73E8; text-decoration: none;">
                        {_("google_link")}
                     </a>
