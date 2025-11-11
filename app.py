@@ -100,7 +100,7 @@ LANG = {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
         "tab_notice": "सूचना", "tab_map": "टूर रूट", "indoor": "इनडोर", "outdoor": "आउटडोर",
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
-        "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
+        "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "ल로그아웃",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
         "date": "तारीख", "city_name": "शहर का नाम", "search_placeholder": "शहर/स्थल खोजें...",
 
@@ -130,7 +130,7 @@ LANG = {
 defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False}
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
-    elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
+    elif k == "lang" and not isinstance(st.session_state.lang, str): st.session_state[k] = "ko"
 
 # --- 번역 함수 ---
 def _(key):
@@ -673,11 +673,11 @@ with tab_map:
 
     m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
     locations = []
-    city_names_for_map = []
-
+    city_names_for_map = [] # 도시 이름 저장은 팝업을 위해 유지
+ 
     for item in schedule_for_map:
         lat = item['lat']; lon = item['lon']; date_str_map = item['date']
-        city_name_map = item.get('city', 'N/A')
+        city_name_map = item.get('city', 'N/A') # 도시 이름은 여기서 계속 저장
 
         try: event_date = datetime.strptime(date_str_map, "%Y-%m-%d").date()
         except ValueError: event_date = current_date + timedelta(days=365)
@@ -739,7 +739,7 @@ with tab_map:
 
         folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
         locations.append([lat, lon])
-        city_names_for_map.append(city_name_map)
+        city_names_for_map.append(city_name_map) # 팝업을 위해 도시 이름 리스트는 유지
 
 
     # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
@@ -756,66 +756,45 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
-        # === 수정된 부분: 툴팁을 포함하여 과거 경로(PolyLine)를 구간별로 그리기 ===
+        # === 수정된 부분: 툴팁에서 도시 이름 제거 ===
         # 1. 과거 경로 (25% 투명도, 구간별 툴팁)
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
                 segment = [past_segments[i], past_segments[i+1]]
                 dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
                 
-                # city_names_for_map 리스트에서 도시 이름 가져오기
-                start_city = city_names_for_map[i]
-                end_city = city_names_for_map[i+1]
-                
-                tooltip_text = f"{start_city} ➡️ {end_city}: {dist_time}"
+                # 도시 이름을 툴팁에서 제거
+                tooltip_text = f"{dist_time}"
                 
                 folium.PolyLine(
                     locations=segment, 
                     color="#BB3333", 
                     weight=5, 
                     opacity=0.25, 
-                    tooltip=tooltip_text
+                    tooltip=tooltip_text # 수정된 툴팁 적용
                 ).add_to(m)
         # === 수정 끝 ===
 
-        # === 수정된 부분: 툴팁을 포함하여 미래 경로(AntPath)를 구간별로 그리기 ===
+        # === 수정된 부분: 툴팁에서 도시 이름 제거 ===
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
         if len(future_segments) > 1:
             for i in range(len(future_segments) - 1):
                 segment = [future_segments[i], future_segments[i+1]]
                 dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
 
-                # 'future_segments' 목록 내의 인덱스(i)를
-                # 전체 'locations' 및 'city_names_for_map' 목록의
-                # 올바른 인덱스로 변환합니다.
+                # 도시 이름을 툴팁에서 제거
+                tooltip_text = f"{dist_time}"
                 
-                start_city_index_in_map_list = 0
-                if current_index == 0: # 모든 일정이 미래인 경우
-                    start_city_index_in_map_list = i
-                elif current_index > 0: # 과거와 미래가 혼합된 경우
-                    start_city_index_in_map_list = current_index + i
-                
-                # current_index == -1 (모든 일정이 과거)인 경우
-                # future_segments가 비어있어 이 루프는 실행되지 않습니다.
-                
-                if current_index != -1: 
-                    end_city_index_in_map_list = start_city_index_in_map_list + 1
-
-                    if end_city_index_in_map_list < len(city_names_for_map):
-                        start_city = city_names_for_map[start_city_index_in_map_list]
-                        end_city = city_names_for_map[end_city_index_in_map_list]
-                        tooltip_text = f"{start_city} ➡️ {end_city}: {dist_time}"
-
-                        AntPath(
-                            segment, 
-                            use="regular", 
-                            dash_array='30, 20', 
-                            color='#BB3333', 
-                            weight=5, 
-                            opacity=0.8, 
-                            options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
-                            tooltip=tooltip_text
-                        ).add_to(m)
+                AntPath(
+                    segment, 
+                    use="regular", 
+                    dash_array='30, 20', 
+                    color='#BB3333', 
+                    weight=5, 
+                    opacity=0.8, 
+                    options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
+                    tooltip=tooltip_text # 수정된 툴팁 적용
+                ).add_to(m)
         # === 수정 끝 ===
 
     # 지도 표시 (전체 너비 활용)
