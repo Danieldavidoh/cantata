@@ -11,6 +11,7 @@ from folium.plugins import AntPath
 from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
+from requests.utils import quote # URL 인코딩을 위해 import
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -57,7 +58,10 @@ LANG = {
         "notice_upd_success": "공지사항이 수정되었습니다.", "schedule_reg_success": "일정이 등록되었습니다.",
         "schedule_del_success": "일정 항목이 제거되었습니다.", "schedule_upd_success": "일정이 성공적으로 수정되었습니다.",
         "venue_placeholder": "공연 장소를 입력하세요", "note_placeholder": "특이사항을 입력하세요",
-        "google_link_placeholder": "구글맵 URL을 입력하세요", "seats_tooltip": "예상 관객 인원",
+        # === 수정된 부분 2: 내비게이션 안내를 위한 placeholder 수정 ===
+        "google_link_placeholder": "장소 이름(예: Dagdusheth Halwai Ganpati) 또는 URL", 
+        # === 수정 끝 ===
+        "seats_tooltip": "예상 관객 인원",
         "file_attachment": "파일 첨부", "attached_files": "첨부 파일", "no_files": "없음",
         "user_posts": "사용자 포스트",
         "new_post": "새 포스트 작성",
@@ -89,7 +93,10 @@ LANG = {
         "notice_del_success": "Notice deleted.", "notice_upd_success": "Notice updated.",
         "schedule_reg_success": "Schedule registered.", "schedule_del_success": "Schedule entry removed.",
         "schedule_upd_success": "Schedule updated successfully.", "venue_placeholder": "Enter venue name",
-        "note_placeholder": "Enter notes/special remarks", "google_link_placeholder": "Enter Google Maps URL",
+        "note_placeholder": "Enter notes/special remarks",
+        # === 수정된 부분 2: 내비게이션 안내를 위한 placeholder 수정 ===
+        "google_link_placeholder": "Venue Name (e.g., Dagdusheth Halwai Ganpati) or URL",
+        # === 수정 끝 ===
         "seats_tooltip": "Expected audience count", "file_attachment": "File Attachment", "attached_files": "Attached Files",
         "no_files": "None", "user_posts": "User Posts", "new_post": "Create New Post", "post_content": "Post Content",
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
@@ -116,7 +123,10 @@ LANG = {
         "notice_del_success": "सूचना हटा दी गई।", "notice_upd_success": "सूचना अपडेट की गई।",
         "schedule_reg_success": "कार्यक्रम पंजीकृत हुआ।", "schedule_del_success": "कार्यक्रम प्रविष्टि हटा दी गई।",
         "schedule_upd_success": "कार्यक्रम सफलतापूर्वक अपडेट किया गया।", "venue_placeholder": "स्थल का नाम दर्ज करें",
-        "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें", "google_link_placeholder": "गूगल मैप्स URL दर्ज करें",
+        "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें",
+        # === 수정된 부분 2: 내비게이션 안내를 위한 placeholder 수정 ===
+        "google_link_placeholder": "स्थल का नाम (उदा: दगडूशेठ हलवाई गणपति) या URL",
+        # === 수정 끝 ===
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
@@ -130,7 +140,7 @@ LANG = {
 defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False}
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
-    elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
+    elif k == "lang" and not isinstance(st.session_state.lang, str): st.session_state[k] = "ko"
 
 # --- 번역 함수 ---
 def _(key):
@@ -400,6 +410,8 @@ tab_notice, tab_map = st.tabs([_("tab_notice"), _("tab_map")])
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
 # =============================================================================
+# === 수정된 부분 1: 모든 expander의 expanded=False 확인 ===
+# (모두 False로 설정되어 있어 코드 변경 없음)
 with tab_notice:
 
     # 1. 관리자 공지사항 관리
@@ -407,7 +419,7 @@ with tab_notice:
         st.subheader(f"🔔 {_('existing_notices')} (관리자 모드)")
 
         # --- 관리자: 공지사항 등록/수정 폼 ---
-        with st.expander(_("register"), expanded=False):
+        with st.expander(_("register"), expanded=False): # <--- 기본값 False
             with st.form("notice_form", clear_on_submit=True):
                 notice_title = st.text_input("제목")
                 notice_content = st.text_area(_("note"))
@@ -444,7 +456,7 @@ with tab_notice:
             prefix = "🚨 " if notice_type_key == "Urgent" else ""
             header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
 
-            with st.expander(header_text, expanded=False):
+            with st.expander(header_text, expanded=False): # <--- 기본값 False
                 col_del, col_title = st.columns([1, 4])
                 with col_del:
                     if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
@@ -489,7 +501,7 @@ with tab_notice:
                 translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
                 prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
 
-                with st.expander(header_text, expanded=False):
+                with st.expander(header_text, expanded=False): # <--- 기본값 False
                     st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                     attached_files = notice.get('files', [])
                     if attached_files:
@@ -500,7 +512,7 @@ with tab_notice:
         st.subheader(f"📸 {_('user_posts')}")
 
         # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
-        with st.expander(_("new_post"), expanded=False):
+        with st.expander(_("new_post"), expanded=False): # <--- 기본값 False
             with st.form("user_post_form", clear_on_submit=True):
                 post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
                 uploaded_media = st.file_uploader(_("media_attachment"), type=["png", "jpg", "jpeg", "mp4", "mov"], accept_multiple_files=True, key="user_media_uploader")
@@ -535,7 +547,7 @@ with tab_map:
         st.subheader(f"⚙️ {_('tour_schedule_management')}")
 
         # --- 도시/일정 등록 폼 (Admin Only) ---
-        with st.expander(_("add_city"), expanded=False):
+        with st.expander(_("add_city"), expanded=False): # <--- 기본값 False
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
                 # 도시 이름 중복 방지 로직 (등록된 도시 제외)
@@ -554,7 +566,7 @@ with tab_map:
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
-                # === 수정된 부분 1: 관리자 폼 레이블에 아이콘 추가 ===
+                # === 수정된 부분 2: 관리자 폼 레이블에 아이콘 추가 ===
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
                 # === 수정 끝 ===
 
@@ -595,7 +607,7 @@ with tab_map:
                 # Construct the header text for the expander with Markdown formatting
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
 
-                with st.expander(header_text, expanded=False):
+                with st.expander(header_text, expanded=False): # <--- 기본값 False
 
                     # --- 수정 폼 (수정된 수정/등록 및 제거 버튼 포함) ---
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
@@ -621,7 +633,7 @@ with tab_map:
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
                         
-                        # === 수정된 부분 1: 관리자 폼 레이블에 아이콘 추가 ===
+                        # === 수정된 부분 2: 관리자 폼 레이블에 아이콘 추가 ===
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         # === 수정 끝 ===
                         
@@ -669,7 +681,7 @@ with tab_map:
                                 st.markdown(f"**<span style='color: grey;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: grey;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
-
+# === (expander=False) 수정 끝 ===
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
     st.subheader(f"🗺️ {_('tab_map')} 보기")
@@ -724,14 +736,25 @@ with tab_map:
             </div>
         """
 
-        # === 수정된 부분 2: 아이콘을 빨간색으로 변경하고 링크와 분리 ===
+        # === 수정된 부분 2: 구글맵 링크/내비게이션 처리 ===
         if item.get('google_link'):
-            google_link_url = item['google_link']
+            google_link_data = item['google_link']
+            final_google_link = ""
+
+            # 입력값이 URL인지 텍스트인지 확인
+            if google_link_data.startswith('http'):
+                # URL이면, 기존처럼 링크
+                final_google_link = google_link_data
+            else:
+                # URL이 아니면 (장소 이름이면), 내비게이션 URL 생성
+                encoded_query = quote(google_link_data) # URL 인코딩
+                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
+
             # 아이콘(빨간색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
                 <span style="display: block; margin-top: 5px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #BB3333; margin-right: 5px;"></i>
-                    <a href="{google_link_url}" target="_blank" 
+                    <a href="{final_google_link}" target="_blank" 
                        style="color: #1A73E8; text-decoration: none;">
                        {_("google_link")}
                     </a>
@@ -775,7 +798,6 @@ with tab_map:
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
 
-        # === 수정된 부분 1: 지난 경로 투명도(opacity) 수정 ===
         # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
@@ -790,10 +812,9 @@ with tab_map:
                     locations=segment, 
                     color="#BB3333", 
                     weight=5, 
-                    opacity=0.125, # 0.25에서 0.125로 수정
+                    opacity=0.125, # <--- 투명도 수정됨
                     tooltip=tooltip_obj 
                 ).add_to(m)
-        # === 수정 끝 ===
 
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
         if len(future_segments) > 1:
