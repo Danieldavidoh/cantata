@@ -501,12 +501,13 @@ st.markdown(
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         opacity: 0.8;
-        top: -50px; /* 위에서 시작 */
+        /* top: -50px; (제거) -> 인라인 스타일로 대체 */
     }
 
     @keyframes float-across {
-        0% { transform: translateX(0vw) translateY(-20px) rotate(0deg); }
-        100% { transform: translateX(100vw) translateY(120px) rotate(360deg); }
+        /* 수정: 수직 이동 제거 (아이콘이 상단 영역에 머무르도록) */
+        0% { transform: translateX(0vw) rotate(0deg); }
+        100% { transform: translateX(100vw) rotate(360deg); }
     }
 
     /* 8. 눈 결정체 애니메이션 */
@@ -522,7 +523,8 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 */
+        /* 수정: 투명도 50% 감소 (0.7 -> 0.35) */
+        color: rgba(255, 255, 255, 0.35);
         font-size: 1em;
         opacity: 0;
         animation-name: fall;
@@ -531,9 +533,10 @@ st.markdown(
     }
 
     @keyframes fall {
+        /* 수정: opacity: 1 -> 0.9 (너무 투명해서 안보일까봐 살짝 올림) */
         0% { transform: translateY(-10vh) translateX(0vw); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
+        10% { opacity: 0.9; }
+        90% { opacity: 0.9; }
         100% { transform: translateY(100vh) translateX(5vw); opacity: 0; }
     }
     
@@ -578,11 +581,12 @@ def generate_christmas_icons(num_icons=15):
         delay = random.uniform(0, 15) # 애니메이션 시작 지연
         duration = random.uniform(10, 20) # 애니메이션 지속 시간 (느리게)
 
-        # === 수정된 부분: textwrap.dedent() 적용 ===
+        # === 수정된 부분: top 위치 수정 (0~50px) 및 dedent 적용 ===
         icons_html += textwrap.dedent(f"""
             <span class="christmas-icon" style="
                 font-size: {size}px;
                 left: {left}%;
+                top: {random.randint(0, 50)}px; /* 0-50px 사이의 상단 위치 */
                 animation-duration: {duration}s;
                 animation-delay: {delay}s;
             ">{icon}</span>
@@ -591,7 +595,8 @@ def generate_christmas_icons(num_icons=15):
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # --- 눈 결정체 생성 (CSS 기반) ---
-def generate_snowflakes(num_flakes=100):
+# === 수정된 부분: 눈 갯수 20% 감소 (100 -> 80) ===
+def generate_snowflakes(num_flakes=80):
     snowflakes_html = ""
     for _ in range(num_flakes):
         size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
@@ -1060,13 +1065,13 @@ with tab_map:
                 # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
                 # saddr=Current+Location은 모바일에서 자동으로 현위치를 잡도록 함
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"https://www.google.com/maps?saddr=Current+Location&daddr={encoded_query}" # maps/15 -> maps/4?daddr=
+                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination=lat,lon6saddr=Current+Location&daddr={encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
                 <span style="display: block; margin-top: 5px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
-<a href="{final_google_link}" target="_blank" 
+                    <a href="{final_google_link}" target="_blank" 
                        style="color: #1A73E8; text-decoration: none;">
                        {_("google_link")}
                     </a>
