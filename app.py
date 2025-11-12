@@ -157,6 +157,39 @@ for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
     elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
 
+# --- 관리자 및 UI 설정 ---
+ADMIN_PASS = "0009"
+# === [수정] 전체 삭제 비밀번호 (0610으로 가정) ===
+DELETE_ALL_PASS = "0610"
+
+# === [추가] 활동 감지 및 자동 로그아웃 로직 ===
+if "last_activity_time" not in st.session_state:
+    st.session_state.last_activity_time = datetime.now()
+
+def update_activity():
+    st.session_state.last_activity_time = datetime.now()
+
+# 1. 자동 로그아웃 검사
+if st.session_state.admin:
+    # 1초마다 자동 새로고침 설정 (관리자 모드에서만)
+    st_autorefresh(interval=1000, key="auto_refresh_admin") 
+    
+    time_since_last_activity = (datetime.now() - st.session_state.last_activity_time).total_seconds()
+    TIMEOUT_SECONDS = 60 # 1분 타임아웃
+    
+    if time_since_last_activity > TIMEOUT_SECONDS:
+        st.session_state.admin = False
+        st.session_state.logged_in_user = None
+        st.info("관리자 활동이 1분 이상 없어 자동으로 로그아웃되었습니다.")
+        st.session_state.show_controls = False
+        st.session_state.show_login_form = False
+        st.rerun()
+
+# 2. 모든 입력/버튼 클릭 전에 활동 시간 업데이트
+# (Streamlit 위젯의 on_change/on_click 이벤트에 활동 업데이트를 명시적으로 추가했습니다.)
+# === 활동 감지 및 자동 로그아웃 로직 끝 ===
+
+
 # --- 번역 함수 ---
 def _(key):
     lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
@@ -850,79 +883,84 @@ def delete_all_data_permanently():
 tab_names = [f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"]
 
 # 탭 선택 시 상태 저장 및 리로드 (모든 확장 상태를 닫기 위함)
-def set_tab(index):
+# 이 함수는 탭 전환을 처리하고, 상태를 업데이트하며, reran을 트리거하여 모든 expander가 닫힌 상태로 렌더링되게 합니다.
+def set_tab_index(index):
+    # 탭 변경 시에만 rerun을 통해 expander를 접습니다.
     if st.session_state.current_tab_index != index:
         st.session_state.current_tab_index = index
-        # 탭 변경 시 페이지를 다시 로드하여 모든 expander가 expanded=False로 초기화되도록 유도
         st.rerun() 
     
+# st.tabs를 사용하여 탭을 렌더링합니다.
+# 탭을 전환할 때마다 Streamlit은 전체 페이지를 다시 실행합니다.
+# 이 때, st.expander가 expanded=False로 설정되어 있으면 닫힌 상태로 렌더링됩니다.
 tab_notice_obj, tab_map_obj = st.tabs(tab_names)
 
 # 현재 활성화된 탭에 따라 내용 렌더링
-if st.session_state.current_tab_index == 0:
-    with tab_notice_obj:
-        # 탭 1 내용 시작 (공지)
+# st.session_state.current_tab_index를 사용하지 않고 st.tabs의 반환값(with 블록)을 사용하여 탭을 전환하는 Streamlit의 기본 동작을 이용합니다.
 
-        # 1. 관리자 공지사항 관리
-        if st.session_state.admin:
-            st.subheader(f"🔔 공지 관리") 
+with tab_notice_obj:
+    # 탭 1 내용 시작 (공지)
 
-            # --- 관리자: 공지사항 등록/수정 폼 ---
-            with st.expander(_("register"), expanded=False): 
-                with st.form("notice_form", clear_on_submit=True):
-                    notice_title = st.text_input("제목")
-                    notice_content = st.text_area(_("note"))
+    # 1. 관리자 공지사항 관리
+    if st.session_state.admin:
+        st.subheader(f"🔔 공지 관리") 
 
-                    uploaded_files = st.file_uploader(
-                        _("file_attachment"),
-                        type=["png", "jpg", "jpeg", "pdf", "txt", "zip"],
-                        accept_multiple_files=True,
-                        key="notice_file_uploader"
-                    )
+        # --- 관리자: 공지사항 등록/수정 폼 ---
+        with st.expander(_("register"), expanded=False): 
+            with st.form("notice_form", clear_on_submit=True):
+                notice_title = st.text_input("제목")
+                notice_content = st.text_area(_("note"))
 
-                    type_options = {"General": _("general"), "Urgent": _("urgent")}
-                    selected_display_type = st.radio(_("type"), list(type_options.values()))
-                    notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
+                uploaded_files = st.file_uploader(
+                    _("file_attachment"),
+                    type=["png", "jpg", "jpeg", "pdf", "txt", "zip"],
+                    accept_multiple_files=True,
+                    key="notice_file_uploader"
+                )
 
-                    submitted = st.form_submit_button(_("register"))
+                type_options = {"General": _("general"), "Urgent": _("urgent")}
+                selected_display_type = st.radio(_("type"), list(type_options.values()))
+                notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
 
-                    if submitted and notice_title and notice_content:
-                        file_info_list = save_uploaded_files(uploaded_files)
+                submitted = st.form_submit_button(_("register"))
 
-                        new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                        tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
-                    elif submitted: st.warning(_("fill_in_fields"))
+                if submitted and notice_title and notice_content:
+                    file_info_list = save_uploaded_files(uploaded_files)
 
-            # --- 관리자: 공지사항 목록 및 수정/삭제 ---
-            valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('id') and n.get('title')]
-            notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
-            type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
+                    new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
+                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
+                elif submitted: st.warning(_("fill_in_fields"))
 
-            for notice in notices_to_display:
-                notice_id = notice['id']; notice_type_key = notice.get('type', 'General')
-                translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice['title']
+        # --- 관리자: 공지사항 목록 및 수정/삭제 ---
+        valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('id') and n.get('title')]
+        notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+        type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
 
-                prefix = "🚨 " if notice_type_key == "Urgent" else ""
-                header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
+        for notice in notices_to_display:
+            notice_id = notice['id']; notice_type_key = notice.get('type', 'General')
+            translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice['title']
 
-                with st.expander(header_text, expanded=False): 
-                    col_del, col_title = st.columns([1, 4])
-                    with col_del:
-                        if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
-                            for file_info in notice.get('files', []):
-                                if os.path.exists(file_info['path']): os.remove(file_info['path'])
+            prefix = "🚨 " if notice_type_key == "Urgent" else ""
+            header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
 
-                            tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
-                            save_json(NOTICE_FILE, tour_notices); st.success(_("notice_del_success")); safe_rerun()
+            with st.expander(header_text, expanded=False): 
+                col_del, col_title = st.columns([1, 4])
+                with col_del:
+                    if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
+                        for file_info in notice.get('files', []):
+                            if os.path.exists(file_info['path']): os.remove(file_info['path'])
 
-                    with col_title:
-                        st.markdown(f"**{_('content')}:** {notice.get('content', _('no_content'))}")
+                        tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
+                        save_json(NOTICE_FILE, tour_notices); st.success(_("notice_del_success")); safe_rerun()
 
-                        attached_files = notice.get('files', [])
-                        if attached_files:
-                            st.markdown(f"**{_('attached_files')}:**")
-                            for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=True, is_user_post=False)
-                        else: st.markdown(f"**{_('attached_files')}:** {_('no_files')}")
+                with col_title:
+                    st.markdown(f"**{_('content')}:** {notice.get('content', _('no_content'))}")
+
+                    attached_files = notice.get('files', [])
+                    if attached_files:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=True, is_user_post=False)
+                    else: st.markdown(f"**{_('attached_files')}:** {_('no_files')}")
 
                     # --- 수정 폼 ---
                     with st.form(f"update_notice_{notice_id}", clear_on_submit=True):
@@ -1041,8 +1079,8 @@ if st.session_state.current_tab_index == 0:
             with st.form("delete_all_form", clear_on_submit=False):
                 st.warning(_("delete_all_warning"))
                 
-                # === [수정] 비밀번호 필드: (0610) 제거, 플레이스홀더에 0610 노출 ===
-                delete_password = st.text_input("비밀번호", type="password", placeholder="0610", key="delete_all_pass")
+                # === [수정] 비밀번호 필드: placeholder 제거 ===
+                delete_password = st.text_input("비밀번호", type="password", key="delete_all_pass")
                 
                 # 2단계 확인을 위한 체크박스
                 confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
@@ -1060,82 +1098,81 @@ if st.session_state.current_tab_index == 0:
         # === [추가] 끝 ===
 
 
-if st.session_state.current_tab_index == 1:
-    with tab_map_obj:
-        # 탭 2 내용 시작 (지도)
-        
-        # --- 1. 관리자: 일정 관리 섹션 ---
-        if st.session_state.admin:
-            st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
+with tab_map_obj:
+    # 탭 2 내용 시작 (지도)
+    
+    # --- 1. 관리자: 일정 관리 섹션 ---
+    if st.session_state.admin:
+        st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
 
-            # --- 도시/일정 등록 폼 (Admin Only) ---
-            # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-            with st.expander(_("add_city"), expanded=False): 
-                with st.form("schedule_form", clear_on_submit=True):
-                    col_c, col_d, col_v = st.columns(3)
-                    registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
-                    available_cities = [c for c in city_dict if c not in registered_cities] # city_options 대신 city_dict 사용
+        # --- 도시/일정 등록 폼 (Admin Only) ---
+        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+        with st.expander(_("add_city"), expanded=False): 
+            with st.form("schedule_form", clear_on_submit=True):
+                col_c, col_d, col_v = st.columns(3)
+                registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
+                available_cities = [c for c in city_dict if c not in registered_cities] # city_options 대신 city_dict 사용
 
-                    # === [수정] selectbox -> multiselect 로 변경 ===
-                    city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
-                    
-                    schedule_date = col_d.date_input(_("date"), key="new_date_input")
-                    venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
+                # === [수정] selectbox -> multiselect 로 변경 ===
+                city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
+                
+                schedule_date = col_d.date_input(_("date"), key="new_date_input")
+                venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
 
-                    col_l, col_s, col_ug, col_up = st.columns(4)
-                    type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                    selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
-                    type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
+                col_l, col_s, col_ug, col_up = st.columns(4)
+                type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
+                selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
+                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
 
-                    expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
-                    
-                    google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
+                expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
+                
+                google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
 
-                    # === 1. 수정: 슬라이더에 % 포맷 적용 ===
-                    probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
+                # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
 
-                    note = st.text_area(_("note"), placeholder=_("note_placeholder"))
+                note = st.text_area(_("note"), placeholder=_("note_placeholder"))
 
-                    submitted = st.form_submit_button(_("register"))
+                submitted = st.form_submit_button(_("register"))
 
-                    # === [수정] 제출 로직: city_name_list만 검사하도록 수정 (나머지는 N/A 허용) ===
-                    if submitted:
-                        if not city_name_list: 
-                            st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
-                        else:
-                            cities_added_count = 0
-                            # schedule_date나 venue_name이 비어있더라도 등록은 진행
-                            for city_name in city_name_list: # 선택된 도시 리스트를 순회
-                                if city_name not in city_dict:
-                                    st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
-                                    continue # 이 도시 건너뛰기
-                                
-                                city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
-                                # schedule_date와 venue_name이 비어있으면 빈 문자열 또는 N/A로 저장
-                                date_str = schedule_date.strftime("%Y-%m-%d") if schedule_date else "N/A"
-                                venue_str = venue_name if venue_name else "N/A"
-
-                                new_schedule_entry = {
-                                    "id": str(uuid.uuid4()), 
-                                    "city": city_name, # 개별 도시 이름
-                                    "venue": venue_str, 
-                                    "lat": city_coords["lat"], 
-                                    "lon": city_coords["lon"], 
-                                    "date": date_str, 
-                                    "type": type_sel, 
-                                    "seats": str(expected_seats), 
-                                    "note": note, 
-                                    "google_link": google_link, 
-                                    "probability": probability, 
-                                    "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
-                                }
-                                tour_schedule.append(new_schedule_entry)
-                                cities_added_count += 1
+                # === [수정] 제출 로직: city_name_list만 검사하도록 수정 (나머지는 N/A 허용) ===
+                if submitted:
+                    if not city_name_list: 
+                        st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
+                    else:
+                        cities_added_count = 0
+                        # schedule_date나 venue_name이 비어있더라도 등록은 진행
+                        for city_name in city_name_list: # 선택된 도시 리스트를 순회
+                            if city_name not in city_dict:
+                                st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
+                                continue # 이 도시 건너뛰기
                             
-                            if cities_added_count > 0:
-                                save_json(CITY_FILE, tour_schedule)
-                                st.success(_("schedule_reg_success")) # 성공 메시지
-                                safe_rerun()
+                            city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
+                            # schedule_date와 venue_name이 비어있으면 빈 문자열 또는 N/A로 저장
+                            date_str = schedule_date.strftime("%Y-%m-%d") if schedule_date else "N/A"
+                            venue_str = venue_name if venue_name else "N/A"
+
+                            new_schedule_entry = {
+                                "id": str(uuid.uuid4()), 
+                                "city": city_name, # 개별 도시 이름
+                                "venue": venue_str, 
+                                "lat": city_coords["lat"], 
+                                "lon": city_coords["lon"], 
+                                "date": date_str, 
+                                "type": type_sel, 
+                                "seats": str(expected_seats), 
+                                "note": note, 
+                                "google_link": google_link, 
+                                "probability": probability, 
+                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                            }
+                            tour_schedule.append(new_schedule_entry)
+                            cities_added_count += 1
+                        
+                        if cities_added_count > 0:
+                            save_json(CITY_FILE, tour_schedule)
+                            st.success(_("schedule_reg_success")) # 성공 메시지
+                            safe_rerun()
                     # === 로직 수정 완료 ===
 
             # --- 관리자: 일정 보기 및 수정/삭제 ---
