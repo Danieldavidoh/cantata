@@ -410,6 +410,11 @@ st.markdown(
         box-shadow: none; /* 수정: 그림자 제거 */
     }
     /* ===> [요청] 수정 완료 === */
+    
+    /* ===> [요청 3] 언어 선택 칸(버튼)에 텍스트 커서 대신 포인터(손가락) 커서가 표시되도록 보장 === */
+    .stSelectbox > div > div > button {
+        cursor: pointer !important;
+    }
 
     /* 4. 입력 필드 스타일 */
     .stTextInput > div > div > input,
@@ -674,25 +679,26 @@ title_html = textwrap.dedent(f"""
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
-# --- 4. 수정: 컨트롤 숨기기 및 공간 제거 (구조 변경) ---
+# --- 4. 수정: 컨트롤을 오른쪽 상단에 배치 (언어 선택, 로그인) ---
+_, col_lang, col_auth = st.columns([10, 3, 2]) # [스페이서, 언어, 로그인] 비율
 
-# 4a. 언어 선택 (항상 숨김)
-st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
-LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
-lang_keys = list(LANG_OPTIONS.keys())
-lang_display_names = list(LANG_OPTIONS.values())
-current_lang_index = lang_keys.index(st.session_state.lang)
-selected_lang_display = st.selectbox(
-    "language", # "language"로 고정
-    options=lang_display_names,
-    index=current_lang_index,
-    key="lang_select"
-)
-selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
-if selected_lang_key != st.session_state.lang:
-    st.session_state.lang = selected_lang_key
-    st.rerun()
-st.markdown('</div>', unsafe_allow_html=True)
+# 4a. 언어 선택 (col_lang에 배치)
+with col_lang:
+    LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
+    lang_keys = list(LANG_OPTIONS.keys())
+    lang_display_names = list(LANG_OPTIONS.values())
+    current_lang_index = lang_keys.index(st.session_state.lang)
+    selected_lang_display = st.selectbox(
+        "language", # "language"로 고정
+        options=lang_display_names,
+        index=current_lang_index,
+        key="lang_select",
+        label_visibility="collapsed" # 레이블 숨김
+    )
+    selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
+    if selected_lang_key != st.session_state.lang:
+        st.session_state.lang = selected_lang_key
+        st.rerun()
 
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
 def safe_rerun():
@@ -702,18 +708,17 @@ def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
     safe_rerun()
 
-# 4b. 로그인/로그아웃 버튼 (항상 숨김)
-st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
-if st.session_state.admin:
-    if st.button(_("logout"), key="logout_btn_hidden"):
-        st.session_state.admin = False
-        st.session_state.logged_in_user = None
-        st.session_state.show_login_form = False
-        safe_rerun()
-else:
-    if st.button(_("login"), key="login_btn_hidden"): 
-        handle_login_button_click()
-st.markdown('</div>', unsafe_allow_html=True)
+# 4b. 로그인/로그아웃 버튼 (col_auth에 배치)
+with col_auth:
+    if st.session_state.admin:
+        if st.button(_("logout"), key="logout_btn_visible"):
+            st.session_state.admin = False
+            st.session_state.logged_in_user = None
+            st.session_state.show_login_form = False
+            safe_rerun()
+    else:
+        if st.button(_("login"), key="login_btn_visible"): 
+            handle_login_button_click()
 
 
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
@@ -1204,3 +1209,5 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
+
+}
