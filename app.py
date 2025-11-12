@@ -939,6 +939,7 @@ with tab_map:
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
+                # === [수정] Google Maps Link 입력 필드 유지 (데이터 저장용) ===
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
 
                 # === 1. 수정: 슬라이더에 % 포맷 적용 ===
@@ -970,7 +971,7 @@ with tab_map:
                                 "type": type_sel, 
                                 "seats": str(expected_seats), 
                                 "note": note, 
-                                "google_link": google_link, 
+                                "google_link": google_link, # === [수정] 데이터는 저장 ===
                                 "probability": probability, 
                                 "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
                             }
@@ -1030,6 +1031,7 @@ with tab_map:
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
                         
+                        # === [수정] Google Maps Link 입력 필드 유지 (데이터 수정용) ===
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         
                         # === 1. 수정: 슬라이더에 % 포맷 적용 ===
@@ -1050,7 +1052,7 @@ with tab_map:
                                         tour_schedule[idx].update({
                                             "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
                                             "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
-                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability,
+                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability, # === [수정] 데이터는 저장 ===
                                         })
                                         save_json(CITY_FILE, tour_schedule)
                                         st.success(_("schedule_upd_success"))
@@ -1114,6 +1116,7 @@ with tab_map:
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
         # 팝업 HTML (최소 높이 190px)
+        # Google Maps 링크 섹션(if item.get('google_link')) 전체 삭제
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
@@ -1127,38 +1130,13 @@ with tab_map:
                     <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
             </div>
+        </div>
         """
-
-        # === Google Maps URL: 모바일 내비게이션 최적화 ===
-        if item.get('google_link'):
-            google_link_data = item['google_link']
-            final_google_link = ""
-
-            # 1. 입력값이 URL인지 확인 (URL이면 그대로 사용)
-            if google_link_data.startswith('http'):
-                final_google_link = google_link_data
-            else:
-                # 2. 장소 이름/주소인 경우: 내비게이션 URL을 생성하고 URL 인코딩
-                full_query = f"{google_link_data}, {item.get('city', '')}"
-                encoded_query = quote(full_query) 
-                
-                # 3. 모바일에서 현재 위치를 출발점으로 하여 목적지로 길안내를 시작하는 URL (daddr=destination address)
-                # Streamlit iframe 환경 호환성을 위해 구글맵 프록시 URL을 사용합니다.
-                final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
-
-            # 팝업에 링크 추가
-            popup_html += f"""
-                <span style="display: block; margin-top: 5px; font-weight: bold;">
-                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
-                    <a href="{final_google_link}" target="_blank" 
-                        style="color: #1A73E8; text-decoration: none;">
-                        {_("google_link")}
-                    </a>
-                </span>
-            """
+        # === Google Maps URL: 모바일 내비게이션 최적화 로직 (삭제됨) ===
+        # if item.get('google_link'):
+        #     ... (삭제) ...
+        #     popup_html += f""" ... (삭제) ... """
         # === Google Maps URL 수정 완료 ===
-
-        popup_html += "</div>" # 팝업 전체 닫기
 
         # 마커 아이콘
         city_initial = item.get('city', 'A')[0]
