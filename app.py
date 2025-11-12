@@ -532,10 +532,10 @@ st.markdown(
         z-index: 1; 
     }
     
-    /* === [추가] 베들레헴의 별 (Bethlehem Star) CSS === */
+    /* === [수정] 베들레헴의 별 (Bethlehem Star) CSS - 위치 조정 === */
     .bethlehem-star {
         position: fixed; 
-        top: 30px; /* 제목 상단에 위치 */
+        top: 5vh; /* 뷰포트 높이의 5% 위치 (메뉴바 아래) */
         left: 50px; /* 좌측 상단에 위치 */
         font-size: 35px; /* 눈에 띄게 큰 크기 */
         color: #FFD700; /* 골드 색상 */
