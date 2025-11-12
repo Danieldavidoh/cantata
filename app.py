@@ -103,7 +103,7 @@ LANG = {
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
-        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", 
+        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "인도어", "outdoor": "아웃도어", 
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
         "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
@@ -558,6 +558,21 @@ st.markdown(
         width: 1px;
         height: 1px;
         overflow: hidden; /* 보이지 않게 */
+        
+        /* === 2. 수정: 공간 제거를 위한 추가 스타일 === */
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 0;
+        border: none;
+    }
+    
+    /* === 2. 수정: 숨겨진 컨트롤을 감싸는 Streamlit의 부모 컨테이너도 숨김 === */
+    /* Streamlit v1.30+ */
+    [data-testid="stVerticalBlock"]:has(div.hidden-controls) {
+        height: 0;
+        min-height: 0;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     </style>
     
@@ -576,7 +591,7 @@ christmas_icons_list = [
 # === 3. 수정: 아이콘 스타일 (겹침 수정) ===
 # 8개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
 icon_styles = [
-    {"left": 12, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁 (10% -> 12%)
+    {"left": 12, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
     {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
     {"left": 45, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (50% -> 45%)
@@ -657,33 +672,40 @@ title_html = textwrap.dedent(f"""
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
-# === 4. 수정: 언어/로그인 컨트롤을 숨기기 위한 div 추가 ===
+# --- 4. 수정: 컨트롤 숨기기 및 공간 제거 (구조 변경) ---
+
+# 4a. 언어 선택 (항상 숨김)
 st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
+LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
+lang_keys = list(LANG_OPTIONS.keys())
+lang_display_names = list(LANG_OPTIONS.values())
+current_lang_index = lang_keys.index(st.session_state.lang)
+selected_lang_display = st.selectbox(
+    "language", # "language"로 고정
+    options=lang_display_names,
+    index=current_lang_index,
+    key="lang_select"
+)
+selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
+if selected_lang_key != st.session_state.lang:
+    st.session_state.lang = selected_lang_key
+    st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
-# 언어 선택 버튼 (상단 고정)
-col_lang, col_auth = st.columns([1, 3])
-with col_lang:
-    LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
-    lang_keys = list(LANG_OPTIONS.keys())
-    lang_display_names = list(LANG_OPTIONS.values())
+# 4b. 로그인/로그아웃 버튼 (항상 숨김)
+st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
+if st.session_state.admin:
+    if st.button(_("logout"), key="logout_btn_hidden"):
+        st.session_state.admin = False
+        st.session_state.logged_in_user = None
+        st.session_state.show_login_form = False
+        safe_rerun()
+else:
+    if st.button(_("login"), key="login_btn_hidden"): 
+        handle_login_button_click()
+st.markdown('</div>', unsafe_allow_html=True)
 
-    current_lang_index = lang_keys.index(st.session_state.lang)
-
-    # === 3. 수정: 메뉴 -> "language" (고정) ===
-    selected_lang_display = st.selectbox(
-        "language", # _("menu") -> "language"
-        options=lang_display_names,
-        index=current_lang_index,
-        key="lang_select"
-    )
-
-    selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
-
-    if selected_lang_key != st.session_state.lang:
-        st.session_state.lang = selected_lang_key
-        st.rerun()
-
-# --- 로그인 / 로그아웃 로직 ---
+# --- 로그인 / 로그아웃 로직 (핸들러) ---
 def safe_rerun():
     if hasattr(st, 'rerun'): st.rerun()
 
@@ -691,36 +713,28 @@ def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
     safe_rerun()
 
-with col_auth:
-    if st.session_state.admin:
-        if st.button(_("logout"), key="logout_btn"):
-            st.session_state.admin = False
-            st.session_state.logged_in_user = None
-            st.session_state.show_login_form = False
-            safe_rerun()
-    else:
-        if st.button(_("login"), key="login_btn"): handle_login_button_click()
+# 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
+if st.session_state.show_login_form and not st.session_state.admin:
+    # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
+    _, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
+    with col_form:
+        with st.form("login_form_permanent", clear_on_submit=False):
+            st.write(_("admin_login"))
+            password = st.text_input("Password", type="password")
+            submitted = st.form_submit_button(_("login"))
 
-        if st.session_state.show_login_form:
-            with st.form("login_form_permanent", clear_on_submit=False):
-                st.write(_("admin_login"))
-                password = st.text_input("Password", type="password")
-                submitted = st.form_submit_button(_("login"))
-
-                if submitted:
-                    if password == ADMIN_PASS:
-                        st.session_state.admin = True
-                        st.session_state.logged_in_user = "Admin"
-                        st.session_state.show_login_form = False
-                        safe_rerun()
-                    else: st.warning(_("incorrect_password"))
-
-# === 4. 수정: 숨김 div 닫기 ===
-st.markdown('</div>', unsafe_allow_html=True)
+            if submitted:
+                if password == ADMIN_PASS:
+                    st.session_state.admin = True
+                    st.session_state.logged_in_user = "Admin"
+                    st.session_state.show_login_form = False
+                    safe_rerun()
+                else: st.warning(_("incorrect_password"))
+# --- 4. 수정 끝 ---
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map = st.tabs([f"📢&nbsp;&nbsp;{_('tab_notice')}", f"🚌&nbsp;&nbsp;{_('tab_map')}"])
+tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -923,7 +937,8 @@ with tab_map:
                 
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
 
-                probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5)
+                # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
 
                 note = st.text_area(_("note"), placeholder=_("note_placeholder"))
 
@@ -986,7 +1001,8 @@ with tab_map:
                         
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         
-                        updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}")
+                        # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                        updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}", format="%d%%")
 
                         updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
 
