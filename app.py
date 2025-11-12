@@ -483,10 +483,12 @@ st.markdown(
     /* 7. 크리스마스 아이콘 애니메이션 */
     .christmas-icons {
         position: fixed; /* 화면 상단에 고정 */
-        width: 100%;
+        /* width: 100%; */ /* 기존 */
+        width: 60vw; /* 수정: 너비를 60% (뷰포트 너비)로 줄임 */
+        left: 20vw; /* 수정: 20% 여백을 주어 중앙 정렬 (100 - 60) / 2 */
         height: 100px; /* 아이콘들이 움직일 공간 */
         top: 0;
-        left: 0;
+        left: 20vw; /* 수정: (100-60)/2 = 20vw */
         pointer-events: none; /* 클릭 방지 */
         overflow: hidden;
         z-index: 999; /* 최상단 */
@@ -497,18 +499,27 @@ st.markdown(
         display: block;
         font-size: 20px; /* 기본 크기 */
         color: #FFFFFF;
-        animation-name: float-across;
+        /* animation-name: float-across; */ /* 기존 */
+        animation-name: bob-up-down; /* 수정: 위아래로 밥(bob)하는 애니메이션 */
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         opacity: 0.8;
         /* top: -50px; (제거) -> 인라인 스타일로 대체 */
     }
 
-    @keyframes float-across {
-        /* 수정: 수직 이동 제거 (아이콘이 상단 영역에 머무르도록) */
-        0% { transform: translateX(0vw) rotate(0deg); }
-        100% { transform: translateX(100vw) rotate(360deg); }
+    /* @keyframes float-across { */ /* 기존 애니메이션 제거 */
+        /* 0% { transform: translateX(0vw) rotate(0deg); } */
+        /* 100% { transform: translateX(100vw) rotate(360deg); } */
+    /* } */
+
+    /* === 수정: 'bob-up-down' 애니메이션 추가 === */
+    @keyframes bob-up-down {
+        0%   { transform: translateY(0px) rotate(-5deg); }
+        50%  { transform: translateY(-10px) rotate(5deg); }
+        100% { transform: translateY(0px) rotate(-5deg); }
     }
+    /* === 수정 끝 === */
+
 
     /* 8. 눈 결정체 애니메이션 */
     .snowflakes {
@@ -523,8 +534,8 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        /* 수정: 투명도 50% 감소 (0.7 -> 0.35) */
-        color: rgba(255, 255, 255, 0.35);
+        /* === 수정: 투명도를 3% (0.03)으로 대폭 낮춤 === */
+        color: rgba(255, 255, 255, 0.03);
         font-size: 1em;
         opacity: 0;
         animation-name: fall;
@@ -577,9 +588,9 @@ def generate_christmas_icons(num_icons=15):
     for _ in range(num_icons):
         icon = random.choice(christmas_icons_list)
         size = random.randint(20, 40) # 픽셀 크기
-        left = random.randint(0, 100) # % 시작 위치
-        delay = random.uniform(0, 15) # 애니메이션 시작 지연
-        duration = random.uniform(10, 20) # 애니메이션 지속 시간 (느리게)
+        left = random.randint(0, 100) # % 시작 위치 (컨테이너 60vw 기준)
+        delay = random.uniform(0, 5) # === 수정: 애니메이션 시작 지연 (0~5초) ===
+        duration = random.uniform(3, 7) # === 수정: 애니메이션 지속 시간 (3~7초, 밥(bob) 속도) ===
 
         # === 수정된 부분: top 위치 수정 (0~50px) 및 dedent 적용 ===
         icons_html += textwrap.dedent(f"""
@@ -595,8 +606,8 @@ def generate_christmas_icons(num_icons=15):
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # --- 눈 결정체 생성 (CSS 기반) ---
-# === 수정된 부분: 눈 갯수 20% 감소 (100 -> 80) ===
-def generate_snowflakes(num_flakes=80):
+# === 수정된 부분: 눈 갯수 30% 감소 (80 -> 56) ===
+def generate_snowflakes(num_flakes=56):
     snowflakes_html = ""
     for _ in range(num_flakes):
         size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
@@ -1155,3 +1166,5 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
+
+}
