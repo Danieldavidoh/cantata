@@ -1214,7 +1214,7 @@ with tab_map:
                     color="#BB3333", 
                     weight=5, 
                     opacity=0.125, 
-                    tooltip=obj 
+                    tooltip=tooltip_obj 
                 ).add_to(m)
 
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
