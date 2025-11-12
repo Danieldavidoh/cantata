@@ -526,10 +526,11 @@ st.markdown(
         overflow: hidden;
         z-index: 1; 
     }
-    /* === [수정] 큰 별 위치를 제목 위에 가운데로 조정 === */
+    /* === [삭제] 큰 별 CSS (big-star) === */
+    /*
     .big-star {
-        position: fixed; /* fix position relative to viewport */
-        top: 10vh; /* 제목으로부터 약간 위 (15vh -> 10vh) */
+        position: fixed; 
+        top: 10vh; 
         left: 50vw;
         transform: translate(-50%, 0);
         font-size: 50px;
@@ -543,6 +544,7 @@ st.markdown(
         0% { opacity: 0.8; transform: scale(1) translate(-50%, 0); }
         100% { opacity: 1.1; transform: scale(1.1) translate(-50%, 0); }
     }
+    */
     @keyframes twinkle {
         0% { opacity: 0.1; }
         50% { opacity: 0.8; }
@@ -628,7 +630,7 @@ def generate_star_background(num_stars=50): # 개수 50개로 조정
     for _ in range(num_stars):
         left = random.randint(0, 100)
         top = random.randint(0, 100)
-        size = random.uniform(1.0, 3.0) # 별 크기 1.0px ~ 3.0px로 증가
+        size = random.uniform(1.0, 3.0) * 2 # 별 크기 1.0px ~ 3.0px로 증가 -> 두배로 증가
         twinkle_duration = random.uniform(2, 5) 
         twinkle_delay = random.uniform(0, 5)
         
@@ -652,10 +654,9 @@ def generate_star_background(num_stars=50): # 개수 50개로 조정
 
 # 유난히 빛나는 큰 별 HTML (하나만 유지됨)
 BIG_STAR_HTML = textwrap.dedent("""
-    <div class="big-star">
-        ✨
-    </div>
-""")
+    
+""") # 큰 별 삭제
+
 # === Starry Background and Big Star Functions 끝 ===
 
 # --- 제목 렌더링 ---
@@ -664,7 +665,7 @@ icons_html_str = generate_christmas_icons()
 # 1. 별 배경 및 큰 별 삽입 (z-index 1 및 999로 설정)
 stars_background_html = generate_star_background(50) # 50개로 호출
 st.markdown(stars_background_html, unsafe_allow_html=True)
-st.markdown(BIG_STAR_HTML, unsafe_allow_html=True) # 큰 별 하나만 표시
+# st.markdown(BIG_STAR_HTML, unsafe_allow_html=True) # 큰 별 하나만 표시
 
 title_cantata = _('title_cantata')
 title_year = _('title_year')
