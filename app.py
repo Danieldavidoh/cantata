@@ -659,12 +659,13 @@ title_html = textwrap.dedent(f"""
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
-# --- 4. [요청] 숨겨진 컨트롤 메뉴 (화살표 대신 톱니바퀴 아이콘 사용) ---
+# --- 4. [요청] 숨겨진 컨트롤 메뉴 (톱니바퀴 아이콘 사용) ---
 col_spacer, col_toggle = st.columns([10, 1]) # [스페이서, 토글 버튼]
 
 with col_toggle:
     # 톱니바퀴 버튼을 누르면 st.session_state.show_controls 값을 반전시킴
-    if st.button("⚙️", key="toggle_controls", help=_("menu")):
+    # === [요청] help 툴팁 제거 ===
+    if st.button("⚙️", key="toggle_controls"):
         st.session_state.show_controls = not st.session_state.show_controls
 
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
@@ -926,7 +927,9 @@ with tab_map:
                 registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
                 available_cities = [c for c in city_options if c not in registered_cities]
 
-                city_name_input = col_c.selectbox(_('city_name'), options=available_cities, index=0 if available_cities else None, key="new_city_select")
+                # === [요청] selectbox -> multiselect 로 변경 ===
+                city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
+                
                 schedule_date = col_d.date_input(_("date"), key="new_date_input")
                 venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
 
@@ -946,13 +949,40 @@ with tab_map:
 
                 submitted = st.form_submit_button(_("register"))
 
+                # === [요청] 제출 로직: multiselect(list)를 순회하며 여러 항목 생성 ===
                 if submitted:
-                    if not city_name_input or not venue_name or not schedule_date: st.warning(_("fill_in_fields"))
-                    elif city_name_input not in city_dict: st.warning(_("city_coords_error"))
+                    if not city_name_list or not venue_name or not schedule_date: 
+                        st.warning(_("fill_in_fields"))
                     else:
-                        city_coords = city_dict.get(city_name_input, {'lat': 0, 'lon': 0}) 
-                        new_schedule_entry = {"id": str(uuid.uuid4()), "city": city_name_input, "venue": venue_name, "lat": city_coords["lat"], "lon": city_coords["lon"], "date": schedule_date.strftime("%Y-%m-%d"), "type": type_sel, "seats": str(expected_seats), "note": note, "google_link": google_link, "probability": probability, "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                        tour_schedule.append(new_schedule_entry); save_json(CITY_FILE, tour_schedule); st.success(_("schedule_reg_success")); safe_rerun()
+                        cities_added_count = 0
+                        for city_name in city_name_list: # 선택된 도시 리스트를 순회
+                            if city_name not in city_dict:
+                                st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
+                                continue # 이 도시 건너뛰기
+                            
+                            city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
+                            new_schedule_entry = {
+                                "id": str(uuid.uuid4()), 
+                                "city": city_name, # 개별 도시 이름
+                                "venue": venue_name, 
+                                "lat": city_coords["lat"], 
+                                "lon": city_coords["lon"], 
+                                "date": schedule_date.strftime("%Y-%m-%d"), 
+                                "type": type_sel, 
+                                "seats": str(expected_seats), 
+                                "note": note, 
+                                "google_link": google_link, 
+                                "probability": probability, 
+                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                            }
+                            tour_schedule.append(new_schedule_entry)
+                            cities_added_count += 1
+                        
+                        if cities_added_count > 0:
+                            save_json(CITY_FILE, tour_schedule)
+                            st.success(_("schedule_reg_success")) # 성공 메시지
+                            safe_rerun()
+                # === 로직 수정 완료 ===
 
         # --- 관리자: 일정 보기 및 수정/삭제 ---
         valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
