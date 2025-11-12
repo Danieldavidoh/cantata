@@ -126,7 +126,7 @@ LANG = {
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
-        "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
+        "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
         "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।"
@@ -362,21 +362,24 @@ st.markdown(
         font-weight: bold;
     }
 
-    /* === 3. 수정: 탭 버튼 오른쪽 정렬 === */
+    /* === [요청] 탭을 화면 전체 너비로 균등하게 분배 === */
     .stTabs [data-baseweb="tab-list"] {
-        justify-content: flex-end;
+        /* justify-content: flex-end; */ /* 이전: 오른쪽 정렬 */
+        justify-content: space-evenly; /* 새 요청: 균등 분배 */
+        width: 100%;
     }
-
+    
     .stTabs [data-baseweb="tab-list"] button {
         background-color: rgba(255, 255, 255, 0.05); /* 반투명 버튼 */
         color: #f0f0f0;
         border-radius: 8px 8px 0 0;
-        margin: 0 4px;
+        margin: 0; /* 여백 제거 */
         border-bottom: 3px solid #66BB66; /* 비활성 탭 하단 라인 (그린) */
         transition: all 0.2s ease-in-out;
-        /* === 4. 수정: 좌우 여백 추가 === */
-        padding-left: 20px; 
-        padding-right: 20px;
+        padding-left: 10px; /* 좌우 여백 */
+        padding-right: 10px;
+        flex-grow: 1; /* 버튼이 남은 공간을 채우도록 함 */
+        text-align: center;
     }
 
     .stTabs [data-baseweb="tab-list"] button:hover {
@@ -411,7 +414,7 @@ st.markdown(
     }
     /* ===> [요청] 수정 완료 === */
     
-    /* ===> [요청 3] 언어 선택 칸(버튼)에 텍스트 커서 대신 포인터(손가락) 커서가 표시되도록 보장 === */
+    /* ===> [요청] 언어 선택 칸(버튼)에 텍스트 커서 대신 포인터(손가락) 커서가 표시되도록 보장 === */
     .stSelectbox > div > div > button {
         cursor: pointer !important;
     }
@@ -679,27 +682,26 @@ title_html = textwrap.dedent(f"""
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
-# --- 4. 수정: 컨트롤을 오른쪽 상단에 배치 (언어 선택, 로그인) ---
-# ===> [TypeError FIX] `_` 변수를 `col_spacer`로 변경하여 함수 충돌 해결
-col_spacer, col_lang, col_auth = st.columns([10, 3, 2]) # [스페이서, 언어, 로그인] 비율
+# --- 4. 수정: 컨트롤 숨기기 및 공간 제거 (구조 변경) ---
 
-# 4a. 언어 선택 (col_lang에 배치)
-with col_lang:
-    LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
-    lang_keys = list(LANG_OPTIONS.keys())
-    lang_display_names = list(LANG_OPTIONS.values())
-    current_lang_index = lang_keys.index(st.session_state.lang)
-    selected_lang_display = st.selectbox(
-        "language", # "language"로 고정
-        options=lang_display_names,
-        index=current_lang_index,
-        key="lang_select",
-        label_visibility="collapsed" # 레이블 숨김
-    )
-    selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
-    if selected_lang_key != st.session_state.lang:
-        st.session_state.lang = selected_lang_key
-        st.rerun()
+# 4a. 언어 선택 (항상 숨김)
+st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
+LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
+lang_keys = list(LANG_OPTIONS.keys())
+lang_display_names = list(LANG_OPTIONS.values())
+current_lang_index = lang_keys.index(st.session_state.lang)
+selected_lang_display = st.selectbox(
+    "language", # "language"로 고정
+    options=lang_display_names,
+    index=current_lang_index,
+    key="lang_select",
+    label_visibility="collapsed" # 레이블 숨김
+)
+selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
+if selected_lang_key != st.session_state.lang:
+    st.session_state.lang = selected_lang_key
+    st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
 def safe_rerun():
@@ -709,50 +711,58 @@ def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
     safe_rerun()
 
-# 4b. 로그인/로그아웃 버튼 (col_auth에 배치)
-with col_auth:
-    if st.session_state.admin:
+# 4b. 로그인/로그아웃 버튼 (항상 숨김)
+# [참고] 이 버튼은 이제 보이지 않지만, 탭에서 로그인/로그아웃을 처리하기 위해 로직은 남겨둡니다.
+# (또는 탭에서 직접 세션 상태를 변경할 수도 있습니다. 여기서는 탭이 이 핸들러를 호출하도록 합니다.)
+st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
+if st.session_state.admin:
+    if st.button(_("logout"), key="logout_btn_hidden"):
+        st.session_state.admin = False
+        st.session_state.logged_in_user = None
+        st.session_state.show_login_form = False
+        safe_rerun()
+else:
+    # 'login' 버튼을 누르면 폼을 토글합니다.
+    if st.button(_("login"), key="login_btn_hidden"): 
+        handle_login_button_click()
+st.markdown('</div>', unsafe_allow_html=True)
+
+
+# --- [요청] 탭 구성 (로그인/관리 탭 포함) ---
+if st.session_state.admin:
+    # 관리자로 로그인한 경우: 관리, 공지, 칸타타 투어
+    tab_admin, tab_notice, tab_map = st.tabs([
+        f"{_('tab_admin')}", 
+        f"📢 {_('tab_notice')}", 
+        f"🚌 {_('tab_map')}"
+    ])
+else:
+    # 로그인하지 않은 경우: 로그인, 공지, 칸타타 투어
+    tab_login, tab_notice, tab_map = st.tabs([
+        f"{_('tab_login')}", 
+        f"📢 {_('tab_notice')}", 
+        f"🚌 {_('tab_map')}"
+    ])
+
+# =============================================================================
+# [요청] 탭 1: 로그인 또는 관리자
+# =============================================================================
+
+if st.session_state.admin:
+    # --- 1a. 관리자 탭 (로그인 된 경우) ---
+    with tab_admin:
+        st.subheader(f"⚙️ {_('tab_admin')}")
+        
+        # 로그아웃 버튼
         if st.button(_("logout"), key="logout_btn_visible"):
             st.session_state.admin = False
             st.session_state.logged_in_user = None
             st.session_state.show_login_form = False
             safe_rerun()
-    else:
-        if st.button(_("login"), key="login_btn_visible"): 
-            handle_login_button_click()
-
-
-# 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
-if st.session_state.show_login_form and not st.session_state.admin:
-    # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
-    # ===> [TypeError FIX] `_` 변수를 `col_spacer_form`으로 변경
-    col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
-    with col_form:
-        with st.form("login_form_permanent", clear_on_submit=False):
-            st.write(_("admin_login"))
-            password = st.text_input("Password", type="password")
-            submitted = st.form_submit_button(_("login"))
-
-            if submitted:
-                if password == ADMIN_PASS:
-                    st.session_state.admin = True
-                    st.session_state.logged_in_user = "Admin"
-                    st.session_state.show_login_form = False
-                    safe_rerun()
-                else: st.warning(_("incorrect_password"))
-# --- 4. 수정 끝 ---
-
-
-# --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
-
-# =============================================================================
-# 탭 1: 공지사항 (Notice)
-# =============================================================================
-with tab_notice:
-
-    # 1. 관리자 공지사항 관리
-    if st.session_state.admin:
+            
+        st.markdown("---")
+        # (기존 공지 탭의 관리자 기능을 이곳으로 이동)
+        
         # === 5. 수정: 관리자 제목 변경 ===
         st.subheader(f"🔔 공지 관리") 
 
@@ -861,6 +871,35 @@ with tab_notice:
                         st.success("포스트가 삭제되었습니다.")
                         safe_rerun()
         # === 수정 끝 ===
+        
+else:
+    # --- 1b. 로그인 탭 (로그아웃 된 경우) ---
+    with tab_login:
+        # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
+        # ===> [TypeError FIX] `_` 변수를 `col_spacer_form`으로 변경
+        col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
+        with col_form:
+            with st.form("login_form_permanent", clear_on_submit=False):
+                st.subheader(_("admin_login"))
+                password = st.text_input("Password", type="password")
+                submitted = st.form_submit_button(_("login"))
+
+                if submitted:
+                    if password == ADMIN_PASS:
+                        st.session_state.admin = True
+                        st.session_state.logged_in_user = "Admin"
+                        st.session_state.show_login_form = False
+                        safe_rerun()
+                    else: st.warning(_("incorrect_password"))
+
+# =============================================================================
+# 탭 2: 공지사항 (Notice)
+# =============================================================================
+with tab_notice:
+
+    # 1. 관리자 공지사항 관리 ( [요청] 이 섹션은 tab_admin으로 이동됨)
+    # if st.session_state.admin:
+    #     ... (내용 이동됨) ...
 
     # 2. 일반 사용자 공지사항 & 포스트 보기
     if not st.session_state.admin:
@@ -917,9 +956,46 @@ with tab_notice:
                         for media_file in attached_media:
                             display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
                     # === 수정 끝 ===
+    
+    # [요청] 관리자도 공지/포스트 탭을 볼 수 있어야 합니다. (읽기 전용)
+    else: # if st.session_state.admin:
+        st.subheader(f"📢 {_('tab_notice')} (읽기 전용)")
+        valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('title')]
+        if not valid_notices: st.write(_("no_notices"))
+        else:
+            notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+            type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
+
+            for notice in notices_to_display:
+                notice_id = notice.get('id'); notice_type_key = notice.get('type', 'General')
+                translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
+                prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
+
+                with st.expander(header_text, expanded=False): 
+                    st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                    attached_files = notice.get('files', [])
+                    if attached_files:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=True, is_user_post=False)
+
+        st.subheader(f"📸 {_('user_posts')} (읽기 전용)")
+        valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
+        if not valid_posts: st.write(_("no_posts"))
+        else:
+            posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+            for post in posts_to_display:
+                post_id = post['id']
+                with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
+                    st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                    attached_media = post.get('files', [])
+                    if attached_media:
+                        st.markdown(f"**{_('attached_files')}:**")
+                        for media_file in attached_media:
+                            display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
+
 
 # =============================================================================
-# 탭 2: 칸타타 투어 (Map)
+# 탭 3: 칸타타 투어 (Map)
 # =============================================================================
 with tab_map:
 
