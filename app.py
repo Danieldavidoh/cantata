@@ -134,7 +134,7 @@ LANG = {
 }
 
 # --- 세션 초기화 ---
-defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False, "show_controls": False} # [요청] show_controls 추가
+defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False, "show_controls": False} 
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
     elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
@@ -169,17 +169,14 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
     file_type = file_info['type']; file_path = file_info['path']; file_name = file_info['name']
     key_prefix = "admin" if is_admin else "user"
 
-    # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
     if is_user_post and not is_admin and not os.path.exists(file_path):
           st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
           return
-    # === 수정 끝 ===
 
     if os.path.exists(file_path):
         if file_type.startswith('image/'):
             base64_data = get_file_as_base64(file_path)
             if base64_data:
-                # === 수정: use_column_width=True -> use_container_width=True (경고 메시지 제거) ===
                 st.image(f"data:{file_type};base64,{base64_data}", caption=f"🖼️ {file_name} ({file_size_kb} KB)", use_container_width=True)
             else:
                 st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
@@ -201,10 +198,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             except Exception:
                 pass
     else:
-        # 파일이 존재하지 않는 경우 메시지 표시
-        if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
+        if is_admin or not is_user_post:
               st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-        # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
 
 
 # --- JSON 헬퍼 ---
@@ -257,12 +252,11 @@ def calculate_distance_and_time(p1, p2):
     return f"{distance_str} / {time_str}"
 
 # --- 5. 도시 목록 및 좌표 정의 ---
-# === [요청] 6개 도시 추가 (Bandra, Kodoli, Mira Road, Miraj, Paratwada, Wadala) ===
 city_dict = {
     "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
     "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
     "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, "Badlapur": {"lat": 19.1088, "lon": 73.1311},
-    "Bandra": {"lat": 19.0544, "lon": 72.8406}, # [요청] 추가
+    "Bandra": {"lat": 19.0544, "lon": 72.8406}, 
     "Bhandara": {"lat": 21.180052, "lon": 79.564987}, "Bhiwandi": {"lat": 19.300282, "lon": 73.069645},
     "Bhusawal": {"lat": 21.02606, "lon": 75.830095}, "Chandrapur": {"lat": 19.957275, "lon": 79.296875},
     "Chiplun": {"lat": 17.5322, "lon": 73.516}, "Dhule": {"lat": 20.904964, "lon": 74.774651},
@@ -273,23 +267,23 @@ city_dict = {
     "Karanja": {"lat": 20.7083, "lon": 76.93}, "Karanja Lad": {"lat": 20.3969, "lon": 76.8908},
     "Karjat": {"lat": 18.9121, "lon": 73.3259}, "Kavathe Mahankal": {"lat": 17.218, "lon": 74.416},
     "Khamgaon": {"lat": 20.691, "lon": 76.6886}, "Khopoli": {"lat": 18.6958, "lon": 73.3207},
-    "Kodoli": {"lat": 16.8764, "lon": 74.1909}, # [요청] 추가
+    "Kodoli": {"lat": 16.8764, "lon": 74.1909}, 
     "Kolad": {"lat": 18.5132, "lon": 73.2166}, "Kolhapur": {"lat": 16.691031, "lon": 74.229523},
     "Kopargaon": {"lat": 19.883333, "lon": 74.483333}, "Koparkhairane": {"lat": 19.0873, "lon": 72.9856},
     "Kothrud": {"lat": 18.507399, "lon": 73.807648}, "Kudal": {"lat": 16.033333, "lon": 73.683333},
     "Kurla": {"lat": 19.0667, "lon": 72.8833}, "Latur": {"lat": 18.406526, "lon": 76.560229},
     "Lonavala": {"lat": 18.75, "lon": 73.4}, "Mahad": {"lat": 18.086, "lon": 73.3006},
     "Malegaon": {"lat": 20.555256, "lon": 74.525539}, "Malkapur": {"lat": 20.4536, "lon": 76.3886},
-    "Manmad": {"lat": 20.3333, "lon": 74.4333}, 
-    "Mira Road": {"lat": 19.2799, "lon": 72.8561}, # [요청] 추가
+    "Manmad": {"lat": 20.3333, "lon": 74.4333},  
+    "Mira Road": {"lat": 19.2799, "lon": 72.8561}, 
     "Mira-Bhayandar": {"lat": 19.271112, "lon": 72.854094},
-    "Miraj": {"lat": 16.8295, "lon": 74.6433}, # [요청] 추가
+    "Miraj": {"lat": 16.8295, "lon": 74.6433}, 
     "Mumbai": {"lat": 19.07609, "lon": 72.877426}, "Nagpur": {"lat": 21.1458, "lon": 79.088154},
     "Nanded": {"lat": 19.148733, "lon": 77.321011}, "Nandurbar": {"lat": 21.317, "lon": 74.02},
     "Nashik": {"lat": 20.011645, "lon": 73.790332}, "Niphad": {"lat": 20.074, "lon": 73.834},
     "Osmanabad": {"lat": 18.169111, "lon": 76.035309}, "Palghar": {"lat": 19.691644, "lon": 72.768478},
     "Panaji": {"lat": 15.4909, "lon": 73.8278}, "Panvel": {"lat": 18.989746, "lon": 73.117069},
-    "Paratwada": {"lat": 21.3019, "lon": 77.5178}, # [요청] 추가
+    "Paratwada": {"lat": 21.3019, "lon": 77.5178}, 
     "Parbhani": {"lat": 19.270335, "lon": 76.773347}, "Peth": {"lat": 18.125, "lon": 74.514},
     "Phaltan": {"lat": 17.9977, "lon": 74.4066}, "Pune": {"lat": 18.52043, "lon": 73.856743},
     "Raigad": {"lat": 18.515048, "lon": 73.179436}, "Ramtek": {"lat": 21.3142, "lon": 79.2676},
@@ -301,7 +295,7 @@ city_dict = {
     "Shrirampur": {"lat": 19.6214, "lon": 73.8653}, "Sinnar": {"lat": 19.8531, "lon": 73.9976},
     "Solan": {"lat": 30.9083, "lon": 77.0989}, "Solapur": {"lat": 17.659921, "lon": 75.906393},
     "Talegaon": {"lat": 18.7519, "lon": 73.487}, "Thane": {"lat": 19.218331, "lon": 72.978088},
-    "Wadala": {"lat": 19.0216, "lon": 72.8646}, # [요청] 추가
+    "Wadala": {"lat": 19.0216, "lon": 72.8646}, 
     "Achalpur": {"lat": 20.1833, "lon": 77.6833}, "Akot": {"lat": 21.1, "lon": 77.1167},
     "Ambajogai": {"lat": 18.9667, "lon": 76.6833}, "Amalner": {"lat": 21.0333, "lon": 75.3333},
     "Anjangaon Surji": {"lat": 21.1167, "lon": 77.8667}, "Arvi": {"lat": 20.45, "lon": 78.15},
@@ -578,7 +572,6 @@ st.markdown(
 # === 수정 끝 ===
 
 # --- 크리스마스 아이콘 목록 ---
-# === 수정: 4개 아이콘(🎅, 🦌, ❄️, 🧦) 제거 ===
 christmas_icons_list = [
     "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
 ]
@@ -672,7 +665,6 @@ col_spacer, col_toggle = st.columns([10, 1]) # [스페이서, 토글 버튼]
 
 with col_toggle:
     # 톱니바퀴 버튼을 누르면 st.session_state.show_controls 값을 반전시킴
-    # === [요청] help 툴팁 제거 ===
     if st.button("⚙️", key="toggle_controls"):
         st.session_state.show_controls = not st.session_state.show_controls
 
@@ -726,7 +718,6 @@ if st.session_state.show_controls:
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
     # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
-    # ===> [TypeError FIX] `_` 변수를 `col_spacer_form`으로 변경
     col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
@@ -1138,7 +1129,7 @@ with tab_map:
             </div>
         """
 
-        # === 5. 수정: 구글맵 링크를 내비게이션 URL로 변경 ===
+        # === Google Maps URL 수정 (모바일 내비게이션 연결) ===
         if item.get('google_link'):
             google_link_data = item['google_link']
             final_google_link = ""
@@ -1149,11 +1140,8 @@ with tab_map:
                 final_google_link = google_link_data
             else:
                 # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
-                # (수정) 목적지에 현재 도시 이름을 추가하여 검색 정확도 높임
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
                 # 모바일에서 현재 위치에서 목적지로 바로 길안내를 시작하는 URL 형식
-                # "daddr" (Destination Address) 파라미터 사용
-                # web/mobile 호환을 위해 googleusercontent.com 우회 링크 사용 (Streamlit 환경에서 필수)
                 final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
