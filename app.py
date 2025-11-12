@@ -522,8 +522,8 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        /* === 2. 수정: 투명도를 5% (0.05)로 설정 === */
-        color: rgba(255, 255, 255, 0.05);
+        /* === [요청] 투명도를 5% (0.05) -> 2.5% (0.025)로 수정 === */
+        color: rgba(255, 255, 255, 0.025);
         font-size: 1em;
         opacity: 0;
         animation-name: fall;
@@ -1142,7 +1142,7 @@ with tab_map:
             else:
                 # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
-                # (수정) 'https://www.google.com/maps/dir/?api=1&destination=' (웹/모바일 호환)
+                # (수정) 'http://googleusercontent.com/maps/google.com/0' (웹/모바일 호환)
                 final_google_link = f"http://googleusercontent.com/maps/google.com/0{encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
