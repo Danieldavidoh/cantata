@@ -1152,26 +1152,34 @@ with tab_map:
             </div>
         """
         
-        # === Google Maps URL: 모바일 내비게이션 최적화 (재도입 및 텍스트 수정) ===
-        # 장소 이름이나 URL이 저장된 'google_link' 필드를 사용하여 내비게이션 링크 생성
+        # === Google Maps URL: 모바일 내비게이션 최적화 (수정된 로직) ===
         google_link_data = item.get('google_link')
         if google_link_data:
-            # URL 또는 장소 이름/좌표를 destination으로 전달
+            # 1. URL 인코딩 (장소 이름이나 주소가 포함될 수 있음)
             full_query = f"{google_link_data}" 
             encoded_query = quote(full_query) 
             
-            # Google Maps의 'dir/?api=1&destination=' 스킴을 사용하여 현위치에서 길찾기 요청
-            # Streamlit iframe 환경 호환성을 위해 구글맵 프록시 URL을 사용합니다.
-            final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
+            # 2. Google Maps URL Scheme (네이티브 앱 실행 유도)
+            # 현위치에서 목적지(daddr)로 길찾기를 시작합니다.
+            # 이 스킴은 모바일에서 가장 안정적으로 앱을 엽니다.
+            nav_scheme_link = f"comgooglemaps://?daddr={encoded_query}&dir_action=navigate"
 
+            # 3. HTTPS 기반의 표준 URL (데스크톱/앱 미설치 환경 폴백)
+            web_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
+            
+            # iframe 환경이므로, <a> 태그에는 Scheme URL을 사용하여 모바일 앱 실행을 시도하고, 
+            # 실패 시 브라우저에서 처리하도록 합니다. (Streamlit 환경 특성상 프록시는 사용하지 않음)
+            final_link = nav_scheme_link
+            
             # 팝업에 링크 추가
             popup_html += f"""
                 <span style="display: block; margin-top: 10px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
-                    <a href="{final_google_link}" target="_blank" 
+                    <a href="{final_link}" target="_blank" 
                         style="color: #1A73E8; text-decoration: none;">
                         {_("google_link")}
                     </a>
+                    <br><a href="{web_link}" target="_blank" style="font-size: 0.8em; color: #6495ED; text-decoration: none;"> (웹 지도 보기) </a>
                 </span>
             """
         # === Google Maps URL 수정 완료 ===
