@@ -58,7 +58,7 @@ LANG = {
         "incorrect_password": "비밀번호가 틀렸습니다.", "fill_in_fields": "제목과 내용을 채워주세요.",
         "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!", "notice_del_success": "공지사항이 삭제되었습니다.",
         "notice_upd_success": "공지사항이 수정되었습니다.", "schedule_reg_success": "일정이 등록되었습니다.",
-        "schedule_del_success": "일정 항목이 제거되었습니다.", "schedule_upd_success": "일정이 성공적으로 수정되었습니다.",
+        "schedule_del_success": "일정 항목이 제거되었습니다.", "schedule_upd_success": "일정이 성공적으로 수정되었습니다。",
         "venue_placeholder": "공연 장소를 입력하세요", "note_placeholder": "특이사항을 입력하세요",
         "google_link_placeholder": "장소 이름(예: Dagdusheth Halwai Ganpati) 또는 URL", 
         "seats_tooltip": "예상 관객 인원",
@@ -548,6 +548,11 @@ st.markdown(
         0% { opacity: 0.8; transform: scale(1); }
         100% { opacity: 1.0; transform: scale(1.1); }
     }
+    @keyframes twinkle {
+        0% { opacity: 0.1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 0.1; }
+    }
     /* === Starry Sky and Pulsating Star CSS 끝 === */
     
     /* 9. Folium 맵 스타일 */
@@ -621,14 +626,21 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# === Starry Background and Big Star Functions (수정: 별 크기 및 개수 조정) ===
+# === Starry Background and Big Star Functions (수정: 별 크기 및 개수 조정, Y축 밀도 조정) ===
 def generate_star_background(num_stars=50): # 개수 50개로 조정
     stars_html = ""
     # 배경에 고정된 작은 별들을 생성합니다.
     for _ in range(num_stars):
         left = random.randint(0, 100)
-        top = random.randint(0, 100)
-        size = random.uniform(1.0, 3.0) * 2 # 별 크기 1.0px ~ 3.0px로 증가 -> 두배로 증가
+        
+        # Y축 위치를 조정하여 상단(0vh)에 별이 더 많이 나타나고 하단(100vh)으로 갈수록 적어지게 함
+        # 상단 30% 영역(0~30vh)에 70%의 별을 집중시키기 위해 가중치 사용
+        if random.random() < 0.7:
+            top = random.randint(0, 30) # 상단 30vh에 집중
+        else:
+            top = random.randint(30, 100) # 나머지 70vh에 분산
+            
+        size = random.uniform(1.0, 3.0) * 2 # 별 크기 두배로 증가
         twinkle_duration = random.uniform(2, 5) 
         twinkle_delay = random.uniform(0, 5)
         
@@ -650,7 +662,7 @@ def generate_star_background(num_stars=50): # 개수 50개로 조정
         """)
     return f'<div class="star-field-container">{stars_html}</div>'
 
-# 베들레헴의 별 (Bethlehem Star)
+# 베들레헴의 별 (Bethlehem Star) HTML
 BETHLEHEM_STAR_HTML = textwrap.dedent("""
     <div class="bethlehem-star">
         ✨
@@ -660,10 +672,10 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 # --- 제목 렌더링 ---
 icons_html_str = generate_christmas_icons()
 
-# 1. 별 배경 및 베들레헴의 별 삽입 (제목 위에 배치)
-stars_background_html = generate_star_background(50) 
+# 1. 별 배경 및 베들레헴의 별 삽입
+stars_background_html = generate_star_background(50) # 50개로 호출
 st.markdown(stars_background_html, unsafe_allow_html=True)
-st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 표시
+st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
 
 title_cantata = _('title_cantata')
 title_year = _('title_year')
@@ -1179,9 +1191,6 @@ with tab_map:
             # saddr 파라미터를 생략하면 모바일 앱이 자동으로 현위치를 사용합니다.
             nav_scheme_link = f"comgooglemaps://?daddr={encoded_query}&dir_action=navigate"
 
-            # HTTPS 기반의 표준 URL (웹/앱 미설치 환경 폴백)
-            web_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
-            
             final_link = nav_scheme_link
             
             # 팝업에 링크 추가
