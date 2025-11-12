@@ -113,7 +113,7 @@ LANG = {
         "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", 
         "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", 
         "venue_list_title": "प्रदर्शन शहर की सूची", 
-        "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "شهر", "link": "लिंक", "past_route": "पिछला मार्ग",
+        "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
         "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
         "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।", "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
         "logged_out_success": "लॉग आउट किया गया।", "incorrect_password": "गलत पासवर्ड।",
@@ -171,8 +171,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
 
     # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
     if is_user_post and not is_admin and not os.path.exists(file_path):
-         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-         return
+        st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+        return
     # === 수정 끝 ===
 
     if os.path.exists(file_path):
@@ -203,7 +203,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
     else:
         # 파일이 존재하지 않는 경우 메시지 표시
         if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
-             st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+            st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
         # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
 
 
@@ -344,14 +344,6 @@ user_posts = load_json(USER_POST_FILE)
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
-
-# === [요청] '가능성' 표시 여부 플래그 ===
-today = date.today()
-hide_start_date = date(2025, 11, 25)
-hide_end_date = date(2025, 12, 30)
-show_probability = not (hide_start_date <= today <= hide_end_date)
-# =========================================
-
 
 # ----------------------------------------------------------------------
 # 6. 제목 및 크리스마스 UI
@@ -753,7 +745,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
+tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -847,14 +839,14 @@ with tab_notice:
                 
                 with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
                     st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                    
+                        
                     attached_media = post.get('files', [])
                     if attached_media:
                         st.markdown(f"**{_('attached_files')}:**")
                         # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
                         for media_file in attached_media:
                             display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
-                    
+                        
                     # 관리자용 삭제 버튼
                     if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
                         # 파일 먼저 삭제
@@ -917,7 +909,7 @@ with tab_notice:
                 post_id = post['id']
                 with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
                     st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                    
+                        
                     # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
                     attached_media = post.get('files', [])
                     if attached_media:
@@ -936,205 +928,169 @@ with tab_map:
     if st.session_state.admin:
         st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
 
-        # === [요청] 캘린더/목록 뷰를 위한 탭 생성 ===
-        cal_tab, list_tab = st.tabs(["📅 일정 등록 (Calendar)", "📝 일정 목록 (List)"])
-        
-        # === 캘린더 탭: 날짜 선택 후 입력 ===
-        with cal_tab:
-            # === [요청] "1." 제거 및 타이틀 수정 ===
-            st.markdown("### 달력에서 날짜를 선택하세요.")
-            
-            # 1. 캘린더 (날짜 선택기)
-            selected_date = st.date_input(
-                _("date"), 
-                datetime(2025, 12, 3), # 기본값
-                key="calendar_date_picker",
-                label_visibility="collapsed" # 날짜 위 "date" 레이블 숨김
-            )
+        # --- 도시/일정 등록 폼 (Admin Only) ---
+        with st.expander(_("add_city"), expanded=False): 
+            with st.form("schedule_form", clear_on_submit=True):
+                col_c, col_d, col_v = st.columns(3)
+                registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
+                available_cities = [c for c in city_options if c not in registered_cities]
 
-            # --- 선택된 날짜의 기존 일정을 표시 ---
-            st.markdown("---")
-            st.markdown(f"**{selected_date.strftime('%Y-%m-%d')}의 기존 일정:**")
-            events_on_date = [s['city'] for s in tour_schedule if s.get('date') == selected_date.strftime('%Y-%m-%d')]
-            
-            if events_on_date:
-                for city_event in events_on_date:
-                    st.info(f"📍 {city_event}")
-            else:
-                st.success("선택된 날짜에 일정이 없습니다. 새 일정을 등록하세요.")
-            st.markdown("---")
-            
-            # === [요청] 폼을 Expander 안으로 이동 ===
-            expander_title = f"**{selected_date.strftime('%Y-%m-%d')}**에 새 일정 등록하기"
-            with st.expander(expander_title, expanded=False):
-                # 2. 폼 (날짜 필드 제거됨)
-                with st.form("schedule_form_calendar", clear_on_submit=True):
-                    # 도시(multiselect), 장소
-                    col_c, col_v = st.columns(2)
-                    
-                    # [수정] 캘린더 뷰에서는 모든 도시를 선택할 수 있도록 city_options 사용
-                    city_name_list = col_c.multiselect(_('city_name'), options=city_options, key="new_city_multiselect_cal") 
-                    venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input_cal")
+                # === [요청] selectbox -> multiselect 로 변경 ===
+                city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
+                
+                schedule_date = col_d.date_input(_("date"), key="new_date_input")
+                venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
 
-                    # 나머지 필드 (타입, 인원, 링크, 가능성)
-                    col_l, col_s, col_ug, col_up = st.columns(4)
-                    type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                    selected_display_type = col_l.radio(_("type"), list(type_options_map.values()), key="cal_radio")
-                    type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
+                col_l, col_s, col_ug, col_up = st.columns(4)
+                type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
+                selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
+                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
 
-                    expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"), key="cal_seats")
-                    google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"), key="cal_google")
-                    
-                    # === [요청] '가능성' 기본값을 0으로 수정 + 기간 한정 숨기기 ===
-                    if show_probability:
-                        probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=0, step=5, format="%d%%", key="cal_prob")
+                expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
+                
+                google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
+
+                # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
+
+                note = st.text_area(_("note"), placeholder=_("note_placeholder"))
+
+                submitted = st.form_submit_button(_("register"))
+
+                # === [요청] 제출 로직: multiselect(list)를 순회하며 여러 항목 생성 ===
+                if submitted:
+                    if not city_name_list or not venue_name or not schedule_date: 
+                        st.warning(_("fill_in_fields"))
                     else:
-                        probability = 100 # 숨겨진 경우 기본값 100%
-                    
-                    note = st.text_area(_("note"), placeholder=_("note_placeholder"), key="cal_note")
-                    submitted = st.form_submit_button(_("register"))
-
-                    # 폼 제출 로직 (selected_date 사용)
-                    if submitted:
-                        if not city_name_list or not venue_name: 
-                            st.warning(_("fill_in_fields"))
-                        else:
-                            cities_added_count = 0
-                            for city_name in city_name_list: # 선택된 도시 리스트를 순회
-                                if city_name not in city_dict:
-                                    st.warning(f"{city_name}: {_('city_coords_error')}")
-                                    continue
-                                
-                                city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
-                                new_schedule_entry = {
-                                    "id": str(uuid.uuid4()), 
-                                    "city": city_name,
-                                    "venue": venue_name, 
-                                    "lat": city_coords["lat"], 
-                                    "lon": city_coords["lon"], 
-                                    "date": selected_date.strftime("%Y-%m-%d"), # <--- 캘린더에서 선택한 날짜
-                                    "type": type_sel, 
-                                    "seats": str(expected_seats), 
-                                    "note": note, 
-                                    "google_link": google_link, 
-                                    "probability": probability, 
-                                    "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
-                                }
-                                tour_schedule.append(new_schedule_entry)
-                                cities_added_count += 1
+                        cities_added_count = 0
+                        for city_name in city_name_list: # 선택된 도시 리스트를 순회
+                            if city_name not in city_dict:
+                                st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
+                                continue # 이 도시 건너뛰기
                             
-                            if cities_added_count > 0:
+                            city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
+                            new_schedule_entry = {
+                                "id": str(uuid.uuid4()), 
+                                "city": city_name, # 개별 도시 이름
+                                "venue": venue_name, 
+                                "lat": city_coords["lat"], 
+                                "lon": city_coords["lon"], 
+                                "date": schedule_date.strftime("%Y-%m-%d"), 
+                                "type": type_sel, 
+                                "seats": str(expected_seats), 
+                                "note": note, 
+                                "google_link": google_link, 
+                                "probability": probability, 
+                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                            }
+                            tour_schedule.append(new_schedule_entry)
+                            cities_added_count += 1
+                        
+                        if cities_added_count > 0:
+                            save_json(CITY_FILE, tour_schedule)
+                            st.success(_("schedule_reg_success")) # 성공 메시지
+                            safe_rerun()
+                # === 로직 수정 완료 ===
+
+        # --- 관리자: 일정 보기 및 수정/삭제 ---
+        valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
+
+        if valid_schedule:
+            st.subheader(_("venue_list_title")) # '공연 도시 목록'
+            schedule_dict = {item['id']: item for item in valid_schedule}
+            sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
+            type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+
+            for i, (item_id, item) in enumerate(sorted_schedule_items):
+                current_type_key = item.get('type', 'outdoor')
+                translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
+                probability_val = item.get('probability', 100)
+
+                city_name_display = item.get('city', 'N/A')
+                
+                # --- 실내/실외 색상 변경 ---
+                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
+                
+                # === 2. 수정: expander 제목에서 (:#1E90FF[실내]) 대신 (실내)로 표시 ===
+                header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
+
+                with st.expander(header_text, expanded=False): 
+
+                    with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
+                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
+
+                        col_uc, col_ud, col_uv = st.columns(3)
+
+                        updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
+
+                        try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
+                        except ValueError: initial_date = date.today()
+
+                        updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
+                        updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
+
+                        col_ul, col_us, col_ug, col_up = st.columns(4)
+                        current_map_type = item.get('type', 'outdoor')
+                        current_map_index = 0 if current_map_type == "indoor" else 1
+                        map_type_list = list(type_options_map_rev.values())
+                        updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
+                        updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
+
+                        seats_value = item.get('seats', '0')
+                        updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
+                        
+                        updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
+                        
+                        # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                        updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}", format="%d%%")
+
+                        updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
+
+                        st.markdown("---")
+                        col_save, col_del, col_space = st.columns([1, 1, 4])
+
+                        # "등록" (Save) 버튼
+                        with col_save:
+                            if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
+                                for idx, s in enumerate(tour_schedule):
+                                    if s.get('id') == item_id:
+                                        coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
+
+                                        tour_schedule[idx].update({
+                                            "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
+                                            "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
+                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability,
+                                        })
+                                        save_json(CITY_FILE, tour_schedule)
+                                        st.success(_("schedule_upd_success"))
+                                        safe_rerun()
+
+                        # "제거" (Remove) 버튼
+                        with col_del:
+                            if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
+                                tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
                                 save_json(CITY_FILE, tour_schedule)
-                                st.success(f"{cities_added_count}개 일정 등록 완료!")
+                                st.success(_("schedule_del_success"))
                                 safe_rerun()
-        # === [요청] 캘린더 UI 수정 완료 ===
 
-        # === 목록 탭: 기존의 수정/삭제/보기 기능 ===
-        with list_tab:
-            # --- 관리자: 일정 보기 및 수정/삭제 ---
-            valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
+                # Display distance/time between current city and the next city in the expander
+                if i < len(sorted_schedule_items) - 1:
+                    current_city_coords = (item.get('lat'), item.get('lon'))
+                    next_item = sorted_schedule_items[i+1][1]
+                    next_city_coords = (next_item.get('lat'), next_item.get('lon'))
 
-            if valid_schedule:
-                st.subheader(_("venue_list_title")) # '공연 도시 목록'
-                schedule_dict = {item['id']: item for item in valid_schedule}
-                sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
-                type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+                    if all(current_city_coords) and all(next_city_coords):
+                        distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
+                        st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                    else:
+                            st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
-                for i, (item_id, item) in enumerate(sorted_schedule_items):
-                    current_type_key = item.get('type', 'outdoor')
-                    translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
-                    probability_val = item.get('probability', 100) # 기본값 100
-
-                    city_name_display = item.get('city', 'N/A')
-                    
-                    # --- 실내/실외 색상 변경 ---
-                    type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
-                    
-                    # === [요청] '가능성' 숨기기 로직 ===
-                    header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type})"
-                    if show_probability:
-                        header_text += f" | {_('probability')}: **{probability_val}%**"
-
-                    with st.expander(header_text, expanded=False): 
-
-                        with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
-                            st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
-
-                            col_uc, col_ud, col_uv = st.columns(3)
-
-                            updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
-
-                            try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
-                            except ValueError: initial_date = date.today()
-
-                            updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
-                            updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
-
-                            col_ul, col_us, col_ug, col_up = st.columns(4)
-                            current_map_type = item.get('type', 'outdoor')
-                            current_map_index = 0 if current_map_type == "indoor" else 1
-                            map_type_list = list(type_options_map_rev.values())
-                            updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
-                            updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
-
-                            seats_value = item.get('seats', '0')
-                            updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
-                            
-                            updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
-                            
-                            # === [요청] '가능성' 숨기기 로직 (업데이트 폼) ===
-                            if show_probability:
-                                updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 0), step=5, key=f"upd_prob_{item_id}", format="%d%%")
-                            else:
-                                updated_probability = item.get('probability', 100) # 숨겨진 경우, 기존 값 유지
-
-                            updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
-
-                            st.markdown("---")
-                            col_save, col_del, col_space = st.columns([1, 1, 4])
-
-                            # "등록" (Save) 버튼
-                            with col_save:
-                                if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
-                                    for idx, s in enumerate(tour_schedule):
-                                        if s.get('id') == item_id:
-                                            coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
-
-                                            tour_schedule[idx].update({
-                                                "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
-                                                "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
-                                                "note": updated_note, "google_link": updated_google, "probability": updated_probability,
-                                            })
-                                            save_json(CITY_FILE, tour_schedule)
-                                            st.success(_("schedule_upd_success"))
-                                            safe_rerun()
-
-                            # "제거" (Remove) 버튼
-                            with col_del:
-                                if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
-                                    tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
-                                    save_json(CITY_FILE, tour_schedule)
-                                    st.success(_("schedule_del_success"))
-                                    safe_rerun()
-
-                        # Display distance/time between current city and the next city in the expander
-                        if i < len(sorted_schedule_items) - 1:
-                            current_city_coords = (item.get('lat'), item.get('lon'))
-                            next_item = sorted_schedule_items[i+1][1]
-                            next_city_coords = (next_item.get('lat'), next_item.get('lon'))
-
-                            if all(current_city_coords) and all(next_city_coords):
-                                distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
-                            else:
-                                    st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
-
-            else: st.write(_("no_schedule"))
+        else: st.write(_("no_schedule"))
 
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
     st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
-    
+    current_date = date.today()
     schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
 
     AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
@@ -1143,7 +1099,7 @@ with tab_map:
     m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
     locations = []
     city_names_for_map = [] 
- 
+
     for item in schedule_for_map:
         lat = item['lat']; lon = item['lon']; date_str_map = item['date']
         city_name_map = item.get('city', 'N/A') 
@@ -1174,120 +1130,41 @@ with tab_map:
                 <b>{_('date')}:</b> {date_str_map}<br>
                 <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
                 <b>{_('type')}:</b> <span style="color: {type_color_html};"><i class="fa {map_type_icon_fa}" style="margin-right: 5px;"></i> {translated_type}</span><br>
-        """
-        
-        # === [요청] '가능성' 숨기기 로직 (맵 팝업) ===
-        if show_probability:
-            popup_html += f"""
                 <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
                 
                 <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
                     <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
-            """
-        
-        popup_html += "</div>" # 팝업 닫기 (div style="color: #1A1A1A;"...)
-
-        # === 5. 수정: 구글맵 링크를 내비게이션 URL로 변경 ===
-        if item.get('google_link'):
-            google_link_data = item['google_link']
-            final_google_link = ""
-
-            # 입력값이 URL인지 텍스트인지 확인
-            if google_link_data.startswith('http'):
-                # URL이면, 기존처럼 링크
-                final_google_link = google_link_data
-            else:
-                # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
-                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
-                # (수정) 'http://googleusercontent.com/maps/google.com/0' (웹/모바일 호환)
-                final_google_link = f"http://googleusercontent.com/maps/google.com/0{encoded_query}"
-
-            # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
-            popup_html += f"""
-                <span style="display: block; margin-top: 5px; font-weight: bold;">
-                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
-                    <a href="{final_google_link}" target="_blank" 
-                       style="color: #1A73E8; text-decoration: none;">
-                       {_("google_link")}
-                    </a>
-                </span>
-            """
-        # === 수정 끝 ===
-
-        popup_html += "</div>" # 팝업 전체 닫기
-
-        # 마커 아이콘
-        city_initial = item.get('city', 'A')[0]
-        marker_icon_html = f"""
-            <div style="
-                transform: scale(0.666);
-                opacity: {0.5 if is_past else 1.0};
-                text-align: center;
-                white-space: nowrap;
-            ">
-                <i class="fa fa-map-marker fa-3x" style="color: #BB3333;"></i>
-                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
             </div>
         """
 
-        folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
-        locations.append([lat, lon])
-        city_names_for_map.append(city_name_map) 
+        # === [요청] 구글맵 링크를 '내비게이션' (길찾기) URL로 변경 ===
+        # (현위치 -> 목적지)
 
+        google_link_data = item.get('google_link', '').strip()
+        final_google_link = ""
+        destination_query = "" # 목적지 쿼리 문자열
 
-    # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
-    if len(locations) > 1:
-        current_index = -1
-
-        for i, item in enumerate(schedule_for_map):
-            try:
-                event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
-                if event_date >= current_date: current_index = i; break
-            except ValueError: continue
-
-        if current_index == -1: past_segments = locations; future_segments = []
-        elif current_index == 0: past_segments = []; future_segments = locations
-        else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
-
-        # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
-        if len(past_segments) > 1:
-            for i in range(len(past_segments) - 1):
-                segment = [past_segments[i], past_segments[i+1]]
-                dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
-                tooltip_text = f"{dist_time}"
+        if google_link_data:
+            # 1. 입력값이 URL인 경우 (사용자가 직접 http... 링크를 넣음)
+            if google_link_data.startswith('http'):
+                final_google_link = google_link_data # 사용자가 입력한 URL을 그대로 사용
+            
+            # 2. 입력값이 URL이 아닌 경우 (예: "Dagdusheth Halwai Ganpati")
+            else:
+                # 장소 이름 + 도시 이름으로 쿼리
+                destination_query = f"{google_link_data}, {item.get('city', '')}"
                 
-                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
-                
-                folium.PolyLine(
-                    locations=segment, 
-                    color="#BB3333", 
-                    weight=5, 
-                    opacity=0.125, 
-                    tooltip=tooltip_obj 
-                ).add_to(m)
+        # 3. google_link_data가 비어있던 경우
+        else:
+            # 위도, 경도가 있으면 그것을 사용 (가장 정확함)
+            if item.get('lat') is not None and item.get('lon') is not None:
+                destination_query = f"{item['lat']},{item['lon']}"
+            # 그것도 없으면 도시 이름만 사용
+            else:
+                destination_query = item.get('city', 'Pune') # 기본값
 
-        # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
-        if len(future_segments) > 1:
-            for i in range(len(future_segments) - 1):
-                segment = [future_segments[i], future_segments[i+1]]
-                dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
-                tooltip_text = f"{dist_time}"
-
-                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
-
-                AntPath(
-                    segment, 
-                    use="regular", 
-                    dash_array='30, 20', 
-                    color='#BB3333', 
-                    weight=5, 
-                    opacity=0.8, 
-                    options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
-                    tooltip=tooltip_obj 
-                ).add_to(m)
-
-    # 지도 표시 (전체 너비 활용)
-    st_folium(m, width=1000, height=600, key="tour_map_render")
-
-    st.caption(_("caption"))
+        # 4. 2번이나 3번에서 destination_query가 생성된 경우, 길찾기 URL 생성
+        if destination_query and not final_google_link:
+            # 'destination' 파라미터를 사용한 길찾기 URL 생성
+            # origin (saddr)을 비워두면 '현재 위치'가
