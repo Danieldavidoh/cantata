@@ -130,7 +130,7 @@ LANG = {
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।",
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें。",
     }
 }
 
@@ -619,14 +619,14 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# === Starry Background and Big Star Functions (추가) ===
-def generate_star_background(num_stars=100):
+# === Starry Background and Big Star Functions (수정: 별 크기 및 개수 조정) ===
+def generate_star_background(num_stars=50): # 개수 50개로 조정
     stars_html = ""
     # 배경에 고정된 작은 별들을 생성합니다.
     for _ in range(num_stars):
         left = random.randint(0, 100)
         top = random.randint(0, 100)
-        size = random.uniform(0.5, 1.5)
+        size = random.uniform(1.0, 3.0) # 별 크기 1.0px ~ 3.0px로 증가
         twinkle_duration = random.uniform(2, 5) 
         twinkle_delay = random.uniform(0, 5)
         
@@ -637,18 +637,18 @@ def generate_star_background(num_stars=100):
                 top: {top}vh;
                 width: {size}px;
                 height: {size}px;
-                background-color: rgba(255, 255, 255, {random.uniform(0.1, 0.6):.2f});
+                background-color: rgba(255, 255, 255, {random.uniform(0.5, 1.0):.2f}); /* 밝기 증가 */
                 border-radius: 50%;
                 animation: twinkle {twinkle_duration:.2f}s infinite alternate;
                 animation-delay: {twinkle_delay:.2f}s;
                 opacity: 0;
-                box-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+                box-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* 그림자 효과 증가 */
                 z-index: 1;
             "></span>
         """)
     return f'<div class="star-field-container">{stars_html}</div>'
 
-# 유난히 빛나는 큰 별 HTML
+# 유난히 빛나는 큰 별 HTML (하나만 유지됨)
 BIG_STAR_HTML = textwrap.dedent("""
     <div class="big-star">
         ✨
@@ -660,9 +660,9 @@ BIG_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 큰 별 삽입 (z-index 1 및 999로 설정)
-stars_background_html = generate_star_background(100) 
+stars_background_html = generate_star_background(50) # 50개로 호출
 st.markdown(stars_background_html, unsafe_allow_html=True)
-st.markdown(BIG_STAR_HTML, unsafe_allow_html=True)
+st.markdown(BIG_STAR_HTML, unsafe_allow_html=True) # 큰 별 하나만 표시
 
 title_cantata = _('title_cantata')
 title_year = _('title_year')
