@@ -72,6 +72,10 @@ LANG = {
         "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다。", 
         "probability": "가능성",
         "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요。",
+        "delete_all_data": "전체 데이터 영구 삭제 (관리자용)",
+        "delete_all_warning": "경고: 모든 공지, 일정 및 사용자 포스트가 영구 삭제됩니다. 계속하시려면 비밀번호(0691)를 입력하세요.",
+        "delete_all_confirm": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다!",
+        "delete_all_success": "모든 데이터가 성공적으로 삭제되었습니다!",
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -106,6 +110,10 @@ LANG = {
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "Probability",
         "caption": "Click icons or routes on the map for details.",
+        "delete_all_data": "Permanently Delete All Data (Admin Only)",
+        "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password (0691) to proceed.",
+        "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
+        "delete_all_success": "All data successfully deleted!",
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
@@ -135,7 +143,11 @@ LANG = {
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें。",
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।",
+        "delete_all_data": "Permanently Delete All Data (Admin Only)",
+        "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password (0691) to proceed.",
+        "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
+        "delete_all_success": "All data successfully deleted!",
     }
 }
 
@@ -350,6 +362,8 @@ user_posts = load_json(USER_POST_FILE)
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
+# === [추가] 전체 삭제 비밀번호 ===
+DELETE_ALL_PASS = "0691"
 
 # ----------------------------------------------------------------------
 # 6. 제목 및 크리스마스 UI
@@ -796,6 +810,38 @@ if st.session_state.show_login_form and not st.session_state.admin:
                 else: st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
+# === [추가] 전체 데이터 삭제 함수 ===
+def delete_all_data_permanently():
+    global tour_notices, tour_schedule, user_posts
+    
+    # 1. uploads 디렉토리 내 파일 삭제
+    try:
+        for filename in os.listdir(UPLOAD_DIR):
+            file_path = os.path.join(UPLOAD_DIR, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+    except Exception as e:
+        st.error(f"첨부 파일 삭제 오류: {e}")
+
+    # 2. JSON 파일 내용 초기화 및 저장
+    try:
+        for file in [NOTICE_FILE, CITY_FILE, USER_POST_FILE]:
+            if os.path.exists(file):
+                # 파일 내용을 빈 리스트로 초기화
+                with open(file, "w", encoding="utf-8") as f:
+                    f.write("[]")
+        
+        # 메모리 내 변수 초기화
+        tour_notices = []
+        tour_schedule = []
+        user_posts = []
+        
+        st.success(_("delete_all_success"))
+        safe_rerun()
+
+    except Exception as e:
+        st.error(f"데이터 파일 초기화 오류: {e}")
+
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
 # tab_nav_test 삭제
@@ -976,6 +1022,33 @@ with tab_notice:
                         for media_file in attached_media:
                             display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
                     # === 수정 끝 ===
+    
+    # 3. === [추가] 전체 삭제 버튼 (관리자 전용) ===
+    if st.session_state.admin:
+        st.markdown("---")
+        st.subheader(_("delete_all_data")) 
+
+        # --- 전체 삭제 폼 ---
+        with st.form("delete_all_form", clear_on_submit=False):
+            st.warning(_("delete_all_warning"))
+            
+            delete_password = st.text_input("비밀번호 (0691)", type="password", key="delete_all_pass")
+            
+            # 2단계 확인을 위한 체크박스
+            confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
+            
+            submitted = st.form_submit_button("전체 삭제 실행")
+            
+            if submitted:
+                if delete_password == DELETE_ALL_PASS:
+                    if confirm_delete:
+                        delete_all_data_permanently()
+                    else:
+                        st.error("데이터 삭제를 확인해 주세요.")
+                else:
+                    st.error("잘못된 비밀번호입니다.")
+    # === [추가] 끝 ===
+
 
 # =============================================================================
 # 탭 2: 칸타타 투어 (Map)
@@ -992,9 +1065,9 @@ with tab_map:
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
                 registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
-                available_cities = [c for c in city_options if c not in registered_cities]
+                available_cities = [c for c in city_dict if c not in registered_cities] # city_options 대신 city_dict 사용
 
-                # === [요청] selectbox -> multiselect 로 변경 ===
+                # === [수정] selectbox -> multiselect 로 변경 ===
                 city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
                 
                 schedule_date = col_d.date_input(_("date"), key="new_date_input")
@@ -1016,7 +1089,7 @@ with tab_map:
 
                 submitted = st.form_submit_button(_("register"))
 
-                # === [수정] 제출 로직: city_name_list만 검사하도록 수정 ===
+                # === [수정] 제출 로직: city_name_list만 검사하도록 수정 (나머지는 N/A 허용) ===
                 if submitted:
                     if not city_name_list: 
                         st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
