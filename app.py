@@ -54,11 +54,11 @@ LANG = {
         "set_data": "데이터 설정", "type": "유형", "city": "도시", "link": "링크", "past_route": "지난 경로",
         "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다.",
         "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
-        "logged_in_success": "관리자로 로그인했습니다。", "logged_out_success": "로그아웃했습니다.",
+        "logged_in_success": "관리자로 로그인했습니다。", "logged_out_success": "로그아웃했습니다。",
         "incorrect_password": "비밀번호가 틀렸습니다.", "fill_in_fields": "제목과 내용을 채워주세요。",
-        "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!", "notice_del_success": "공지사항이 삭제되었습니다.",
-        "notice_upd_success": "공지사항이 수정되었습니다.", "schedule_reg_success": "일정이 등록되었습니다.",
-        "schedule_del_success": "일정 항목이 제거되었습니다.", "schedule_upd_success": "일정이 성공적으로 수정되었습니다。",
+        "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!", "notice_del_success": "공지사항이 삭제되었습니다。",
+        "notice_upd_success": "공지사항이 수정되었습니다。", "schedule_reg_success": "일정이 등록되었습니다。",
+        "schedule_del_success": "일정 항목이 제거되었습니다。", "schedule_upd_success": "일정이 성공적으로 수정되었습니다。",
         "venue_placeholder": "공연 장소를 입력하세요", "note_placeholder": "특이사항을 입력하세요",
         "google_link_placeholder": "장소 이름(예: Dagdusheth Halwai Ganpati) 또는 URL", 
         "seats_tooltip": "예상 관객 인원",
@@ -628,8 +628,8 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# === Starry Background and Big Star Functions (수정: 별 크기 및 개수 조정, Y축 밀도 조정) ===
-def generate_star_background(num_stars=60, twinkling_count=7): # 개수 60개로 조정
+# === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이) ===
+def generate_star_background(num_stars=180, twinkling_count=7): # 개수 180개로 조정
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
     
@@ -637,11 +637,10 @@ def generate_star_background(num_stars=60, twinkling_count=7): # 개수 60개로
     for i in range(num_stars):
         left = random.randint(0, 100)
         
-        # === [수정] Y축 위치를 결정 (숫자 그라데이션) ===
-        # 0 ~ 50vh 공간에 별을 배치합니다.
+        # Y축 위치를 결정 (숫자 그라데이션) - 0 ~ 33vh 공간에 별을 배치
         # random.random()을 제곱하여 0에 가까운 값(상단)이 나올 확률을 높입니다.
         normalized_y = random.random() ** 2 
-        top = int(normalized_y * 50) # 0vh (높은 밀도) ~ 50vh (낮은 밀도)
+        top = int(normalized_y * 33) # 0vh (높은 밀도) ~ 33vh (낮은 밀도)
 
             
         # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
@@ -687,7 +686,7 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(60, 7) # 60개 별, 7개 반짝임
+stars_background_html = generate_star_background(180, 7) # 180개 별, 7개 반짝임
 st.markdown(stars_background_html, unsafe_allow_html=True)
 st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
 
