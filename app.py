@@ -179,7 +179,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
         if file_type.startswith('image/'):
             base64_data = get_file_as_base64(file_path)
             if base64_data:
-                st.image(f"data:{file_type};base64,{base64_data}", caption=f"🖼️ {file_name} ({file_size_kb} KB)", use_column_width=True)
+                # === 수정: use_column_width=True -> use_container_width=True (경고 메시지 제거) ===
+                st.image(f"data:{file_type};base64,{base64_data}", caption=f"🖼️ {file_name} ({file_size_kb} KB)", use_container_width=True)
             else:
                 st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
                 try:
@@ -445,7 +446,7 @@ st.markdown(
         color: #FFFFFF; /* 기본 흰색 */
         position: relative;
         z-index: 10;
-        padding-top: 60px; /* 아이콘을 위한 공간 확보 */
+        /* padding-top: 60px; */ /* === 수정: 아이콘이 h1 내부로 이동하여 제거 === */
         margin-bottom: 20px;
         /* 네온사인 효과 (다중 그림자) */
         text-shadow: 
@@ -480,18 +481,16 @@ st.markdown(
         display: block;
     }
 
-    /* 7. 크리스마스 아이콘 애니메이션 */
+    /* === 7. 크리스마스 아이콘 애니메이션 (수정) === */
     .christmas-icons {
-        position: fixed; /* 화면 상단에 고정 */
-        /* width: 100%; */ /* 기존 */
-        width: 60vw; /* 수정: 너비를 60% (뷰포트 너비)로 줄임 */
-        left: 20vw; /* 수정: 20% 여백을 주어 중앙 정렬 (100 - 60) / 2 */
-        height: 100px; /* 아이콘들이 움직일 공간 */
-        top: 0;
-        left: 20vw; /* 수정: (100-60)/2 = 20vw */
-        pointer-events: none; /* 클릭 방지 */
-        overflow: hidden;
-        z-index: 999; /* 최상단 */
+        position: relative; /* 수정: fixed -> relative (h1 내부) */
+        width: 80%; /* 수정: 60vw -> 80% (h1 기준) */
+        margin: 0 auto; /* 추가: 중앙 정렬 */
+        height: 60px; /* 수정: 100px -> 60px (텍스트 상단 공간) */
+        pointer-events: none;
+        overflow: visible; /* 수정: hidden -> visible (아이콘 위아래로 움직일 공간) */
+        z-index: 10; /* 수정: 999 -> 10 */
+        /* top: 0, left: 20vw 삭제 */
     }
 
     .christmas-icon {
@@ -534,8 +533,8 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        /* === 수정: 투명도를 3% (0.03)으로 대폭 낮춤 === */
-        color: rgba(255, 255, 255, 0.03);
+        /* === 수정: 투명도를 30% (0.3)으로 복원 === */
+        color: rgba(255, 255, 255, 0.3);
         font-size: 1em;
         opacity: 0;
         animation-name: fall;
@@ -629,7 +628,8 @@ def generate_snowflakes(num_flakes=56):
     return f'<div class="snowflakes">{snowflakes_html}</div>'
 
 # --- 제목 렌더링 ---
-st.markdown(generate_christmas_icons(), unsafe_allow_html=True)
+# === 수정: 아이콘 HTML을 먼저 생성 ===
+icons_html_str = generate_christmas_icons()
 st.markdown(generate_snowflakes(), unsafe_allow_html=True)
 
 title_cantata = _('title_cantata')
@@ -645,7 +645,8 @@ title_html = textwrap.dedent(f"""
     </div>
 """)
 # === 수정 끝 ===
-st.markdown(f'<h1 class="christmas-title">{title_html}</h1>', unsafe_allow_html=True)
+# === 수정: h1 태그 내부에 아이콘(icons_html_str)을 먼저 삽입하여 그룹화 ===
+st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
 # 언어 선택 버튼 (상단 고정)
