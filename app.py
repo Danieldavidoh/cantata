@@ -13,7 +13,7 @@ from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
 from requests.utils import quote # URL 인코딩을 위해 import
 import textwrap # <<< 들여쓰기 문제 해결을 위해 import
-import re # <<< 네비게이션 테스트 관련 import는 제거됨
+import re # <<< 정규식 사용을 위해 추가
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -525,9 +525,10 @@ st.markdown(
         overflow: hidden;
         z-index: 1; 
     }
+    /* === [수정] 큰 별 위치를 제목 위에 가운데로 조정 === */
     .big-star {
         position: fixed; /* fix position relative to viewport */
-        top: 15vh; 
+        top: 10vh; /* 제목으로부터 약간 위 (15vh -> 10vh) */
         left: 50vw;
         transform: translate(-50%, 0);
         font-size: 50px;
@@ -1152,23 +1153,45 @@ with tab_map:
             </div>
         """
         
-        # === Google Maps URL: 모바일 내비게이션 최적화 (수정된 로직) ===
+        # === Google Maps URL: 모바일 내비게이션 최적화 (오류 수정 로직) ===
         google_link_data = item.get('google_link')
         if google_link_data:
-            # 1. URL 인코딩 (장소 이름이나 주소가 포함될 수 있음)
-            full_query = f"{google_link_data}" 
-            encoded_query = quote(full_query) 
             
-            # 2. Google Maps URL Scheme (네이티브 앱 실행 유도)
-            # 현위치에서 목적지(daddr)로 길찾기를 시작합니다.
-            # 이 스킴은 모바일에서 가장 안정적으로 앱을 엽니다.
+            # --- 1. 목적지 쿼리 추출 ---
+            destination_query = ""
+            
+            # 1a. 좌표 또는 장소 이름 추출 (URL에서 추출)
+            # URL 형식: https://maps.app.goo.gl/xxxxyyyy
+            # 또는 URL 형식: https://www.google.com/maps/@19.07609,72.877426,15z (좌표)
+            
+            # Google Maps 좌표 패턴 (예: @19.07609,72.877426)
+            coord_match = re.search(r"@(-?\d+\.\d+),(-?\d+\.\d+)", google_link_data)
+            
+            # Google Maps Place ID/App Link (일반적으로 짧은 goo.gl 링크는 리디렉션을 통해 처리되므로, 그냥 전체 링크를 쿼리로 사용)
+            if google_link_data.startswith("http") and not coord_match:
+                 # URL 자체가 목적지를 포함하고 있을 경우, 인코딩을 피하기 위해 URL 그대로 사용 (최종 리디렉션에 의존)
+                 # 다만, Scheme URL에서는 단순 URL 쿼리는 종종 실패하므로, 대신 city/venue 이름을 사용합니다.
+                 pass # 아래에서 city/venue 이름으로 폴백.
+            
+            # 1b. 좌표가 추출된 경우 (가장 정확)
+            if coord_match:
+                lat_str, lon_str = coord_match.groups()
+                destination_query = f"{lat_str},{lon_str}"
+            # 1c. URL이 아니거나, URL에서 좌표를 추출하지 못한 경우 (장소 이름/주소 사용)
+            else:
+                 destination_query = f"{item.get('venue', '')}, {item.get('city', '')}"
+            
+            # --- 2. URL 생성 ---
+            encoded_query = quote(destination_query) 
+            
+            # Google Maps URL Scheme (네이티브 앱 실행 유도)
+            # 현위치(saddr=)에서 목적지(daddr=)로 길찾기를 시작합니다.
+            # saddr 파라미터를 생략하면 모바일 앱이 자동으로 현위치를 사용합니다.
             nav_scheme_link = f"comgooglemaps://?daddr={encoded_query}&dir_action=navigate"
 
-            # 3. HTTPS 기반의 표준 URL (데스크톱/앱 미설치 환경 폴백)
+            # HTTPS 기반의 표준 URL (웹/앱 미설치 환경 폴백)
             web_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
             
-            # iframe 환경이므로, <a> 태그에는 Scheme URL을 사용하여 모바일 앱 실행을 시도하고, 
-            # 실패 시 브라우저에서 처리하도록 합니다. (Streamlit 환경 특성상 프록시는 사용하지 않음)
             final_link = nav_scheme_link
             
             # 팝업에 링크 추가
