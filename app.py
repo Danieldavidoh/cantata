@@ -448,13 +448,14 @@ st.markdown(
         z-index: 10;
         /* padding-top: 60px; */ /* === 수정: 아이콘이 h1 내부로 이동하여 제거 === */
         margin-bottom: 20px;
-        /* === 수정: 네온사인(text-shadow) 및 애니메이션(animation) 제거 === */
-        /* text-shadow: ... */
-        /* animation: neon-flicker 2s infinite alternate; */ 
+        /* === 수정: 은은한 네온사인 효과 다시 추가 === */
+        text-shadow:
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 20px #BB3333;
     }
 
-    /* === 수정: 네온사인 애니메이션 제거 === */
-    /* @keyframes neon-flicker { ... } */
+    /* === 수정: 네온사인 애니메이션 제거됨 === */
     
     /* 제목 컨테이너 (h1 내부) */
     .christmas-title-container {
@@ -549,9 +550,13 @@ st.markdown(
         color: #f0f0f0;
     }
     
-    /* === 11. 수정: 메뉴/로그인 숨기기 === */
+    /* === 11. 수정: 메뉴/로그인 숨기기 (화면 왼쪽 밖) === */
     .hidden-controls {
-        display: none;
+        position: absolute;
+        left: -9999px; /* 화면 왼쪽 밖으로 이동 */
+        width: 1px;
+        height: 1px;
+        overflow: hidden; /* 보이지 않게 */
     }
     </style>
     
@@ -572,12 +577,12 @@ christmas_icons_list = [
 icon_styles = [
     {"left": 10, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
-    {"left": 35, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔 (산타 위치 대체)
-    {"left": 50, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (사슴 위치 대체)
-    {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭 (기존 🍭 위치 조정)
-    {"left": 80, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟 (눈결정체 위치 대체)
-    {"left": 40, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (기존 🕯️ 위치 조정)
-    {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️ (양말 위치 대체)
+    {"left": 35, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
+    {"left": 50, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬
+    {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
+    {"left": 80, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟
+    {"left": 48, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (위치 수정: 40% -> 48%)
+    {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
 ]
 # === 수정 끝 ===
 
@@ -607,7 +612,7 @@ def generate_christmas_icons(): # num_icons 제거
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === 8. 눈 결정체 생성 (CSS 기반) (복원) ===
-def generate_snowflakes(num_flakes=56): # (기존 56개 유지)
+def generate_snowflakes(num_flakes=25): # === 수정: 밀도 조절 (56 -> 25) ===
     snowflakes_html = ""
     for _ in range(num_flakes):
         size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
@@ -1074,7 +1079,7 @@ with tab_map:
             </div>
         """
 
-        # === 수정된 부분: 내비게이션 링크 생성 (maps.google.com/4?daddr=) ===
+        # === 5. 수정: 구글맵 링크를 내비게이션 URL로 변경 ===
         if item.get('google_link'):
             google_link_data = item['google_link']
             final_google_link = ""
@@ -1084,10 +1089,10 @@ with tab_map:
                 # URL이면, 기존처럼 링크
                 final_google_link = google_link_data
             else:
-                # URL이 아니면 (장소 이름이면), 'daddr'을 사용한 내비게이션 URL 생성
-                # saddr=Current+Location은 모바일에서 자동으로 현위치를 잡도록 함
-                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩 (도시 이름 추가)
-                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination=lat,lon6saddr=Current+Location&daddr={encoded_query}"
+                # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
+                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
+                # (수정) 'https://www.google.com/maps/dir/?api=1&destination=' 사용
+                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
