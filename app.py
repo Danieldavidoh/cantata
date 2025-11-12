@@ -125,7 +125,7 @@ LANG = {
         "google_link_placeholder": "स्थल का नाम (उदा: दगडूशेठ हलवाई गणपति) या URL",
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
-        "user_posts": "उपयोगकर्ता 포스트", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
+        "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
@@ -520,7 +520,7 @@ st.markdown(
     /* === 수정 끝 === */
 
 
-    /* 8. 눈 결정체 애니메이션 */
+    /* === 8. 눈 결정체 애니메이션 (복원 및 수정) === */
     .snowflakes {
         position: fixed;
         top: 0;
@@ -533,8 +533,8 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        /* === 수정: 투명도를 30% (0.3)으로 복원 === */
-        color: rgba(255, 255, 255, 0.3);
+        /* === 수정: 투명도를 20% (0.2)로 설정 === */
+        color: rgba(255, 255, 255, 0.2);
         font-size: 1em;
         opacity: 0;
         animation-name: fall;
@@ -543,12 +543,12 @@ st.markdown(
     }
 
     @keyframes fall {
-        /* 수정: opacity: 1 -> 0.9 (너무 투명해서 안보일까봐 살짝 올림) */
         0% { transform: translateY(-10vh) translateX(0vw); opacity: 0; }
-        10% { opacity: 0.9; }
-        90% { opacity: 0.9; }
+        10% { opacity: 0.9; } /* 나타나기 시작 */
+        90% { opacity: 0.9; } /* 사라지기 직전 */
         100% { transform: translateY(100vh) translateX(5vw); opacity: 0; }
     }
+    /* === 수정 끝 === */
     
     /* 9. Folium 맵 스타일 */
     .st-bv { /* st_folium 컨테이너 */
@@ -577,32 +577,29 @@ st.markdown(
 # === 수정 끝 ===
 
 # --- 크리스마스 아이콘 목록 ---
+# === 수정: 4개 아이콘(🎅, 🦌, ❄️, 🧦) 제거 ===
 christmas_icons_list = [
-    "🎁", "🎄", "🎅", "🦌", "🔔", "🍬", "🍭", "❄️", "🌟", "🕯️", "🧦", "☃️"
+    "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
 ]
 
 # === 수정: 아이콘 스타일 고정 (새로고침 시 위치 변경 방지) ===
-# 12개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
+# 8개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
 icon_styles = [
     {"left": 10, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
-    {"left": 30, "top": 20, "duration": 3.8, "delay": 0.5, "size": 35}, # 🎅
-    {"left": 40, "top": 10, "duration": 6.2, "delay": 2.0, "size": 30}, # 🦌
-    {"left": 50, "top": 0,  "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
-    {"left": 60, "top": 25, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬
-    {"left": 70, "top": 10, "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
-    {"left": 80, "top": 5,  "duration": 6.8, "delay": 2.5, "size": 30}, # ❄️
-    {"left": 90, "top": 20, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟
-    {"left": 25, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️
-    {"left": 55, "top": 35, "duration": 4.0, "delay": 2.8, "size": 32}, # 🧦
-    {"left": 75, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
+    {"left": 35, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔 (산타 위치 대체)
+    {"left": 50, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (사슴 위치 대체)
+    {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭 (기존 🍭 위치 조정)
+    {"left": 80, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟 (눈결정체 위치 대체)
+    {"left": 40, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (기존 🕯️ 위치 조정)
+    {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️ (양말 위치 대체)
 ]
 # === 수정 끝 ===
 
 # --- 크리스마스 아이콘 생성 및 애니메이션 주입 (수정) ---
 def generate_christmas_icons(): # num_icons 제거
     icons_html = ""
-    # === 수정: 12개 고유 아이콘 리스트와 스타일 리스트를 함께 순회 ===
+    # === 수정: 8개 고유 아이콘 리스트와 스타일 리스트를 함께 순회 ===
     for i, icon in enumerate(christmas_icons_list):
         # 고정된 스타일 값 가져오기
         style = icon_styles[i]
@@ -624,9 +621,8 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# --- 눈 결정체 생성 (CSS 기반) ---
-# === 수정된 부분: 눈 갯수 30% 감소 (80 -> 56) ===
-def generate_snowflakes(num_flakes=56):
+# === 8. 눈 결정체 생성 (CSS 기반) (복원) ===
+def generate_snowflakes(num_flakes=56): # (기존 56개 유지)
     snowflakes_html = ""
     for _ in range(num_flakes):
         size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
@@ -650,6 +646,7 @@ def generate_snowflakes(num_flakes=56):
 # --- 제목 렌더링 ---
 # === 수정: 아이콘 HTML을 먼저 생성 ===
 icons_html_str = generate_christmas_icons()
+# === 수정: 눈송이 생성 함수 다시 호출 ===
 st.markdown(generate_snowflakes(), unsafe_allow_html=True)
 
 title_cantata = _('title_cantata')
