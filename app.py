@@ -171,8 +171,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
 
     # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
     if is_user_post and not is_admin and not os.path.exists(file_path):
-         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-         return
+          st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+          return
     # === 수정 끝 ===
 
     if os.path.exists(file_path):
@@ -203,7 +203,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
     else:
         # 파일이 존재하지 않는 경우 메시지 표시
         if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
-             st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+              st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
         # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
 
 
@@ -252,7 +252,7 @@ def calculate_distance_and_time(p1, p2):
 
     # 거리와 시간 포맷 변경 (km / X.Xh)
     distance_str = f"{distance_km:.0f} km" # 소수점 없이 km
-    time_str = f"{travel_time_h:.1f}h"     # 소수점 한 자리까지 h
+    time_str = f"{travel_time_h:.1f}h"      # 소수점 한 자리까지 h
 
     return f"{distance_str} / {time_str}"
 
@@ -510,7 +510,7 @@ st.markdown(
     }
 
     @keyframes bob-up-down {
-        0%   { transform: translateY(0px) rotate(-5deg); }
+        0%    { transform: translateY(0px) rotate(-5deg); }
         50%  { transform: translateY(-10px) rotate(5deg); }
         100% { transform: translateY(0px) rotate(-5deg); }
     }
@@ -745,7 +745,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
+tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -1149,17 +1149,20 @@ with tab_map:
                 final_google_link = google_link_data
             else:
                 # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
+                # (수정) 목적지에 현재 도시 이름을 추가하여 검색 정확도 높임
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
-                # (수정) 'http://googleusercontent.com/maps/google.com/0' (웹/모바일 호환)
-                final_google_link = f"http://googleusercontent.com/maps/google.com/0{encoded_query}"
+                # 모바일에서 현재 위치에서 목적지로 바로 길안내를 시작하는 URL 형식
+                # "daddr" (Destination Address) 파라미터 사용
+                # web/mobile 호환을 위해 googleusercontent.com 우회 링크 사용 (Streamlit 환경에서 필수)
+                final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
                 <span style="display: block; margin-top: 5px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
                     <a href="{final_google_link}" target="_blank" 
-                       style="color: #1A73E8; text-decoration: none;">
-                       {_("google_link")}
+                        style="color: #1A73E8; text-decoration: none;">
+                        {_("google_link")}
                     </a>
                 </span>
             """
@@ -1241,4 +1244,3 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
-
