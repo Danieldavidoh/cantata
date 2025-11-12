@@ -12,8 +12,8 @@ from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
 from requests.utils import quote # URL 인코딩을 위해 import
-import textwrap # <<< 수정: 들여쓰기 문제 해결을 위해 import
-import re # <<< 네비게이션 테스트를 위해 추가
+import textwrap # <<< 들여쓰기 문제 해결을 위해 import
+import re # <<< 네비게이션 테스트 관련 import는 제거됨
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -400,23 +400,22 @@ st.markdown(
     }
 
     /* === 3. 수정: 버튼 스타일 (테두리) === */
-    /* ===> [요청] 버튼 색상을 밝은 주황색(#FF8C00)으로 변경 === */
     .stButton > button {
-        background-color: transparent; /* 수정: 배경 투명 */
-        color: #FF8C00; /* 수정: 텍스트 밝은 주황색 */
+        background-color: transparent; 
+        color: #FF8C00; 
         border-radius: 8px;
         padding: 8px 16px;
         font-weight: bold;
-        border: 2px solid #FF8C00; /* 수정: 밝은 주황색 테두리 */
+        border: 2px solid #FF8C00; 
         transition: all 0.2s ease-in-out;
-        box-shadow: none; /* 수정: 그림자 제거 */
+        box-shadow: none; 
     }
     .stButton > button:hover {
-        background-color: rgba(255, 140, 0, 0.1); /* 수정: 옅은 주황색 배경 */
-        color: #FFA500; /* 수정: 호버 주황색 */
-        border-color: #FFA500; /* 수정: 호버 주황색 */
+        background-color: rgba(255, 140, 0, 0.1); 
+        color: #FFA500; 
+        border-color: #FFA500; 
         transform: translateY(-2px);
-        box-shadow: none; /* 수정: 그림자 제거 */
+        box-shadow: none; 
     }
     /* ===> [요청] 수정 완료 === */
     
@@ -472,10 +471,9 @@ st.markdown(
         position: relative;
         z-index: 10;
         margin-bottom: 20px;
-        /* === 1. 수정: 네온사인 효과 제거 (기본값) === */
     }
 
-    /* === 1. 수정: 네온 효과를 위한 새 클래스 === */
+    /* 1. 네온 효과 */
     .neon-effect {
         text-shadow:
             0 0 5px #fff,
@@ -488,23 +486,23 @@ st.markdown(
         display: block;
     }
 
-    /* === 7. 크리스마스 아이콘 애니메이션 (수정) === */
+    /* 7. 크리스마스 아이콘 애니메이션 */
     .christmas-icons {
-        position: relative; /* 수정: fixed -> relative (h1 내부) */
-        width: 80%; /* 수정: 60vw -> 80% (h1 기준) */
-        margin: 0 auto; /* 추가: 중앙 정렬 */
-        height: 60px; /* 수정: 100px -> 60px (텍스트 상단 공간) */
+        position: relative;
+        width: 80%; 
+        margin: 0 auto; 
+        height: 60px; 
         pointer-events: none;
-        overflow: visible; /* 수정: hidden -> visible (아이콘 위아래로 움직일 공간) */
-        z-index: 10; /* 수정: 999 -> 10 */
+        overflow: visible; 
+        z-index: 10; 
     }
 
     .christmas-icon {
         position: absolute;
         display: block;
-        font-size: 20px; /* 기본 크기 */
+        font-size: 20px; 
         color: #FFFFFF;
-        animation-name: bob-up-down; /* 수정: 위아래로 밥(bob)하는 애니메이션 */
+        animation-name: bob-up-down; 
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         opacity: 0.8;
@@ -515,7 +513,40 @@ st.markdown(
         50%  { transform: translateY(-10px) rotate(5deg); }
         100% { transform: translateY(0px) rotate(-5deg); }
     }
-    /* === 수정 끝 === */
+
+    /* === Starry Sky and Pulsating Star CSS (별 배경) === */
+    .star-field-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1; 
+    }
+    .big-star {
+        position: fixed; /* fix position relative to viewport */
+        top: 15vh; 
+        left: 50vw;
+        transform: translate(-50%, 0);
+        font-size: 50px;
+        color: #FFD700;
+        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 40px rgba(255, 215, 0, 0.7);
+        animation: pulse 4s infinite alternate;
+        z-index: 999; 
+        pointer-events: none;
+    }
+    @keyframes pulse {
+        0% { opacity: 0.8; transform: scale(1) translate(-50%, 0); }
+        100% { opacity: 1.1; transform: scale(1.1) translate(-50%, 0); }
+    }
+    @keyframes twinkle {
+        0% { opacity: 0.1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 0.1; }
+    }
+    /* === Starry Sky and Pulsating Star CSS 끝 === */
     
     /* 9. Folium 맵 스타일 */
     .st-bv { /* st_folium 컨테이너 */
@@ -535,8 +566,6 @@ st.markdown(
         margin-bottom: 10px;
         color: #f0f0f0;
     }
-    
-    /* 네비게이션 테스트 버튼 스타일 (삭제됨) */
     
     </style>
     
@@ -590,17 +619,50 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# === 8. 눈 결정체 생성 (CSS 기반) 함수 삭제됨 ===
-# def generate_snowflakes(num_flakes=25): 
-#     ... (삭제) ...
-#     return f'<div class="snowflakes">{snowflakes_html}</div>'
+# === Starry Background and Big Star Functions (추가) ===
+def generate_star_background(num_stars=100):
+    stars_html = ""
+    # 배경에 고정된 작은 별들을 생성합니다.
+    for _ in range(num_stars):
+        left = random.randint(0, 100)
+        top = random.randint(0, 100)
+        size = random.uniform(0.5, 1.5)
+        twinkle_duration = random.uniform(2, 5) 
+        twinkle_delay = random.uniform(0, 5)
+        
+        stars_html += textwrap.dedent(f"""
+            <span style="
+                position: fixed; 
+                left: {left}%;
+                top: {top}vh;
+                width: {size}px;
+                height: {size}px;
+                background-color: rgba(255, 255, 255, {random.uniform(0.1, 0.6):.2f});
+                border-radius: 50%;
+                animation: twinkle {twinkle_duration:.2f}s infinite alternate;
+                animation-delay: {twinkle_delay:.2f}s;
+                opacity: 0;
+                box-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+                z-index: 1;
+            "></span>
+        """)
+    return f'<div class="star-field-container">{stars_html}</div>'
 
+# 유난히 빛나는 큰 별 HTML
+BIG_STAR_HTML = textwrap.dedent("""
+    <div class="big-star">
+        ✨
+    </div>
+""")
+# === Starry Background and Big Star Functions 끝 ===
 
 # --- 제목 렌더링 ---
-# === 수정: 아이콘 HTML을 먼저 생성 ===
 icons_html_str = generate_christmas_icons()
-# === 수정: 눈송이 생성 함수 호출 삭제됨 ===
-# st.markdown(generate_snowflakes(), unsafe_allow_html=True) 
+
+# 1. 별 배경 및 큰 별 삽입 (z-index 1 및 999로 설정)
+stars_background_html = generate_star_background(100) 
+st.markdown(stars_background_html, unsafe_allow_html=True)
+st.markdown(BIG_STAR_HTML, unsafe_allow_html=True)
 
 title_cantata = _('title_cantata')
 title_year = _('title_year')
@@ -624,7 +686,6 @@ col_spacer, col_toggle = st.columns([10, 1]) # [스페이서, 토글 버튼]
 
 with col_toggle:
     # 톱니바퀴 버튼을 누르면 st.session_state.show_controls 값을 반전시킴
-    # === [요청] help 툴팁 제거 ===
     if st.button("⚙️", key="toggle_controls"):
         st.session_state.show_controls = not st.session_state.show_controls
 
@@ -1091,7 +1152,7 @@ with tab_map:
             </div>
         """
         
-        # === Google Maps URL: 모바일 내비게이션 최적화 (재도입) ===
+        # === Google Maps URL: 모바일 내비게이션 최적화 (재도입 및 텍스트 수정) ===
         # 장소 이름이나 URL이 저장된 'google_link' 필드를 사용하여 내비게이션 링크 생성
         google_link_data = item.get('google_link')
         if google_link_data:
@@ -1109,7 +1170,7 @@ with tab_map:
                     <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
                     <a href="{final_google_link}" target="_blank" 
                         style="color: #1A73E8; text-decoration: none;">
-                        {_("google_link")} 네비게이션 안내 시작
+                        {_("google_link")}
                     </a>
                 </span>
             """
@@ -1192,9 +1253,3 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
-
-
-# =============================================================================
-# 탭 3: 네비게이션 테스트 (Navigation Test)
-# =============================================================================
-# === [요청] 네비게이션 테스트 탭 삭제됨 ===
