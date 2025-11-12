@@ -363,6 +363,11 @@ st.markdown(
         font-weight: bold;
     }
 
+    /* === 3. 수정: 탭 버튼 오른쪽 정렬 === */
+    .stTabs [data-baseweb="tab-list"] {
+        justify-content: flex-end;
+    }
+
     .stTabs [data-baseweb="tab-list"] button {
         background-color: rgba(255, 255, 255, 0.05); /* 반투명 버튼 */
         color: #f0f0f0;
@@ -370,6 +375,9 @@ st.markdown(
         margin: 0 4px;
         border-bottom: 3px solid #66BB66; /* 비활성 탭 하단 라인 (그린) */
         transition: all 0.2s ease-in-out;
+        /* === 4. 수정: 좌우 여백 추가 === */
+        padding-left: 20px; 
+        padding-right: 20px;
     }
 
     .stTabs [data-baseweb="tab-list"] button:hover {
@@ -446,16 +454,17 @@ st.markdown(
         color: #FFFFFF; /* 기본 흰색 */
         position: relative;
         z-index: 10;
-        /* padding-top: 60px; */ /* === 수정: 아이콘이 h1 내부로 이동하여 제거 === */
         margin-bottom: 20px;
-        /* === 수정: 은은한 네온사인 효과 다시 추가 === */
+    }
+
+    /* === 1. 수정: 네온 효과를 위한 새 클래스 === */
+    .neon-effect {
         text-shadow:
             0 0 5px #fff,
             0 0 10px #fff,
-            0 0 20px #BB3333;
+            0 0 20px #BB3333,
+            0 0 35px #BB3333;
     }
-
-    /* === 수정: 네온사인 애니메이션 제거됨 === */
     
     /* 제목 컨테이너 (h1 내부) */
     .christmas-title-container {
@@ -471,7 +480,6 @@ st.markdown(
         pointer-events: none;
         overflow: visible; /* 수정: hidden -> visible (아이콘 위아래로 움직일 공간) */
         z-index: 10; /* 수정: 999 -> 10 */
-        /* top: 0, left: 20vw 삭제 */
     }
 
     .christmas-icon {
@@ -479,20 +487,12 @@ st.markdown(
         display: block;
         font-size: 20px; /* 기본 크기 */
         color: #FFFFFF;
-        /* animation-name: float-across; */ /* 기존 */
         animation-name: bob-up-down; /* 수정: 위아래로 밥(bob)하는 애니메이션 */
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         opacity: 0.8;
-        /* top: -50px; (제거) -> 인라인 스타일로 대체 */
     }
 
-    /* @keyframes float-across { */ /* 기존 애니메이션 제거 */
-        /* 0% { transform: translateX(0vw) rotate(0deg); } */
-        /* 100% { transform: translateX(100vw) rotate(360deg); } */
-    /* } */
-
-    /* === 수정: 'bob-up-down' 애니메이션 추가 === */
     @keyframes bob-up-down {
         0%   { transform: translateY(0px) rotate(-5deg); }
         50%  { transform: translateY(-10px) rotate(5deg); }
@@ -514,7 +514,7 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        /* === 수정: 투명도를 5% (0.05)로 설정 === */
+        /* === 2. 수정: 투명도를 5% (0.05)로 설정 === */
         color: rgba(255, 255, 255, 0.05);
         font-size: 1em;
         opacity: 0;
@@ -577,11 +577,11 @@ christmas_icons_list = [
 icon_styles = [
     {"left": 10, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
-    {"left": 35, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
+    {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔 (수정: 35% -> 30%)
     {"left": 50, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬
     {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
     {"left": 80, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟
-    {"left": 48, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (위치 수정: 40% -> 48%)
+    {"left": 55, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (수정: 48% -> 55%)
     {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
 ]
 # === 수정 끝 ===
@@ -643,10 +643,10 @@ title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
 
-# === 수정된 부분: textwrap.dedent() 적용 ===
+# === 수정: 네온 효과를 '칸타타 투어'에만 적용 ===
 title_html = textwrap.dedent(f"""
     <div class="christmas-title-container">
-        <span style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
+        <span class="neon-effect" style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
         <span style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
         <span style="color: #66BB66; font-size: 0.66em;">{title_region}</span>
     </div>
@@ -1091,7 +1091,7 @@ with tab_map:
             else:
                 # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
-                # (수정) 'https://www.google.com/maps/dir/?api=1&destination=' 사용
+                # (수정) 'https://www.google.com/maps/dir/?api=1&destination=' (웹/모바일 호환)
                 final_google_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
