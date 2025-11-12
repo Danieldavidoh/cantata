@@ -390,21 +390,23 @@ st.markdown(
         border-bottom: 3px solid #FFD700; /* 활성 탭 하단 라인 (골드) */
     }
 
-    /* 3. 버튼 스타일 */
+    /* === 3. 수정: 버튼 스타일 (테두리) === */
     .stButton > button {
-        background-color: #BB3333;
-        color: white;
+        background-color: transparent; /* 수정: 배경 투명 */
+        color: #BB3333; /* 수정: 텍스트 빨간색 */
         border-radius: 8px;
         padding: 8px 16px;
         font-weight: bold;
-        border: none;
+        border: 2px solid #BB3333; /* 수정: 빨간 테두리 */
         transition: all 0.2s ease-in-out;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: none; /* 수정: 그림자 제거 */
     }
     .stButton > button:hover {
-        background-color: #D44444;
+        background-color: rgba(187, 51, 51, 0.1); /* 수정: 옅은 빨간 배경 */
+        color: #D44444;
+        border-color: #D44444;
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: none; /* 수정: 그림자 제거 */
     }
 
     /* 4. 입력 필드 스타일 */
@@ -577,10 +579,10 @@ icon_styles = [
     {"left": 12, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁 (10% -> 12%)
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
     {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
-    {"left": 50, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬
+    {"left": 45, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (50% -> 45%)
     {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
     {"left": 83, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟 (80% -> 83%)
-    {"left": 48, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (55% -> 48%)
+    {"left": 50, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (48% -> 50%)
     {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
 ]
 # === 수정 끝 ===
@@ -727,7 +729,8 @@ with tab_notice:
 
     # 1. 관리자 공지사항 관리
     if st.session_state.admin:
-        st.subheader(f"🔔 {_('existing_notices')} (관리자 모드)")
+        # === 5. 수정: 관리자 제목 변경 ===
+        st.subheader(f"🔔 공지 관리") 
 
         # --- 관리자: 공지사항 등록/수정 폼 ---
         with st.expander(_("register"), expanded=False): 
@@ -799,8 +802,8 @@ with tab_notice:
                             if n.get('id') == notice_id:
                                 n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
-        # === 수정된 부분: 관리자용 사용자 포스트 뷰 (새 섹션) ===
-        st.subheader(f"📸 {_('user_posts')} (관리자 모드)")
+        # === 6. 수정: 관리자 제목 변경 ===
+        st.subheader(f"📸 포스트 관리")
         valid_posts_admin = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
         if not valid_posts_admin: 
             st.write(_("no_posts"))
