@@ -111,7 +111,7 @@ LANG = {
         "general": "सामान्य", "urgent": "तत्काल", "admin_login": "व्यवस्थापक लॉगिन", "update_content": "सामग्री अपडेट करें",
         "existing_notices": "मौजूदा सूचनाएं", "no_notices": "कोई सूचना उपलब्ध नहीं है।", "content": "सामग्री",
         "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", 
-        "tour_schedule_management": " प्रदर्शन शहर की जानकारी इनपुट", 
+        "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", 
         "venue_list_title": "प्रदर्शन शहर की सूची", 
         "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
         "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
@@ -1114,7 +1114,7 @@ with tab_map:
                 # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
                 encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
                 # (수정) 'https://www.google.com/maps/dir/?api=1&destination=' (웹/모바일 호환)
-                final_google_link = f"https://www.google.com/maps/dir/?api=1&destination={encoded_query}"
+                final_google_link = f"http://googleusercontent.com/maps/google.com/0{encoded_query}"
 
             # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
             popup_html += f"""
