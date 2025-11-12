@@ -717,8 +717,8 @@ with col_auth:
 st.markdown('</div>', unsafe_allow_html=True)
 
 
-# --- 탭 구성 ---
-tab_notice, tab_map = st.tabs([_("tab_notice"), _("tab_map")])
+# --- 탭 구성 (수정: 아이콘 추가) ---
+tab_notice, tab_map = st.tabs([f"📢 {_('tab_notice')}", f"🚌 {_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
