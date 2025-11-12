@@ -555,8 +555,13 @@ st.markdown(
         100% { transform: translateY(100vh) scale(0.5); opacity: 0; } /* 하단으로 떨어지며 사라짐 */
     }
 
-    /* === [삭제] 느리게 반짝이는 애니메이션 키프레임 (star-fall 사용으로 불필요) === */
-    /* @keyframes twinkle-slow { ... } */
+    /* === [추가] 느리게 반짝이는 애니메이션 키프레임 (트리거용) === */
+    @keyframes twinkle-slow {
+        0% { opacity: 0.1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 0.1; }
+    }
+    /* === Starry Sky and Pulsating Star CSS 끝 === */
     
     /* 9. Folium 맵 스타일 */
     .st-bv { /* st_folium 컨테이너 */
@@ -630,7 +635,7 @@ def generate_christmas_icons(): # num_icons 제거
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이, 눈 효과) ===
-def generate_star_background(num_stars=180, twinkling_count=7): # 개수 180개로 조정
+def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개로 조정
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
     
@@ -666,14 +671,17 @@ def generate_star_background(num_stars=180, twinkling_count=7): # 개수 180개�
             f"opacity: 0;", # 초기 투명도는 0으로 설정 (애니메이션이 시작하면 나타나게)
         ]
 
+        # 모든 별에 눈 내리는 애니메이션 적용 (star-fall)
+        animation_name = "star-fall"
         if is_twinkling:
             # 반짝이는 별은 떨어지는 애니메이션에 느린 반짝임을 추가
-            style_attributes.append(f"animation: star-fall {fall_duration:.2f}s linear infinite, twinkle-slow {random.uniform(3, 7):.2f}s infinite alternate;")
-            style_attributes.append(f"animation-delay: {fall_delay:.2f}s;")
-        else:
-            # 일반 별은 떨어지는 애니메이션만 적용
-            style_attributes.append(f"animation: star-fall {fall_duration:.2f}s linear infinite;")
-            style_attributes.append(f"animation-delay: {fall_delay:.2f}s;")
+            animation_name += f", twinkle-slow {random.uniform(3, 7):.2f}s infinite alternate"
+        
+        style_attributes.append(f"animation: {animation_name};")
+        style_attributes.append(f"animation-duration: {fall_duration:.2f}s;")
+        style_attributes.append(f"animation-delay: {fall_delay:.2f}s;")
+        style_attributes.append(f"animation-timing-function: linear;")
+        style_attributes.append(f"animation-iteration-count: infinite;")
 
 
         stars_html += textwrap.dedent(f"""
@@ -692,7 +700,7 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(180, 7) # 180개 별, 7개 반짝임
+stars_background_html = generate_star_background(240, 7) # 240개 별, 7개 반짝임
 st.markdown(stars_background_html, unsafe_allow_html=True)
 st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
 
@@ -800,10 +808,10 @@ with tab_notice:
 
     # 1. 관리자 공지사항 관리
     if st.session_state.admin:
-        # === 5. 수정: 관리자 제목 변경 ===
         st.subheader(f"🔔 공지 관리") 
 
         # --- 관리자: 공지사항 등록/수정 폼 ---
+        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
         with st.expander(_("register"), expanded=False): 
             with st.form("notice_form", clear_on_submit=True):
                 notice_title = st.text_input("제목")
@@ -841,6 +849,7 @@ with tab_notice:
             prefix = "🚨 " if notice_type_key == "Urgent" else ""
             header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
 
+            # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
             with st.expander(header_text, expanded=False): 
                 col_del, col_title = st.columns([1, 4])
                 with col_del:
@@ -883,6 +892,7 @@ with tab_notice:
             for post in posts_to_display_admin:
                 post_id = post['id']
                 
+                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                 with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
                     st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                     
@@ -922,6 +932,7 @@ with tab_notice:
                 translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
                 prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
 
+                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                 with st.expander(header_text, expanded=False): 
                     st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                     attached_files = notice.get('files', [])
@@ -933,6 +944,7 @@ with tab_notice:
         st.subheader(f"📸 {_('user_posts')}")
 
         # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
+        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
         with st.expander(_("new_post"), expanded=False): 
             with st.form("user_post_form", clear_on_submit=True):
                 post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
@@ -953,6 +965,7 @@ with tab_notice:
             posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
             for post in posts_to_display:
                 post_id = post['id']
+                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                 with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
                     st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                     
@@ -974,6 +987,7 @@ with tab_map:
         st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
 
         # --- 도시/일정 등록 폼 (Admin Only) ---
+        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
         with st.expander(_("add_city"), expanded=False): 
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
@@ -1002,25 +1016,30 @@ with tab_map:
 
                 submitted = st.form_submit_button(_("register"))
 
-                # === [요청] 제출 로직: multiselect(list)를 순회하며 여러 항목 생성 ===
+                # === [수정] 제출 로직: city_name_list만 검사하도록 수정 ===
                 if submitted:
-                    if not city_name_list or not venue_name or not schedule_date: 
-                        st.warning(_("fill_in_fields"))
+                    if not city_name_list: 
+                        st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
                     else:
                         cities_added_count = 0
+                        # schedule_date나 venue_name이 비어있더라도 등록은 진행
                         for city_name in city_name_list: # 선택된 도시 리스트를 순회
                             if city_name not in city_dict:
                                 st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
                                 continue # 이 도시 건너뛰기
                             
                             city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
+                            # schedule_date와 venue_name이 비어있으면 빈 문자열 또는 N/A로 저장
+                            date_str = schedule_date.strftime("%Y-%m-%d") if schedule_date else "N/A"
+                            venue_str = venue_name if venue_name else "N/A"
+
                             new_schedule_entry = {
                                 "id": str(uuid.uuid4()), 
                                 "city": city_name, # 개별 도시 이름
-                                "venue": venue_name, 
+                                "venue": venue_str, 
                                 "lat": city_coords["lat"], 
                                 "lon": city_coords["lon"], 
-                                "date": schedule_date.strftime("%Y-%m-%d"), 
+                                "date": date_str, 
                                 "type": type_sel, 
                                 "seats": str(expected_seats), 
                                 "note": note, 
@@ -1059,6 +1078,7 @@ with tab_map:
                 # === 2. 수정: expander 제목에서 (:#1E90FF[실내]) 대신 (실내)로 표시 ===
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
 
+                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                 with st.expander(header_text, expanded=False): 
 
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
@@ -1092,7 +1112,8 @@ with tab_map:
                         updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
 
                         st.markdown("---")
-                        col_save, col_del, col_space = st.columns([1, 1, 4])
+                        # === [수정] 등록과 제거 버튼을 양쪽 끝에 배치 ===
+                        col_save, col_space, col_del = st.columns([1, 4, 1])
 
                         # "등록" (Save) 버튼
                         with col_save:
@@ -1117,6 +1138,7 @@ with tab_map:
                                 save_json(CITY_FILE, tour_schedule)
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
+                        # === 수정 끝 ===
 
                     # Display distance/time between current city and the next city in the expander
                     if i < len(sorted_schedule_items) - 1:
