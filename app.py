@@ -125,7 +125,7 @@ LANG = {
         "google_link_placeholder": "स्थल का नाम (उदा: दगडूशेठ हलवाई गणपति) या URL",
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
-        "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
+        "user_posts": "उपयोगकर्ता 포스트", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
@@ -581,27 +581,47 @@ christmas_icons_list = [
     "🎁", "🎄", "🎅", "🦌", "🔔", "🍬", "🍭", "❄️", "🌟", "🕯️", "🧦", "☃️"
 ]
 
-# --- 크리스마스 아이콘 생성 및 애니메이션 주입 ---
-def generate_christmas_icons(num_icons=15):
-    icons_html = ""
-    for _ in range(num_icons):
-        icon = random.choice(christmas_icons_list)
-        size = random.randint(20, 40) # 픽셀 크기
-        left = random.randint(0, 100) # % 시작 위치 (컨테이너 60vw 기준)
-        delay = random.uniform(0, 5) # === 수정: 애니메이션 시작 지연 (0~5초) ===
-        duration = random.uniform(3, 7) # === 수정: 애니메이션 지속 시간 (3~7초, 밥(bob) 속도) ===
+# === 수정: 아이콘 스타일 고정 (새로고침 시 위치 변경 방지) ===
+# 12개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
+icon_styles = [
+    {"left": 10, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
+    {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
+    {"left": 30, "top": 20, "duration": 3.8, "delay": 0.5, "size": 35}, # 🎅
+    {"left": 40, "top": 10, "duration": 6.2, "delay": 2.0, "size": 30}, # 🦌
+    {"left": 50, "top": 0,  "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
+    {"left": 60, "top": 25, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬
+    {"left": 70, "top": 10, "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
+    {"left": 80, "top": 5,  "duration": 6.8, "delay": 2.5, "size": 30}, # ❄️
+    {"left": 90, "top": 20, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟
+    {"left": 25, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️
+    {"left": 55, "top": 35, "duration": 4.0, "delay": 2.8, "size": 32}, # 🧦
+    {"left": 75, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
+]
+# === 수정 끝 ===
 
-        # === 수정된 부분: top 위치 수정 (0~50px) 및 dedent 적용 ===
+# --- 크리스마스 아이콘 생성 및 애니메이션 주입 (수정) ---
+def generate_christmas_icons(): # num_icons 제거
+    icons_html = ""
+    # === 수정: 12개 고유 아이콘 리스트와 스타일 리스트를 함께 순회 ===
+    for i, icon in enumerate(christmas_icons_list):
+        # 고정된 스타일 값 가져오기
+        style = icon_styles[i]
+        left = style["left"]
+        top = style["top"]
+        duration = style["duration"]
+        delay = style["delay"]
+        size = style["size"] # size 가져오기
+        
+        # === 수정: 모든 랜덤 값 제거 ===
         icons_html += textwrap.dedent(f"""
             <span class="christmas-icon" style="
                 font-size: {size}px;
                 left: {left}%;
-                top: {random.randint(0, 50)}px; /* 0-50px 사이의 상단 위치 */
+                top: {top}px; 
                 animation-duration: {duration}s;
                 animation-delay: {delay}s;
             ">{icon}</span>
         """)
-        # === 수정 끝 ===
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # --- 눈 결정체 생성 (CSS 기반) ---
