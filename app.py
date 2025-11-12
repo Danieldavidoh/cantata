@@ -448,33 +448,13 @@ st.markdown(
         z-index: 10;
         /* padding-top: 60px; */ /* === 수정: 아이콘이 h1 내부로 이동하여 제거 === */
         margin-bottom: 20px;
-        /* 네온사인 효과 (다중 그림자) */
-        text-shadow: 
-            0 0 5px #fff,
-            0 0 10px #fff,
-            0 0 15px #fff,
-            0 0 20px #BB3333, /* 빨간색 네온 */
-            0 0 35px #BB3333,
-            0 0 40px #BB3333,
-            0 0 50px #BB3333,
-            0 0 75px #BB3333;
-        animation: neon-flicker 2s infinite alternate; /* 깜빡이는 네온 효과 */
+        /* === 수정: 네온사인(text-shadow) 및 애니메이션(animation) 제거 === */
+        /* text-shadow: ... */
+        /* animation: neon-flicker 2s infinite alternate; */ 
     }
 
-    @keyframes neon-flicker {
-        0%, 100% { 
-            opacity: 1; 
-            text-shadow: 
-                0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff,
-                0 0 20px #BB3333, 0 0 35px #BB3333, 0 0 40px #BB3333;
-        }
-        50% { 
-            opacity: 0.8; 
-            text-shadow: 
-                0 0 5px #fff, 0 0 8px #fff, 0 0 10px #fff,
-                0 0 15px #BB3333, 0 0 25px #BB3333;
-        }
-    }
+    /* === 수정: 네온사인 애니메이션 제거 === */
+    /* @keyframes neon-flicker { ... } */
     
     /* 제목 컨테이너 (h1 내부) */
     .christmas-title-container {
@@ -533,8 +513,8 @@ st.markdown(
     
     .snowflake {
         position: absolute;
-        /* === 수정: 투명도를 20% (0.2)로 설정 === */
-        color: rgba(255, 255, 255, 0.2);
+        /* === 수정: 투명도를 5% (0.05)로 설정 === */
+        color: rgba(255, 255, 255, 0.05);
         font-size: 1em;
         opacity: 0;
         animation-name: fall;
@@ -567,6 +547,11 @@ st.markdown(
         margin-top: 10px;
         margin-bottom: 10px;
         color: #f0f0f0;
+    }
+    
+    /* === 11. 수정: 메뉴/로그인 숨기기 === */
+    .hidden-controls {
+        display: none;
     }
     </style>
     
@@ -666,6 +651,9 @@ title_html = textwrap.dedent(f"""
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
+# === 4. 수정: 언어/로그인 컨트롤을 숨기기 위한 div 추가 ===
+st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
+
 # 언어 선택 버튼 (상단 고정)
 col_lang, col_auth = st.columns([1, 3])
 with col_lang:
@@ -675,8 +663,9 @@ with col_lang:
 
     current_lang_index = lang_keys.index(st.session_state.lang)
 
+    # === 3. 수정: 메뉴 -> "language" (고정) ===
     selected_lang_display = st.selectbox(
-        _("menu"),
+        "language", # _("menu") -> "language"
         options=lang_display_names,
         index=current_lang_index,
         key="lang_select"
@@ -719,6 +708,10 @@ with col_auth:
                         st.session_state.show_login_form = False
                         safe_rerun()
                     else: st.warning(_("incorrect_password"))
+
+# === 4. 수정: 숨김 div 닫기 ===
+st.markdown('</div>', unsafe_allow_html=True)
+
 
 # --- 탭 구성 ---
 tab_notice, tab_map = st.tabs([_("tab_notice"), _("tab_map")])
