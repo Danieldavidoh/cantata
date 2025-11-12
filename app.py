@@ -54,8 +54,8 @@ LANG = {
         "set_data": "데이터 설정", "type": "유형", "city": "도시", "link": "링크", "past_route": "지난 경로",
         "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다.",
         "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
-        "logged_in_success": "관리자로 로그인했습니다.", "logged_out_success": "로그아웃했습니다.",
-        "incorrect_password": "비밀번호가 틀렸습니다.", "fill_in_fields": "제목과 내용을 채워주세요.",
+        "logged_in_success": "관리자로 로그인했습니다。", "logged_out_success": "로그아웃했습니다.",
+        "incorrect_password": "비밀번호가 틀렸습니다.", "fill_in_fields": "제목과 내용을 채워주세요。",
         "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!", "notice_del_success": "공지사항이 삭제되었습니다.",
         "notice_upd_success": "공지사항이 수정되었습니다.", "schedule_reg_success": "일정이 등록되었습니다.",
         "schedule_del_success": "일정 항목이 제거되었습니다.", "schedule_upd_success": "일정이 성공적으로 수정되었습니다。",
@@ -637,8 +637,12 @@ def generate_star_background(num_stars=60, twinkling_count=7): # 개수 60개로
     for i in range(num_stars):
         left = random.randint(0, 100)
         
-        # Y축 위치를 조정하여 50vh 이상은 별이 없도록 함
-        top = random.randint(0, 50) # 상단 50vh까지만 별이 생성되도록 조정
+        # === [수정] Y축 위치를 결정 (숫자 그라데이션) ===
+        # 0 ~ 50vh 공간에 별을 배치합니다.
+        # random.random()을 제곱하여 0에 가까운 값(상단)이 나올 확률을 높입니다.
+        normalized_y = random.random() ** 2 
+        top = int(normalized_y * 50) # 0vh (높은 밀도) ~ 50vh (낮은 밀도)
+
             
         # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
         size = random.uniform(1.0, 3.0) * (2/3) 
