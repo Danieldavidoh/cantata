@@ -391,7 +391,7 @@ st.markdown(
     }
 
     /* === 3. 수정: 버튼 스타일 (테두리) === */
-    /* ===> [요청] 버튼 색상을 빨간색(#BB3333)에서 밝은 주황색(#FF8C00)으로 변경 === */
+    /* ===> [요청] 버튼 색상을 밝은 주황색(#FF8C00)으로 변경 === */
     .stButton > button {
         background-color: transparent; /* 수정: 배경 투명 */
         color: #FF8C00; /* 수정: 텍스트 밝은 주황색 */
@@ -694,6 +694,14 @@ if selected_lang_key != st.session_state.lang:
     st.rerun()
 st.markdown('</div>', unsafe_allow_html=True)
 
+# --- 로그인 / 로그아웃 로직 (핸들러) ---
+def safe_rerun():
+    if hasattr(st, 'rerun'): st.rerun()
+
+def handle_login_button_click():
+    st.session_state.show_login_form = not st.session_state.show_login_form
+    safe_rerun()
+
 # 4b. 로그인/로그아웃 버튼 (항상 숨김)
 st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
 if st.session_state.admin:
@@ -707,13 +715,6 @@ else:
         handle_login_button_click()
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- 로그인 / 로그아웃 로직 (핸들러) ---
-def safe_rerun():
-    if hasattr(st, 'rerun'): st.rerun()
-
-def handle_login_button_click():
-    st.session_state.show_login_form = not st.session_state.show_login_form
-    safe_rerun()
 
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
