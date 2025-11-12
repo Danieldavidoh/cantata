@@ -113,7 +113,7 @@ LANG = {
         "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", 
         "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", 
         "venue_list_title": "प्रदर्शन शहर की सूची", 
-        "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
+        "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "링크", "past_route": "पिछला मार्ग",
         "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
         "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।", "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
         "logged_out_success": "लॉग आउट किया गया।", "incorrect_password": "गलत पासवर्ड।",
