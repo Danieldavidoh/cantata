@@ -12,8 +12,7 @@ from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
 from requests.utils import quote # URL 인코딩을 위해 import
-import textwrap 
-import re # <<< 네비게이션 테스트를 위해 추가
+import textwrap # <<< 수정: 들여쓰기 문제 해결을 위해 import
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -41,7 +40,7 @@ USER_POST_FILE = "user_posts.json"
 LANG = {
     "ko": {
         "title_cantata": "칸타타 투어", "title_year": "2025", "title_region": "마하라스트라",
-        "tab_notice": "공지", "tab_map": "칸타타 투어", "tab_nav_test": "🌐 네비게이션 테스트", "indoor": "실내", "outdoor": "실외", 
+        "tab_notice": "공지", "tab_map": "칸타타 투어", "indoor": "실내", "outdoor": "실외", 
         "venue": "공연 장소", "seats": "예상 인원", "note": "특이사항", "google_link": "구글맵",
         "warning": "도시와 장소를 입력하세요", "delete": "제거", "menu": "메뉴", "login": "로그인", "logout": "로그아웃",
         "add_city": "추가", "register": "등록", "update": "수정", "remove": "제거",
@@ -69,22 +68,13 @@ LANG = {
         "media_attachment": "사진/동영상 첨부",
         "post_success": "포스트가 성공적으로 업로드되었습니다!",
         "no_posts": "현재 포스트가 없습니다.",
-        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", 
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", # 이 키는 이제 관리자 뷰에서만 사용됨
         "probability": "가능성",
-        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요.",
-        # 네비게이션 테스트 탭용
-        "nav_title": "🚗 Google Maps 네비게이션 연결기",
-        "nav_description": "아래에 Google 지도 링크를 붙여넣으면, 바로 네비게이션으로 연결됩니다.",
-        "nav_input_placeholder": "예: https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6",
-        "nav_success": "✅ 유효한 Google 지도 링크입니다!",
-        "nav_button": "📍 구글 네비로 이동",
-        "nav_info": "📱 모바일에서는 이 버튼을 누르면 Google Maps 앱이 바로 열립니다.",
-        "nav_error": "⚠️ 유효하지 않은 Google Maps 링크 형식입니다.",
-        "nav_example": "👇 예시 링크: "
+        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요."
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
-        "tab_notice": "Notice", "tab_map": "Cantata Tour", "tab_nav_test": "🌐 Navigation Test", "indoor": "Indoor", "outdoor": "Outdoor", 
+        "tab_notice": "Notice", "tab_map": "Cantata Tour", "indoor": "Indoor", "outdoor": "Outdoor", 
         "venue": "Venue", "seats": "Expected", "note": "Note", "google_link": "Google Maps",
         "warning": "Enter city and venue", "delete": "Remove", "menu": "Menu", "login": "Login", "logout": "Logout",
         "add_city": "Add", "register": "Register", "update": "Update", "remove": "Remove",
@@ -109,20 +99,11 @@ LANG = {
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "Probability",
-        "caption": "Click icons or routes on the map for details.",
-        # 네비게이션 테스트 탭용
-        "nav_title": "🚗 Google Maps Navigation Connector",
-        "nav_description": "Paste the Google Maps link below to directly connect to navigation.",
-        "nav_input_placeholder": "e.g.: https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6",
-        "nav_success": "✅ Valid Google Maps link!",
-        "nav_button": "📍 Go to Google Navigation",
-        "nav_info": "📱 On mobile, tapping this button will directly open the Google Maps app.",
-        "nav_error": "⚠️ Invalid Google Maps link format.",
-        "nav_example": "👇 Example Link: "
+        "caption": "Click icons or routes on the map for details."
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
-        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "tab_nav_test": "🌐 नेविगेशन परीक्षण", "indoor": "इनडोर", "outdoor": "आउटडोर", 
+        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", 
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
         "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
@@ -148,21 +129,12 @@ LANG = {
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।",
-        # नेविगेशन परीक्षण टैब के लिए
-        "nav_title": "🚗 गूगल मैप्स नेविगेशन कनेक्टर",
-        "nav_description": "सीधे नेविगेशन से कनेक्ट करने के लिए नीचे Google Maps लिंक पेस्ट करें।",
-        "nav_input_placeholder": "उदाहरण: https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6",
-        "nav_success": "✅ वैध Google Maps लिंक!",
-        "nav_button": "📍 गूगल नेविगेशन पर जाएं",
-        "nav_info": "📱 मोबाइल पर, इस बटन को टैप करने से Google Maps ऐप सीधे खुल जाएगा।",
-        "nav_error": "⚠️ अमान्य Google Maps लिंक प्रारूप।",
-        "nav_example": "👇 उदाहरण लिंक: "
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।"
     }
 }
 
 # --- 세션 초기화 ---
-defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False, "show_controls": False} 
+defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False, "show_controls": False} # [요청] show_controls 추가
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
     elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
@@ -197,14 +169,17 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
     file_type = file_info['type']; file_path = file_info['path']; file_name = file_info['name']
     key_prefix = "admin" if is_admin else "user"
 
+    # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
     if is_user_post and not is_admin and not os.path.exists(file_path):
           st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
           return
+    # === 수정 끝 ===
 
     if os.path.exists(file_path):
         if file_type.startswith('image/'):
             base64_data = get_file_as_base64(file_path)
             if base64_data:
+                # === 수정: use_column_width=True -> use_container_width=True (경고 메시지 제거) ===
                 st.image(f"data:{file_type};base64,{base64_data}", caption=f"🖼️ {file_name} ({file_size_kb} KB)", use_container_width=True)
             else:
                 st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
@@ -226,8 +201,10 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             except Exception:
                 pass
     else:
-        if is_admin or not is_user_post:
+        # 파일이 존재하지 않는 경우 메시지 표시
+        if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
               st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+        # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
 
 
 # --- JSON 헬퍼 ---
@@ -280,11 +257,12 @@ def calculate_distance_and_time(p1, p2):
     return f"{distance_str} / {time_str}"
 
 # --- 5. 도시 목록 및 좌표 정의 ---
+# === [요청] 6개 도시 추가 (Bandra, Kodoli, Mira Road, Miraj, Paratwada, Wadala) ===
 city_dict = {
     "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
     "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
     "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, "Badlapur": {"lat": 19.1088, "lon": 73.1311},
-    "Bandra": {"lat": 19.0544, "lon": 72.8406}, 
+    "Bandra": {"lat": 19.0544, "lon": 72.8406}, # [요청] 추가
     "Bhandara": {"lat": 21.180052, "lon": 79.564987}, "Bhiwandi": {"lat": 19.300282, "lon": 73.069645},
     "Bhusawal": {"lat": 21.02606, "lon": 75.830095}, "Chandrapur": {"lat": 19.957275, "lon": 79.296875},
     "Chiplun": {"lat": 17.5322, "lon": 73.516}, "Dhule": {"lat": 20.904964, "lon": 74.774651},
@@ -295,23 +273,23 @@ city_dict = {
     "Karanja": {"lat": 20.7083, "lon": 76.93}, "Karanja Lad": {"lat": 20.3969, "lon": 76.8908},
     "Karjat": {"lat": 18.9121, "lon": 73.3259}, "Kavathe Mahankal": {"lat": 17.218, "lon": 74.416},
     "Khamgaon": {"lat": 20.691, "lon": 76.6886}, "Khopoli": {"lat": 18.6958, "lon": 73.3207},
-    "Kodoli": {"lat": 16.8764, "lon": 74.1909}, 
+    "Kodoli": {"lat": 16.8764, "lon": 74.1909}, # [요청] 추가
     "Kolad": {"lat": 18.5132, "lon": 73.2166}, "Kolhapur": {"lat": 16.691031, "lon": 74.229523},
     "Kopargaon": {"lat": 19.883333, "lon": 74.483333}, "Koparkhairane": {"lat": 19.0873, "lon": 72.9856},
     "Kothrud": {"lat": 18.507399, "lon": 73.807648}, "Kudal": {"lat": 16.033333, "lon": 73.683333},
     "Kurla": {"lat": 19.0667, "lon": 72.8833}, "Latur": {"lat": 18.406526, "lon": 76.560229},
     "Lonavala": {"lat": 18.75, "lon": 73.4}, "Mahad": {"lat": 18.086, "lon": 73.3006},
     "Malegaon": {"lat": 20.555256, "lon": 74.525539}, "Malkapur": {"lat": 20.4536, "lon": 76.3886},
-    "Manmad": {"lat": 20.3333, "lon": 74.4333},  
-    "Mira Road": {"lat": 19.2799, "lon": 72.8561}, 
+    "Manmad": {"lat": 20.3333, "lon": 74.4333}, 
+    "Mira Road": {"lat": 19.2799, "lon": 72.8561}, # [요청] 추가
     "Mira-Bhayandar": {"lat": 19.271112, "lon": 72.854094},
-    "Miraj": {"lat": 16.8295, "lon": 74.6433}, 
+    "Miraj": {"lat": 16.8295, "lon": 74.6433}, # [요청] 추가
     "Mumbai": {"lat": 19.07609, "lon": 72.877426}, "Nagpur": {"lat": 21.1458, "lon": 79.088154},
     "Nanded": {"lat": 19.148733, "lon": 77.321011}, "Nandurbar": {"lat": 21.317, "lon": 74.02},
     "Nashik": {"lat": 20.011645, "lon": 73.790332}, "Niphad": {"lat": 20.074, "lon": 73.834},
     "Osmanabad": {"lat": 18.169111, "lon": 76.035309}, "Palghar": {"lat": 19.691644, "lon": 72.768478},
     "Panaji": {"lat": 15.4909, "lon": 73.8278}, "Panvel": {"lat": 18.989746, "lon": 73.117069},
-    "Paratwada": {"lat": 21.3019, "lon": 77.5178}, 
+    "Paratwada": {"lat": 21.3019, "lon": 77.5178}, # [요청] 추가
     "Parbhani": {"lat": 19.270335, "lon": 76.773347}, "Peth": {"lat": 18.125, "lon": 74.514},
     "Phaltan": {"lat": 17.9977, "lon": 74.4066}, "Pune": {"lat": 18.52043, "lon": 73.856743},
     "Raigad": {"lat": 18.515048, "lon": 73.179436}, "Ramtek": {"lat": 21.3142, "lon": 79.2676},
@@ -323,7 +301,7 @@ city_dict = {
     "Shrirampur": {"lat": 19.6214, "lon": 73.8653}, "Sinnar": {"lat": 19.8531, "lon": 73.9976},
     "Solan": {"lat": 30.9083, "lon": 77.0989}, "Solapur": {"lat": 17.659921, "lon": 75.906393},
     "Talegaon": {"lat": 18.7519, "lon": 73.487}, "Thane": {"lat": 19.218331, "lon": 72.978088},
-    "Wadala": {"lat": 19.0216, "lon": 72.8646}, 
+    "Wadala": {"lat": 19.0216, "lon": 72.8646}, # [요청] 추가
     "Achalpur": {"lat": 20.1833, "lon": 77.6833}, "Akot": {"lat": 21.1, "lon": 77.1167},
     "Ambajogai": {"lat": 18.9667, "lon": 76.6833}, "Amalner": {"lat": 21.0333, "lon": 75.3333},
     "Anjangaon Surji": {"lat": 21.1167, "lon": 77.8667}, "Arvi": {"lat": 20.45, "lon": 78.15},
@@ -588,21 +566,8 @@ st.markdown(
         color: #f0f0f0;
     }
     
-    /* 네비게이션 테스트 버튼 스타일 */
-    .nav-button-style {
-        display:inline-block;
-        padding: 12px 24px;
-        background-color:#34A853; /* Google Green */
-        color:white;
-        text-decoration:none;
-        border-radius:8px;
-        font-weight:600;
-        font-size:16px;
-        transition: background-color 0.2s;
-    }
-    .nav-button-style:hover {
-        background-color:#2e8a4d;
-    }
+    /* === [요청] 컨트롤 숨기기 CSS 제거 === */
+    /* .hidden-controls ... (제거됨) ... */
     
     </style>
     
@@ -613,6 +578,7 @@ st.markdown(
 # === 수정 끝 ===
 
 # --- 크리스마스 아이콘 목록 ---
+# === 수정: 4개 아이콘(🎅, 🦌, ❄️, 🧦) 제거 ===
 christmas_icons_list = [
     "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
 ]
@@ -706,6 +672,7 @@ col_spacer, col_toggle = st.columns([10, 1]) # [스페이서, 토글 버튼]
 
 with col_toggle:
     # 톱니바퀴 버튼을 누르면 st.session_state.show_controls 값을 반전시킴
+    # === [요청] help 툴팁 제거 ===
     if st.button("⚙️", key="toggle_controls"):
         st.session_state.show_controls = not st.session_state.show_controls
 
@@ -759,6 +726,7 @@ if st.session_state.show_controls:
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
     # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
+    # ===> [TypeError FIX] `_` 변수를 `col_spacer_form`으로 변경
     col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
@@ -777,7 +745,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map, tab_nav_test = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}", _('tab_nav_test')])
+tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -980,7 +948,6 @@ with tab_map:
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
-                # === Google Maps Link 입력 필드 유지 (데이터 저장용) ===
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
 
                 # === 1. 수정: 슬라이더에 % 포맷 적용 ===
@@ -1012,7 +979,7 @@ with tab_map:
                                 "type": type_sel, 
                                 "seats": str(expected_seats), 
                                 "note": note, 
-                                "google_link": google_link, # === [수정] 데이터는 저장 ===
+                                "google_link": google_link, 
                                 "probability": probability, 
                                 "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
                             }
@@ -1072,7 +1039,6 @@ with tab_map:
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
                         
-                        # === Google Maps Link 입력 필드 유지 (데이터 수정용) ===
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         
                         # === 1. 수정: 슬라이더에 % 포맷 적용 ===
@@ -1093,7 +1059,7 @@ with tab_map:
                                         tour_schedule[idx].update({
                                             "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
                                             "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
-                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability, # === [수정] 데이터는 저장 ===
+                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability,
                                         })
                                         save_json(CITY_FILE, tour_schedule)
                                         st.success(_("schedule_upd_success"))
@@ -1156,7 +1122,7 @@ with tab_map:
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
-        # 팝업 HTML (Google Maps 링크 명령 모두 삭제됨)
+        # 팝업 HTML (최소 높이 190px)
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
@@ -1170,8 +1136,39 @@ with tab_map:
                     <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
             </div>
-        </div>
         """
+
+        # === 5. 수정: 구글맵 링크를 내비게이션 URL로 변경 ===
+        if item.get('google_link'):
+            google_link_data = item['google_link']
+            final_google_link = ""
+
+            # 입력값이 URL인지 텍스트인지 확인
+            if google_link_data.startswith('http'):
+                # URL이면, 기존처럼 링크
+                final_google_link = google_link_data
+            else:
+                # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
+                # (수정) 목적지에 현재 도시 이름을 추가하여 검색 정확도 높임
+                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
+                # 모바일에서 현재 위치에서 목적지로 바로 길안내를 시작하는 URL 형식
+                # "daddr" (Destination Address) 파라미터 사용
+                # web/mobile 호환을 위해 googleusercontent.com 우회 링크 사용 (Streamlit 환경에서 필수)
+                final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
+
+            # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
+            popup_html += f"""
+                <span style="display: block; margin-top: 5px; font-weight: bold;">
+                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
+                    <a href="{final_google_link}" target="_blank" 
+                        style="color: #1A73E8; text-decoration: none;">
+                        {_("google_link")}
+                    </a>
+                </span>
+            """
+        # === 수정 끝 ===
+
+        popup_html += "</div>" # 팝업 전체 닫기
 
         # 마커 아이콘
         city_initial = item.get('city', 'A')[0]
@@ -1247,45 +1244,3 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
-
-
-# =============================================================================
-# 탭 3: 네비게이션 테스트 (Navigation Test)
-# =============================================================================
-with tab_nav_test:
-    st.title(_("nav_title"))
-    st.write(_("nav_description"))
-
-    # --- 입력창 ---
-    url = st.text_input(_("google_link"), placeholder=_("nav_input_placeholder"), label_visibility="collapsed")
-
-    # --- 유효성 검사 ---
-    def is_valid_google_maps_url(url):
-        # maps.app.goo.gl (단축 링크) 또는 www.google.com/maps (일반 링크)
-        pattern = r"(https:\/\/)?(maps\.app\.goo\.gl|www\.google\.com\/maps)"
-        return re.match(pattern, url) is not None
-
-    if url:
-        if is_valid_google_maps_url(url):
-            st.success(_("nav_success"))
-
-            # --- 모바일에서 바로 네비로 연결되는 링크 만들기 ---
-            # maps.app.goo.gl 링크는 이미 리디렉션이 포함되어 있으므로 그대로 사용 가능
-            st.markdown(
-                f"""
-                <a href="{url}" target="_blank" class="nav-button-style">
-                    {_("nav_button")}
-                </a>
-                """,
-                unsafe_allow_html=True
-            )
-
-            st.info(_("nav_info"))
-        else:
-            st.error(_("nav_error"))
-    else:
-        st.write(f'{_("nav_example")}`https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6`')
-
-    # --- 푸터 ---
-    st.markdown("---")
-    st.caption("Made with ❤️ using Streamlit")
