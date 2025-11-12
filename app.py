@@ -122,7 +122,7 @@ LANG = {
         "schedule_reg_success": "कार्यक्रम पंजीकृत हुआ।", "schedule_del_success": "कार्यक्रम प्रविष्टि हटा दी गई।",
         "schedule_upd_success": "कार्यक्रम सफलतापूर्वक अपडेट किया गया।", "venue_placeholder": "स्थल का नाम दर्ज करें",
         "note_placeholder": "नोट्स/विशेष टिप्पणी दर्ज करें",
-        "google_link_placeholder": "स्थल का नाम (उदा: दगडूशेठ हलवाई गणपति) या URL",
+        "google_link_placeholder": "स्थल کا نام (उदा: दगडूशेठ हलवाई गणपति) या URL",
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
         "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
@@ -933,16 +933,18 @@ with tab_map:
         
         # === 캘린더 탭: 날짜 선택 후 입력 ===
         with cal_tab:
-            st.markdown("### 1. 달력에서 날짜를 선택하세요.")
+            # === [요청] "1." 제거 ===
+            st.markdown("### 달력에서 날짜를 선택하세요.")
             
             # 1. 캘린더 (날짜 선택기)
             selected_date = st.date_input(
                 _("date"), 
                 datetime(2025, 12, 3), # 기본값
-                key="calendar_date_picker"
+                key="calendar_date_picker",
+                label_visibility="collapsed" # 날짜 위 "date" 레이블 숨김
             )
 
-            # --- [Compromise] 선택된 날짜의 기존 일정을 표시 ---
+            # --- 선택된 날짜의 기존 일정을 표시 ---
             st.markdown("---")
             st.markdown(f"**{selected_date.strftime('%Y-%m-%d')}의 기존 일정:**")
             events_on_date = [s['city'] for s in tour_schedule if s.get('date') == selected_date.strftime('%Y-%m-%d')]
@@ -953,65 +955,65 @@ with tab_map:
             else:
                 st.success("선택된 날짜에 일정이 없습니다. 새 일정을 등록하세요.")
             st.markdown("---")
-            # --- [Compromise] ---
+            
+            # === [요청] 폼을 Expander 안으로 이동 ===
+            with st.expander(f"**{selected_date.strftime('%Y-%m-%d')}**에 새 일정 등록하기", expanded=False):
+                # 2. 폼 (날짜 필드 제거됨)
+                with st.form("schedule_form_calendar", clear_on_submit=True):
+                    # 도시(multiselect), 장소
+                    col_c, col_v = st.columns(2)
+                    
+                    # [수정] 캘린더 뷰에서는 모든 도시를 선택할 수 있도록 city_options 사용
+                    city_name_list = col_c.multiselect(_('city_name'), options=city_options, key="new_city_multiselect_cal") 
+                    venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input_cal")
 
-            st.markdown(f"### 2. **{selected_date.strftime('%Y-%m-%d')}** 새 일정 등록")
+                    # 나머지 필드 (타입, 인원, 링크, 가능성)
+                    col_l, col_s, col_ug, col_up = st.columns(4)
+                    type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
+                    selected_display_type = col_l.radio(_("type"), list(type_options_map.values()), key="cal_radio")
+                    type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
 
-            # 2. 폼 (날짜 필드 제거됨)
-            with st.form("schedule_form_calendar", clear_on_submit=True):
-                # 도시(multiselect), 장소
-                col_c, col_v = st.columns(2)
-                
-                # [수정] 캘린더 뷰에서는 모든 도시를 선택할 수 있도록 city_options 사용
-                city_name_list = col_c.multiselect(_('city_name'), options=city_options, key="new_city_multiselect_cal") 
-                venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input_cal")
+                    expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"), key="cal_seats")
+                    google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"), key="cal_google")
+                    probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%", key="cal_prob")
+                    
+                    note = st.text_area(_("note"), placeholder=_("note_placeholder"), key="cal_note")
+                    submitted = st.form_submit_button(_("register"))
 
-                # 나머지 필드 (타입, 인원, 링크, 가능성)
-                col_l, col_s, col_ug, col_up = st.columns(4)
-                type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                selected_display_type = col_l.radio(_("type"), list(type_options_map.values()), key="cal_radio")
-                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
-
-                expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"), key="cal_seats")
-                google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"), key="cal_google")
-                probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%", key="cal_prob")
-                
-                note = st.text_area(_("note"), placeholder=_("note_placeholder"), key="cal_note")
-                submitted = st.form_submit_button(_("register"))
-
-                # 폼 제출 로직 (selected_date 사용)
-                if submitted:
-                    if not city_name_list or not venue_name: 
-                        st.warning(_("fill_in_fields"))
-                    else:
-                        cities_added_count = 0
-                        for city_name in city_name_list: # 선택된 도시 리스트를 순회
-                            if city_name not in city_dict:
-                                st.warning(f"{city_name}: {_('city_coords_error')}")
-                                continue
+                    # 폼 제출 로직 (selected_date 사용)
+                    if submitted:
+                        if not city_name_list or not venue_name: 
+                            st.warning(_("fill_in_fields"))
+                        else:
+                            cities_added_count = 0
+                            for city_name in city_name_list: # 선택된 도시 리스트를 순회
+                                if city_name not in city_dict:
+                                    st.warning(f"{city_name}: {_('city_coords_error')}")
+                                    continue
+                                
+                                city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
+                                new_schedule_entry = {
+                                    "id": str(uuid.uuid4()), 
+                                    "city": city_name,
+                                    "venue": venue_name, 
+                                    "lat": city_coords["lat"], 
+                                    "lon": city_coords["lon"], 
+                                    "date": selected_date.strftime("%Y-%m-%d"), # <--- 캘린더에서 선택한 날짜
+                                    "type": type_sel, 
+                                    "seats": str(expected_seats), 
+                                    "note": note, 
+                                    "google_link": google_link, 
+                                    "probability": probability, 
+                                    "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                                }
+                                tour_schedule.append(new_schedule_entry)
+                                cities_added_count += 1
                             
-                            city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
-                            new_schedule_entry = {
-                                "id": str(uuid.uuid4()), 
-                                "city": city_name,
-                                "venue": venue_name, 
-                                "lat": city_coords["lat"], 
-                                "lon": city_coords["lon"], 
-                                "date": selected_date.strftime("%Y-%m-%d"), # <--- 캘린더에서 선택한 날짜
-                                "type": type_sel, 
-                                "seats": str(expected_seats), 
-                                "note": note, 
-                                "google_link": google_link, 
-                                "probability": probability, 
-                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
-                            }
-                            tour_schedule.append(new_schedule_entry)
-                            cities_added_count += 1
-                        
-                        if cities_added_count > 0:
-                            save_json(CITY_FILE, tour_schedule)
-                            st.success(f"{cities_added_count}개 일정 등록 완료!")
-                            safe_rerun()
+                            if cities_added_count > 0:
+                                save_json(CITY_FILE, tour_schedule)
+                                st.success(f"{cities_added_count}개 일정 등록 완료!")
+                                safe_rerun()
+        # === [요청] 캘린더 UI 수정 완료 ===
 
         # === 목록 탭: 기존의 수정/삭제/보기 기능 ===
         with list_tab:
