@@ -113,7 +113,7 @@ LANG = {
         "no_content": "कोई सामग्री नहीं", "no_title": "कोई शीर्षक नहीं", 
         "tour_schedule_management": "प्रदर्शन शहर की जानकारी इनपुट", 
         "venue_list_title": "प्रदर्शन शहर की सूची", 
-        "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "शहर", "link": "लिंक", "past_route": "पिछला मार्ग",
+        "set_data": "डेटा सेट करें", "type": "प्रकार", "city": "شهر", "link": "लिंक", "past_route": "पिछला मार्ग",
         "single_location": "एकल स्थान", "legend": "किंवंती", "no_schedule": "कोई कार्यक्रम उपलब्ध नहीं है।",
         "city_coords_error": "निर्देशांक नहीं मिला। कृपया city_dict में जोड़ें।", "logged_in_success": "व्यवस्थापक के रूप में लॉग इन किया गया।",
         "logged_out_success": "लॉग आउट किया गया।", "incorrect_password": "गलत पासवर्ड।",
@@ -976,7 +976,9 @@ with tab_map:
 
                     expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"), key="cal_seats")
                     google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"), key="cal_google")
-                    probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%", key="cal_prob")
+                    
+                    # === [요청] '가능성' 기본값을 100 -> 0으로 수정 ===
+                    probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=0, step=5, format="%d%%", key="cal_prob")
                     
                     note = st.text_area(_("note"), placeholder=_("note_placeholder"), key="cal_note")
                     submitted = st.form_submit_button(_("register"))
@@ -1067,8 +1069,8 @@ with tab_map:
                             
                             updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                             
-                            # === 1. 수정: 슬라이더에 % 포맷 적용 ===
-                            updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}", format="%d%%")
+                            # === [요청] '가능성' 기본값을 0으로 수정 (여기는 '목록' 탭의 폼입니다) ===
+                            updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 0), step=5, key=f"upd_prob_{item_id}", format="%d%%")
 
                             updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
 
@@ -1267,4 +1269,3 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
-
