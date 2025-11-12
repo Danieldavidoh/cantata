@@ -55,7 +55,7 @@ LANG = {
         "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다.",
         "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
         "logged_in_success": "관리자로 로그인했습니다。", "logged_out_success": "로그아웃했습니다。",
-        "incorrect_password": "비밀번호가 틀렸습니다.", "fill_in_fields": "제목과 내용을 채워주세요。",
+        "incorrect_password": "비밀번호가 틀렸습니다。", "fill_in_fields": "제목과 내용을 채워주세요。",
         "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!", "notice_del_success": "공지사항이 삭제되었습니다。",
         "notice_upd_success": "공지사항이 수정되었습니다。", "schedule_reg_success": "일정이 등록되었습니다。",
         "schedule_del_success": "일정 항목이 제거되었습니다。", "schedule_upd_success": "일정이 성공적으로 수정되었습니다。",
@@ -549,13 +549,14 @@ st.markdown(
         100% { opacity: 1.0; transform: scale(1.1); }
     }
     
-    /* === [추가] 느리게 반짝이는 애니메이션 키프레임 (트리거용) === */
-    @keyframes twinkle-slow {
-        0% { opacity: 0.1; }
-        50% { opacity: 0.8; }
-        100% { opacity: 0.1; }
+    /* === [추가] 눈 내리는 듯한 별 애니메이션 키프레임 === */
+    @keyframes star-fall {
+        0% { transform: translateY(0) scale(1); opacity: 0.8; }
+        100% { transform: translateY(100vh) scale(0.5); opacity: 0; } /* 하단으로 떨어지며 사라짐 */
     }
-    /* === Starry Sky and Pulsating Star CSS 끝 === */
+
+    /* === [삭제] 느리게 반짝이는 애니메이션 키프레임 (star-fall 사용으로 불필요) === */
+    /* @keyframes twinkle-slow { ... } */
     
     /* 9. Folium 맵 스타일 */
     .st-bv { /* st_folium 컨테이너 */
@@ -628,7 +629,7 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이) ===
+# === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이, 눈 효과) ===
 def generate_star_background(num_stars=180, twinkling_count=7): # 개수 180개로 조정
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
@@ -637,38 +638,43 @@ def generate_star_background(num_stars=180, twinkling_count=7): # 개수 180개�
     for i in range(num_stars):
         left = random.randint(0, 100)
         
-        # Y축 위치를 결정 (숫자 그라데이션) - 0 ~ 33vh 공간에 별을 배치
+        # Y축 시작 위치를 결정 (숫자 그라데이션) - 0 ~ 33vh 공간에 별을 배치
         # random.random()을 제곱하여 0에 가까운 값(상단)이 나올 확률을 높입니다.
-        normalized_y = random.random() ** 2 
-        top = int(normalized_y * 33) # 0vh (높은 밀도) ~ 33vh (낮은 밀도)
-
-            
+        normalized_y_start = random.random() ** 2 
+        top_start = int(normalized_y_start * 33) # 0vh (높은 밀도) ~ 33vh (낮은 밀도)
+        
         # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
         size = random.uniform(1.0, 3.0) * (2/3) 
-        twinkle_duration = random.uniform(3, 7) # 느린 반짝임 속도 조정
-        twinkle_delay = random.uniform(0, 5)
+        
+        # 떨어지는 속도 및 애니메이션 지연 시간 (느린 눈처럼)
+        fall_duration = random.uniform(10, 25) # 10초 ~ 25초 동안 떨어짐
+        fall_delay = random.uniform(0, 15) # 애니메이션 시작 지연
 
         is_twinkling = i in twinkling_indices
         
-        # 반짝이는 별만 애니메이션 적용, 나머지는 고정된 opacity로 설정
+        # 기본 스타일 (반짝이지 않는 별은 고정된 밝기를 가집니다)
         style_attributes = [
             f"position: fixed;",
             f"left: {left}%;",
-            f"top: {top}vh;",
+            f"top: {top_start}vh;", # 시작 위치는 0~33vh 사이
             f"width: {size}px;",
             f"height: {size}px;",
-            f"background-color: rgba(255, 255, 255, {random.uniform(0.7, 1.0):.2f});", # 밝기 증가
+            f"background-color: rgba(255, 255, 255, {random.uniform(0.7, 1.0):.2f});", 
             f"border-radius: 50%;",
-            f"box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);", # 그림자 효과 감소
+            f"box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);",
             f"z-index: 1;",
+            f"opacity: 0;", # 초기 투명도는 0으로 설정 (애니메이션이 시작하면 나타나게)
         ]
 
         if is_twinkling:
-            style_attributes.append(f"animation: twinkle-slow {twinkle_duration:.2f}s infinite alternate;")
-            style_attributes.append(f"animation-delay: {twinkle_delay:.2f}s;")
-            style_attributes.append(f"opacity: 0.1;") # 시작 시 낮은 투명도 (반짝임 시작)
+            # 반짝이는 별은 떨어지는 애니메이션에 느린 반짝임을 추가
+            style_attributes.append(f"animation: star-fall {fall_duration:.2f}s linear infinite, twinkle-slow {random.uniform(3, 7):.2f}s infinite alternate;")
+            style_attributes.append(f"animation-delay: {fall_delay:.2f}s;")
         else:
-            style_attributes.append(f"opacity: {random.uniform(0.7, 1.0):.2f};") # 고정된 별은 반짝이지 않고 고정된 밝기 유지
+            # 일반 별은 떨어지는 애니메이션만 적용
+            style_attributes.append(f"animation: star-fall {fall_duration:.2f}s linear infinite;")
+            style_attributes.append(f"animation-delay: {fall_delay:.2f}s;")
+
 
         stars_html += textwrap.dedent(f"""
             <span style="{' '.join(style_attributes)}"></span>
@@ -954,7 +960,6 @@ with tab_notice:
                     attached_media = post.get('files', [])
                     if attached_media:
                         st.markdown(f"**{_('attached_files')}:**")
-                        # is_user_post=True를 전달하여 (수정된) display_and_download_file 함수가 파일을 표시하도록 함
                         for media_file in attached_media:
                             display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
                     # === 수정 끝 ===
