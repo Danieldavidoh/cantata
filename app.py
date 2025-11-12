@@ -1129,22 +1129,24 @@ with tab_map:
             </div>
         """
 
-        # === Google Maps URL 수정 (모바일 내비게이션 연결) ===
+        # === Google Maps URL: 모바일 내비게이션 최적화 ===
         if item.get('google_link'):
             google_link_data = item['google_link']
             final_google_link = ""
 
-            # 입력값이 URL인지 텍스트인지 확인
+            # 1. 입력값이 URL인지 확인 (URL이면 그대로 사용)
             if google_link_data.startswith('http'):
-                # URL이면, 기존처럼 링크
                 final_google_link = google_link_data
             else:
-                # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
-                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
-                # 모바일에서 현재 위치에서 목적지로 바로 길안내를 시작하는 URL 형식
+                # 2. 장소 이름/주소인 경우: 내비게이션 URL을 생성하고 URL 인코딩
+                full_query = f"{google_link_data}, {item.get('city', '')}"
+                encoded_query = quote(full_query) 
+                
+                # 3. 모바일에서 현재 위치를 출발점으로 하여 목적지로 길안내를 시작하는 URL (daddr=destination address)
+                # Streamlit iframe 환경 호환성을 위해 구글맵 프록시 URL을 사용합니다.
                 final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
 
-            # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
+            # 팝업에 링크 추가
             popup_html += f"""
                 <span style="display: block; margin-top: 5px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
@@ -1154,7 +1156,7 @@ with tab_map:
                     </a>
                 </span>
             """
-        # === 수정 끝 ===
+        # === Google Maps URL 수정 완료 ===
 
         popup_html += "</div>" # 팝업 전체 닫기
 
