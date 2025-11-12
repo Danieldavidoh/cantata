@@ -12,7 +12,7 @@ from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
 from requests.utils import quote # URL 인코딩을 위해 import
-import textwrap # <<< 수정: 들쓰기 문제 해결을 위해 import
+import textwrap # <<< 수정: 들여쓰기 문제 해결을 위해 import
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -125,7 +125,7 @@ LANG = {
         "google_link_placeholder": "स्थल का नाम (उदा: दगडूशेठ हलवाई गणपति) या URL",
         "seats_tooltip": "अपेक्षित दर्शक संख्या",
         "file_attachment": "फ़ाइल संलग्नक", "attached_files": "संलग्न फ़ाइलें", "no_files": "कोई नहीं",
-        "user_posts": "उपयोगकर्ता 포스트", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
+        "user_posts": "उपयोगकर्ता पोस्ट", "new_post": "नई पोस्ट बनाएं", "post_content": "Post सामग्री",
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है।",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
@@ -390,38 +390,26 @@ st.markdown(
         border-bottom: 3px solid #FFD700; /* 활성 탭 하단 라인 (골드) */
     }
 
-    /* === 3. 수정: 버튼 스타일 (기본: 빨간색) === */
+    /* === 3. 수정: 버튼 스타일 (테두리) === */
+    /* ===> [요청] 버튼 색상을 빨간색(#BB3333)에서 밝은 주황색(#FF8C00)으로 변경 === */
     .stButton > button {
         background-color: transparent; /* 수정: 배경 투명 */
-        color: #BB3333; /* 수정: 텍스트 빨간색 */
+        color: #FF8C00; /* 수정: 텍스트 밝은 주황색 */
         border-radius: 8px;
         padding: 8px 16px;
         font-weight: bold;
-        border: 2px solid #BB3333; /* 수정: 빨간 테두리 */
+        border: 2px solid #FF8C00; /* 수정: 밝은 주황색 테두리 */
         transition: all 0.2s ease-in-out;
         box-shadow: none; /* 수정: 그림자 제거 */
     }
     .stButton > button:hover {
-        background-color: rgba(187, 51, 51, 0.1); /* 수정: 옅은 빨간 배경 */
-        color: #D44444;
-        border-color: #D44444;
+        background-color: rgba(255, 140, 0, 0.1); /* 수정: 옅은 주황색 배경 */
+        color: #FFA500; /* 수정: 호버 주황색 */
+        border-color: #FFA500; /* 수정: 호버 주황색 */
         transform: translateY(-2px);
         box-shadow: none; /* 수정: 그림자 제거 */
     }
-    /* === 수정 끝 === */
-    
-    /* === 추가: 로그인/로그아웃 버튼 (주황색) === */
-    .login-logout-button .stButton > button {
-        color: #FFA500; /* 밝은 주황색 */
-        border-color: #FFA500;
-    }
-    .login-logout-button .stButton > button:hover {
-        background-color: rgba(255, 165, 0, 0.1); /* 옅은 주황 배경 */
-        color: #FF8C00; /* 더 짙은 주황색 */
-        border-color: #FF8C00;
-    }
-    /* === 추가 끝 === */
-
+    /* ===> [요청] 수정 완료 === */
 
     /* 4. 입력 필드 스타일 */
     .stTextInput > div > div > input,
@@ -708,8 +696,6 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # 4b. 로그인/로그아웃 버튼 (항상 숨김)
 st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
-# === 수정: 주황색 버튼 CSS 적용 (login-logout-button) ===
-st.markdown('<div class="login-logout-button">', unsafe_allow_html=True)
 if st.session_state.admin:
     if st.button(_("logout"), key="logout_btn_hidden"):
         st.session_state.admin = False
@@ -719,8 +705,6 @@ if st.session_state.admin:
 else:
     if st.button(_("login"), key="login_btn_hidden"): 
         handle_login_button_click()
-st.markdown('</div>', unsafe_allow_html=True)
-# === 수정 끝 ===
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
@@ -739,12 +723,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
             password = st.text_input("Password", type="password")
-            
-            # === 수정: 주황색 버튼 CSS 적용 (login-logout-button) ===
-            st.markdown('<div class="login-logout-button">', unsafe_allow_html=True)
             submitted = st.form_submit_button(_("login"))
-            st.markdown('</div>', unsafe_allow_html=True)
-            # === 수정 끝 ===
 
             if submitted:
                 if password == ADMIN_PASS:
