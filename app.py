@@ -341,83 +341,75 @@ ADMIN_PASS = "0009"
 # 6. 제목 및 크리스마스 UI
 # ----------------------------------------------------------------------
 
-# --- 크리스마스 테마 CSS 및 애니메이션 (추가) ---
+# --- CSS 스타일 (프리미엄 다크 골드 테마) ---
 st.markdown(
     textwrap.dedent("""
     <style>
-    /* 1. '거룩한 밤' 테마: 어두운 배경 및 텍스트 색상 */
+    /* 1. '프리미엄 다크' 테마 */
     body {
-        background-color: #0d1a26; /* 매우 어두운 파란색 (밤하늘) */
-        color: #f0f0f0; /* 밝은 텍스트 */
+        background-color: #0F172A; /* 어두운 네이비/슬레이트 */
+        color: #E2E8F0; /* 밝은 회색 텍스트 */
     }
-
     .stApp {
-        background: linear-gradient(to bottom, #0d1a26 0%, #1a3a52 100%);
-        background-attachment: fixed;
+        background: #0F172A; /* 단색 배경 */
     }
 
-    /* 2. 탭 메뉴 스타일 */
+    /* 2. 탭 메뉴 스타일 (골드 악센트) */
     .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
         font-size: 1.1em;
         font-weight: bold;
     }
-
-    /* === 3. 수정: 탭 버튼 오른쪽 정렬 === */
     .stTabs [data-baseweb="tab-list"] {
-        justify-content: flex-end;
+        justify-content: flex-end; /* 오른쪽 정렬 */
     }
-
     .stTabs [data-baseweb="tab-list"] button {
-        background-color: rgba(255, 255, 255, 0.05); /* 반투명 버튼 */
-        color: #f0f0f0;
+        background-color: transparent;
+        color: #94A3B8; /* 비활성 텍스트 (회색) */
         border-radius: 8px 8px 0 0;
         margin: 0 4px;
-        border-bottom: 3px solid #66BB66; /* 비활성 탭 하단 라인 (그린) */
+        border-bottom: 3px solid #334155; /* 비활성 탭 (어두운 회색) */
         transition: all 0.2s ease-in-out;
-        /* === 4. 수정: 좌우 여백 추가 === */
         padding-left: 20px; 
         padding-right: 20px;
     }
-
     .stTabs [data-baseweb="tab-list"] button:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: #1E293B; /* 호버 시 */
         color: #FFFFFF;
     }
-
     .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
-        background-color: #BB3333; /* 활성 탭 배경 (레드) */
-        color: #FFFFFF;
-        border-bottom: 3px solid #FFD700; /* 활성 탭 하단 라인 (골드) */
+        background-color: #1E293B; /* 활성 탭 배경 */
+        color: #FFD700; /* 활성 탭 텍스트 (골드) */
+        border-bottom: 3px solid #FFD700; /* 활성 탭 하단 (골드) */
     }
 
-    /* === 3. 수정: 버튼 스타일 (테두리) === */
+    /* 3. 버튼 스타일 (골드 테두리) */
     .stButton > button {
-        background-color: transparent; /* 수정: 배경 투명 */
-        color: #BB3333; /* 수정: 텍스트 빨간색 */
+        background-color: transparent;
+        color: #FFD700; /* 골드 텍스트 */
         border-radius: 8px;
         padding: 8px 16px;
         font-weight: bold;
-        border: 2px solid #BB3333; /* 수정: 빨간 테두리 */
+        border: 2px solid #FFD700; /* 골드 테두리 */
         transition: all 0.2s ease-in-out;
-        box-shadow: none; /* 수정: 그림자 제거 */
+        box-shadow: none;
     }
     .stButton > button:hover {
-        background-color: rgba(187, 51, 51, 0.1); /* 수정: 옅은 빨간 배경 */
-        color: #D44444;
-        border-color: #D44444;
+        background-color: rgba(255, 215, 0, 0.1); /* 옅은 골드 배경 */
+        color: #FFD700;
+        border-color: #FFD700;
         transform: translateY(-2px);
-        box-shadow: none; /* 수정: 그림자 제거 */
+        box-shadow: none;
     }
 
-    /* 4. 입력 필드 스타일 */
+    /* 4. 입력 필드 */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea,
     .stSelectbox > div > div > button,
     .stDateInput > div > div > input {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: #f0f0f0;
+        background-color: #1E293B; /* 어두운 입력창 */
+        color: #E2E8F0;
+        border: 1px solid #334155; /* 경계선 */
         border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus,
@@ -427,147 +419,69 @@ st.markdown(
         box-shadow: 0 0 0 0.1rem rgba(255, 215, 0, 0.25);
     }
     
-    /* 5. Expander (접기/펴기) 스타일 */
+    /* 5. Expander */
     .streamlit-expanderHeader {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: #f0f0f0;
+        background-color: #1E293B;
+        color: #E2E8F0;
+        border: 1px solid #334155;
         border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.2s ease-in-out;
     }
     .streamlit-expanderHeader:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: #334155;
         color: #FFFFFF;
     }
     .streamlit-expanderContent {
-        background-color: rgba(0, 0, 0, 0.1);
-        border-radius: 0 0 8px 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: #0F172A; /* 배경과 동일하게 */
+        border: 1px solid #334155;
         border-top: none;
+        border-radius: 0 0 8px 8px;
     }
 
-    /* 6. 제목 (h1) 네온사인 스타일 */
-    .christmas-title {
+    /* 6. 프리미엄 제목 */
+    .premium-title {
         text-align: center;
-        font-family: 'Mountains of Christmas', cursive; /* 구글 폰트 (느낌있는 폰트) */
-        font-size: 4.0em; /* 크기 조절 */
-        font-weight: 700;
-        color: #FFFFFF; /* 기본 흰색 */
-        position: relative;
-        z-index: 10;
+        font-family: "Inter", "Helvetica", "Arial", sans-serif; /* 깔끔한 산세리프 */
+        font-size: 3.5em; /* 크기 */
+        font-weight: 600; /* 굵기 */
+        color: #FAFAFA;
+        padding-top: 20px; /* 상단 여백 */
         margin-bottom: 20px;
-        /* === 1. 수정: 네온사인 효과 제거 (기본값) === */
     }
 
-    /* === 1. 수정: 네온 효과를 위한 새 클래스 === */
-    .neon-effect {
-        text-shadow:
-            0 0 5px #fff,
-            0 0 10px #fff,
-            0 0 20px #BB3333;
-    }
-    
-    /* 제목 컨테이너 (h1 내부) */
-    .christmas-title-container {
-        display: block;
-    }
-
-    /* === 7. 크리스마스 아이콘 애니메이션 (수정) === */
-    .christmas-icons {
-        position: relative; /* 수정: fixed -> relative (h1 내부) */
-        width: 80%; /* 수정: 60vw -> 80% (h1 기준) */
-        margin: 0 auto; /* 추가: 중앙 정렬 */
-        height: 60px; /* 수정: 100px -> 60px (텍스트 상단 공간) */
-        pointer-events: none;
-        overflow: visible; /* 수정: hidden -> visible (아이콘 위아래로 움직일 공간) */
-        z-index: 10; /* 수정: 999 -> 10 */
-    }
-
-    .christmas-icon {
-        position: absolute;
-        display: block;
-        font-size: 20px; /* 기본 크기 */
-        color: #FFFFFF;
-        animation-name: bob-up-down; /* 수정: 위아래로 밥(bob)하는 애니메이션 */
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        opacity: 0.8;
-    }
-
-    @keyframes bob-up-down {
-        0%   { transform: translateY(0px) rotate(-5deg); }
-        50%  { transform: translateY(-10px) rotate(5deg); }
-        100% { transform: translateY(0px) rotate(-5deg); }
-    }
-    /* === 수정 끝 === */
-
-
-    /* === 8. 눈 결정체 애니메이션 (복원 및 수정) === */
-    .snowflakes {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        pointer-events: none;
-        z-index: 998; /* 아이콘보다 아래 */
-    }
-    
-    .snowflake {
-        position: absolute;
-        /* === 2. 수정: 투명도를 5% (0.05)로 설정 === */
-        color: rgba(255, 255, 255, 0.05);
-        font-size: 1em;
-        opacity: 0;
-        animation-name: fall;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-
-    @keyframes fall {
-        0% { transform: translateY(-10vh) translateX(0vw); opacity: 0; }
-        10% { opacity: 0.9; } /* 나타나기 시작 */
-        90% { opacity: 0.9; } /* 사라지기 직전 */
-        100% { transform: translateY(100vh) translateX(5vw); opacity: 0; }
-    }
-    /* === 수정 끝 === */
-    
-    /* 9. Folium 맵 스타일 */
-    .st-bv { /* st_folium 컨테이너 */
+    /* 7. Folium 맵 스타일 */
+    .st-bv { 
         border-radius: 12px;
         overflow: hidden;
-        border: 2px solid #66BB66; /* 그린 테두리 */
-        box-shadow: 0 0 15px rgba(102, 187, 102, 0.4);
+        border: 2px solid #FFD700; /* 골드 테두리 */
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2); /* 골드 섀도우 */
     }
     
-    /* 10. 공지/포스트 박스 */
+    /* 8. 공지/포스트 박스 */
     .notice-content-box {
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: #1E293B; /* 어두운 배경 */
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid #334155;
         margin-top: 10px;
         margin-bottom: 10px;
-        color: #f0f0f0;
+        color: #E2E8F0;
     }
     
-    /* === 11. 수정: 메뉴/로그인 숨기기 (화면 왼쪽 밖) === */
+    /* 9. 컨트롤 숨기기 (화면 왼쪽 밖) */
     .hidden-controls {
         position: absolute;
         left: -9999px; /* 화면 왼쪽 밖으로 이동 */
         width: 1px;
-        height: 1px;
         overflow: hidden; /* 보이지 않게 */
         
-        /* === 2. 수정: 공간 제거를 위한 추가 스타일 === */
+        /* 공간 제거를 위한 추가 스타일 */
         padding: 0 !important;
         margin: 0 !important;
         height: 0;
         border: none;
     }
     
-    /* === 2. 수정: 숨겨진 컨트롤을 감싸는 Streamlit의 부모 컨테이너도 숨김 === */
-    /* Streamlit v1.30+ */
+    /* 숨겨진 컨트롤을 감싸는 Streamlit의 부모 컨테이너도 숨김 */
     [data-testid="stVerticalBlock"]:has(div.hidden-controls) {
         height: 0;
         min-height: 0;
@@ -576,105 +490,33 @@ st.markdown(
     }
     </style>
     
-    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     """),
     unsafe_allow_html=True
 )
 # === 수정 끝 ===
 
-# --- 크리스마스 아이콘 목록 ---
-# === 수정: 4개 아이콘(🎅, 🦌, ❄️, 🧦) 제거 ===
-christmas_icons_list = [
-    "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
-]
-
-# === 3. 수정: 아이콘 스타일 (겹침 수정) ===
-# 8개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
-icon_styles = [
-    {"left": 12, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
-    {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
-    {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
-    {"left": 45, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (50% -> 45%)
-    {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
-    {"left": 83, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟 (80% -> 83%)
-    {"left": 50, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (48% -> 50%)
-    {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
-]
-# === 수정 끝 ===
-
-# --- 크리스마스 아이콘 생성 및 애니메이션 주입 (수정) ---
-def generate_christmas_icons(): # num_icons 제거
-    icons_html = ""
-    # === 수정: 8개 고유 아이콘 리스트와 스타일 리스트를 함께 순회 ===
-    for i, icon in enumerate(christmas_icons_list):
-        # 고정된 스타일 값 가져오기
-        style = icon_styles[i]
-        left = style["left"]
-        top = style["top"]
-        duration = style["duration"]
-        delay = style["delay"]
-        size = style["size"] # size 가져오기
-        
-        # === 수정: 모든 랜덤 값 제거 ===
-        icons_html += textwrap.dedent(f"""
-            <span class="christmas-icon" style="
-                font-size: {size}px;
-                left: {left}%;
-                top: {top}px; 
-                animation-duration: {duration}s;
-                animation-delay: {delay}s;
-            ">{icon}</span>
-        """)
-    return f'<div class="christmas-icons">{icons_html}</div>'
-
-# === 8. 눈 결정체 생성 (CSS 기반) (복원) ===
-def generate_snowflakes(num_flakes=25): # === 2. 수정: 밀도 조절 (56 -> 25) ===
-    snowflakes_html = ""
-    for _ in range(num_flakes):
-        size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
-        left = random.randint(0, 100) # % 위치
-        duration = random.uniform(10, 30) # 떨어지는 시간 (느리게)
-        delay = random.uniform(0, 20) # 애니메이션 시작 지연
-
-        # === 수정된 부분: textwrap.dedent() 적용 ===
-        snowflakes_html += textwrap.dedent(f"""
-            <div class="snowflake" style="
-                font-size: {size}em;
-                left: {left}vw;
-                animation-duration: {duration}s;
-                animation-delay: {delay}s;
-                animation-name: fall;
-            ">❄</div>
-        """)
-        # === 수정 끝 ===
-    return f'<div class="snowflakes">{snowflakes_html}</div>'
 
 # --- 제목 렌더링 ---
-# === 수정: 아이콘 HTML을 먼저 생성 ===
-icons_html_str = generate_christmas_icons()
-# === 수정: 눈송이 생성 함수 다시 호출 ===
-st.markdown(generate_snowflakes(), unsafe_allow_html=True)
-
 title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
 
-# === 1. 수정: 네온 효과를 '칸타타 투어'와 '2025'에 적용 ===
+# === 수정: 새로운 프리미엄 제목 HTML ===
 title_html = textwrap.dedent(f"""
-    <div class="christmas-title-container">
-        <span class="neon-effect" style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
-        <span class="neon-effect" style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
-        <span style="color: #66BB66; font-size: 0.66em;">{title_region}</span>
+    <div class="premium-title">
+        <span style="color: #FAFAFA;">{title_cantata}</span>
+        <span style="color: #FFD700; margin-left: 10px;">{title_year}</span>
+        <span style="color: #AAAAAA; font-size: 0.7em; margin-left: 10px;">{title_region}</span>
     </div>
 """)
+st.markdown(title_html, unsafe_allow_html=True)
 # === 수정 끝 ===
-# === 수정: h1 태그 내부에 아이콘(icons_html_str)을 먼저 삽입하여 그룹화 ===
-st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
-# --- 4. 수정: 컨트롤 숨기기 및 공간 제거 (구조 변경) ---
+# --- 컨트롤 숨기기 및 공간 제거 (구조 변경) ---
 
-# 4a. 언어 선택 (항상 숨김)
+# 1. 언어 선택 (항상 숨김)
 st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
 LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
 lang_keys = list(LANG_OPTIONS.keys())
@@ -692,7 +534,7 @@ if selected_lang_key != st.session_state.lang:
     st.rerun()
 st.markdown('</div>', unsafe_allow_html=True)
 
-# 4b. 로그인/로그아웃 버튼 (항상 숨김)
+# 2. 로그인/로그아웃 버튼 (항상 숨김)
 st.markdown('<div class="hidden-controls">', unsafe_allow_html=True)
 if st.session_state.admin:
     if st.button(_("logout"), key="logout_btn_hidden"):
@@ -713,7 +555,7 @@ def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
     safe_rerun()
 
-# 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
+# 3. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
     # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
     _, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
@@ -730,7 +572,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.show_login_form = False
                     safe_rerun()
                 else: st.warning(_("incorrect_password"))
-# --- 4. 수정 끝 ---
+# --- 수정 끝 ---
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
