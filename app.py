@@ -27,11 +27,6 @@ except ImportError:
 
 st.set_page_config(page_title="칸타타 투어 2025", layout="wide")
 
-# --- 자동 새로고침 ---
-# 관리자가 아닐 경우 10초마다 새로고침
-if not st.session_state.get("admin", False):
-    st_autorefresh(interval=10000, key="auto_refresh_user")
-
 # --- 파일 경로 ---
 NOTICE_FILE = "notice.json"
 CITY_FILE = "cities.json"
@@ -159,8 +154,7 @@ for k, v in defaults.items():
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
-# === [수정] 전체 삭제 비밀번호 (0610으로 가정) ===
-DELETE_ALL_PASS = "0610"
+# DELETE_ALL_PASS는 삭제됨.
 
 # === [추가] 활동 감지 및 자동 로그아웃 로직 ===
 if "last_activity_time" not in st.session_state:
@@ -395,8 +389,7 @@ user_posts = load_json(USER_POST_FILE)
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
-# === [수정] 전체 삭제 비밀번호 (0610으로 가정) ===
-DELETE_ALL_PASS = "0610"
+# DELETE_ALL_PASS가 코드에서 제거됨
 
 # ----------------------------------------------------------------------
 # 6. 제목 및 크리스마스 UI
@@ -845,38 +838,8 @@ if st.session_state.show_login_form and not st.session_state.admin:
                 else: st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
-# === [추가] 전체 데이터 삭제 함수 ===
-def delete_all_data_permanently():
-    global tour_notices, tour_schedule, user_posts
-    
-    # 1. uploads 디렉토리 내 파일 삭제
-    try:
-        for filename in os.listdir(UPLOAD_DIR):
-            file_path = os.path.join(UPLOAD_DIR, filename)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-    except Exception as e:
-        st.error(f"첨부 파일 삭제 오류: {e}")
-
-    # 2. JSON 파일 내용 초기화 및 저장
-    try:
-        for file in [NOTICE_FILE, CITY_FILE, USER_POST_FILE]:
-            if os.path.exists(file):
-                # 파일 내용을 빈 리스트로 초기화
-                with open(file, "w", encoding="utf-8") as f:
-                    f.write("[]")
-        
-        # 메모리 내 변수 초기화
-        tour_notices = []
-        tour_schedule = []
-        user_posts = []
-        
-        st.success(_("delete_all_success"))
-        safe_rerun()
-
-    except Exception as e:
-        st.error(f"데이터 파일 초기화 오류: {e}")
-
+# === [제거] 전체 데이터 삭제 함수 ===
+# def delete_all_data_permanently(): ... (삭제됨) ...
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
 # 탭 리스트 정의
@@ -896,8 +859,6 @@ def set_tab_index(index):
 tab_notice_obj, tab_map_obj = st.tabs(tab_names)
 
 # 현재 활성화된 탭에 따라 내용 렌더링
-# st.session_state.current_tab_index를 사용하지 않고 st.tabs의 반환값(with 블록)을 사용하여 탭을 전환하는 Streamlit의 기본 동작을 이용합니다.
-
 with tab_notice_obj:
     # 탭 1 내용 시작 (공지)
 
@@ -1070,32 +1031,8 @@ with tab_notice_obj:
                                 display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
                         # === 수정 끝 ===
         
-        # 3. === [추가] 전체 삭제 버튼 (관리자 전용) ===
-        if st.session_state.admin:
-            st.markdown("---")
-            st.subheader(_("delete_all_data")) 
-
-            # --- 전체 삭제 폼 ---
-            with st.form("delete_all_form", clear_on_submit=False):
-                st.warning(_("delete_all_warning"))
-                
-                # === [수정] 비밀번호 필드: placeholder 제거 ===
-                delete_password = st.text_input("비밀번호", type="password", key="delete_all_pass")
-                
-                # 2단계 확인을 위한 체크박스
-                confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
-                
-                submitted = st.form_submit_button("전체 삭제 실행")
-                
-                if submitted:
-                    if delete_password == DELETE_ALL_PASS:
-                        if confirm_delete:
-                            delete_all_data_permanently()
-                        else:
-                            st.error("데이터 삭제를 확인해 주세요.")
-                    else:
-                        st.error("잘못된 비밀번호입니다.")
-        # === [추가] 끝 ===
+        # 3. === [제거] 전체 삭제 버튼 (관리자 전용) ===
+        # if st.session_state.admin: ... (제거됨) ...
 
 
 with tab_map_obj:
@@ -1121,7 +1058,7 @@ with tab_map_obj:
 
                 col_l, col_s, col_ug, col_up = st.columns(4)
                 type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
+                selected_display_type = st.radio(_("type"), list(type_options_map.values()))
                 type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
