@@ -171,8 +171,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
 
     # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
     if is_user_post and not is_admin and not os.path.exists(file_path):
-        st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-        return
+         st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+         return
     # === 수정 끝 ===
 
     if os.path.exists(file_path):
@@ -203,7 +203,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
     else:
         # 파일이 존재하지 않는 경우 메시지 표시
         if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
-            st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+             st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
         # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
 
 
@@ -745,7 +745,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
+tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -839,14 +839,14 @@ with tab_notice:
                 
                 with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
                     st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                        
+                    
                     attached_media = post.get('files', [])
                     if attached_media:
                         st.markdown(f"**{_('attached_files')}:**")
                         # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
                         for media_file in attached_media:
                             display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
-                        
+                    
                     # 관리자용 삭제 버튼
                     if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
                         # 파일 먼저 삭제
@@ -909,7 +909,7 @@ with tab_notice:
                 post_id = post['id']
                 with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
                     st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                        
+                    
                     # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
                     attached_media = post.get('files', [])
                     if attached_media:
@@ -1073,17 +1073,17 @@ with tab_map:
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
 
-                # Display distance/time between current city and the next city in the expander
-                if i < len(sorted_schedule_items) - 1:
-                    current_city_coords = (item.get('lat'), item.get('lon'))
-                    next_item = sorted_schedule_items[i+1][1]
-                    next_city_coords = (next_item.get('lat'), next_item.get('lon'))
+                    # Display distance/time between current city and the next city in the expander
+                    if i < len(sorted_schedule_items) - 1:
+                        current_city_coords = (item.get('lat'), item.get('lon'))
+                        next_item = sorted_schedule_items[i+1][1]
+                        next_city_coords = (next_item.get('lat'), next_item.get('lon'))
 
-                    if all(current_city_coords) and all(next_city_coords):
-                        distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                        st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
-                    else:
-                            st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
+                        if all(current_city_coords) and all(next_city_coords):
+                            distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
+                            st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                        else:
+                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
 
@@ -1099,7 +1099,7 @@ with tab_map:
     m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
     locations = []
     city_names_for_map = [] 
-
+ 
     for item in schedule_for_map:
         lat = item['lat']; lon = item['lon']; date_str_map = item['date']
         city_name_map = item.get('city', 'N/A') 
@@ -1138,33 +1138,107 @@ with tab_map:
             </div>
         """
 
-        # === [요청] 구글맵 링크를 '내비게이션' (길찾기) URL로 변경 ===
-        # (현위치 -> 목적지)
+        # === 5. 수정: 구글맵 링크를 내비게이션 URL로 변경 ===
+        if item.get('google_link'):
+            google_link_data = item['google_link']
+            final_google_link = ""
 
-        google_link_data = item.get('google_link', '').strip()
-        final_google_link = ""
-        destination_query = "" # 목적지 쿼리 문자열
-
-        if google_link_data:
-            # 1. 입력값이 URL인 경우 (사용자가 직접 http... 링크를 넣음)
+            # 입력값이 URL인지 텍스트인지 확인
             if google_link_data.startswith('http'):
-                final_google_link = google_link_data # 사용자가 입력한 URL을 그대로 사용
-            
-            # 2. 입력값이 URL이 아닌 경우 (예: "Dagdusheth Halwai Ganpati")
+                # URL이면, 기존처럼 링크
+                final_google_link = google_link_data
             else:
-                # 장소 이름 + 도시 이름으로 쿼리
-                destination_query = f"{google_link_data}, {item.get('city', '')}"
-                
-        # 3. google_link_data가 비어있던 경우
-        else:
-            # 위도, 경도가 있으면 그것을 사용 (가장 정확함)
-            if item.get('lat') is not None and item.get('lon') is not None:
-                destination_query = f"{item['lat']},{item['lon']}"
-            # 그것도 없으면 도시 이름만 사용
-            else:
-                destination_query = item.get('city', 'Pune') # 기본값
+                # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
+                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
+                # (수정) 'http://googleusercontent.com/maps/google.com/0' (웹/모바일 호환)
+                final_google_link = f"http://googleusercontent.com/maps/google.com/0{encoded_query}"
 
-        # 4. 2번이나 3번에서 destination_query가 생성된 경우, 길찾기 URL 생성
-        if destination_query and not final_google_link:
-            # 'destination' 파라미터를 사용한 길찾기 URL 생성
-            # origin (saddr)을 비워두면 '현재 위치'가
+            # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
+            popup_html += f"""
+                <span style="display: block; margin-top: 5px; font-weight: bold;">
+                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
+                    <a href="{final_google_link}" target="_blank" 
+                       style="color: #1A73E8; text-decoration: none;">
+                       {_("google_link")}
+                    </a>
+                </span>
+            """
+        # === 수정 끝 ===
+
+        popup_html += "</div>" # 팝업 전체 닫기
+
+        # 마커 아이콘
+        city_initial = item.get('city', 'A')[0]
+        marker_icon_html = f"""
+            <div style="
+                transform: scale(0.666);
+                opacity: {0.5 if is_past else 1.0};
+                text-align: center;
+                white-space: nowrap;
+            ">
+                <i class="fa fa-map-marker fa-3x" style="color: #BB3333;"></i>
+                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
+            </div>
+        """
+
+        folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
+        locations.append([lat, lon])
+        city_names_for_map.append(city_name_map) 
+
+
+    # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
+    if len(locations) > 1:
+        current_index = -1
+
+        for i, item in enumerate(schedule_for_map):
+            try:
+                event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
+                if event_date >= current_date: current_index = i; break
+            except ValueError: continue
+
+        if current_index == -1: past_segments = locations; future_segments = []
+        elif current_index == 0: past_segments = []; future_segments = locations
+        else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
+
+        # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
+        if len(past_segments) > 1:
+            for i in range(len(past_segments) - 1):
+                segment = [past_segments[i], past_segments[i+1]]
+                dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
+                tooltip_text = f"{dist_time}"
+                
+                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
+                
+                folium.PolyLine(
+                    locations=segment, 
+                    color="#BB3333", 
+                    weight=5, 
+                    opacity=0.125, 
+                    tooltip=tooltip_obj 
+                ).add_to(m)
+
+        # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
+        if len(future_segments) > 1:
+            for i in range(len(future_segments) - 1):
+                segment = [future_segments[i], future_segments[i+1]]
+                dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
+                tooltip_text = f"{dist_time}"
+
+                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
+
+                AntPath(
+                    segment, 
+                    use="regular", 
+                    dash_array='30, 20', 
+                    color='#BB3333', 
+                    weight=5, 
+                    opacity=0.8, 
+                    options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
+                    tooltip=tooltip_obj 
+                ).add_to(m)
+
+    # 지도 표시 (전체 너비 활용)
+    st_folium(m, width=1000, height=600, key="tour_map_render")
+
+    st.caption(_("caption"))
+
