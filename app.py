@@ -103,7 +103,7 @@ LANG = {
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
-        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "인도어", "outdoor": "아웃도어", 
+        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", 
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
         "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
@@ -659,11 +659,11 @@ title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
 
-# === 1. 수정: 네온 효과를 '칸타타 투어'에만 적용 ===
+# === 1. 수정: 네온 효과를 '칸타타 투어'와 '2025'에 적용 ===
 title_html = textwrap.dedent(f"""
     <div class="christmas-title-container">
         <span class="neon-effect" style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
-        <span style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
+        <span class="neon-effect" style="color: #FFFFFF; margin-right: 10px;">{title_year}</span>
         <span style="color: #66BB66; font-size: 0.66em;">{title_region}</span>
     </div>
 """)
