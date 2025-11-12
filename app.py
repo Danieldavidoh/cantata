@@ -680,7 +680,8 @@ st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', un
 
 
 # --- 4. 수정: 컨트롤을 오른쪽 상단에 배치 (언어 선택, 로그인) ---
-_, col_lang, col_auth = st.columns([10, 3, 2]) # [스페이서, 언어, 로그인] 비율
+# ===> [TypeError FIX] `_` 변수를 `col_spacer`로 변경하여 함수 충돌 해결
+col_spacer, col_lang, col_auth = st.columns([10, 3, 2]) # [스페이서, 언어, 로그인] 비율
 
 # 4a. 언어 선택 (col_lang에 배치)
 with col_lang:
@@ -724,7 +725,8 @@ with col_auth:
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
     # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
-    _, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
+    # ===> [TypeError FIX] `_` 변수를 `col_spacer_form`으로 변경
+    col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
@@ -1209,3 +1211,4 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
+
