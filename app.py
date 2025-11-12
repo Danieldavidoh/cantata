@@ -95,9 +95,14 @@ LANG = {
         "schedule_upd_success": "Schedule updated successfully.", "venue_placeholder": "Enter venue name",
         "note_placeholder": "Enter notes/special remarks",
         "google_link_placeholder": "Venue Name (e.g., Dagdusheth Halwai Ganpati) or URL",
-        "seats_tooltip": "Expected audience count", "file_attachment": "File Attachment", "attached_files": "Attached Files",
-        "no_files": "None", "user_posts": "User Posts", "new_post": "Create New Post", "post_content": "Post Content",
-        "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
+        "seats_tooltip": "Expected audience count",
+        "file_attachment": "File Attachment", "attached_files": "Attached Files", "no_files": "None",
+        "user_posts": "User Posts",
+        "new_post": "Create New Post",
+        "post_content": "Post Content",
+        "media_attachment": "Attach Photo/Video",
+        "post_success": "Post uploaded successfully!",
+        "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "Probability",
         "caption": "Click icons or routes on the map for details.",
@@ -526,29 +531,22 @@ st.markdown(
         overflow: hidden;
         z-index: 1; 
     }
-    /* === [삭제] 큰 별 CSS (big-star) === */
-    /*
-    .big-star {
+    
+    /* === [추가] 베들레헴의 별 (Bethlehem Star) CSS === */
+    .bethlehem-star {
         position: fixed; 
-        top: 10vh; 
-        left: 50vw;
-        transform: translate(-50%, 0);
-        font-size: 50px;
-        color: #FFD700;
-        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 40px rgba(255, 215, 0, 0.7);
-        animation: pulse 4s infinite alternate;
-        z-index: 999; 
+        top: 30px; /* 제목 상단에 위치 */
+        left: 50px; /* 좌측 상단에 위치 */
+        font-size: 35px; /* 눈에 띄게 큰 크기 */
+        color: #FFD700; /* 골드 색상 */
+        text-shadow: 0 0 15px #FFD700, 0 0 30px rgba(255, 215, 0, 0.9); /* 강한 빛 효과 */
+        animation: star-glow 1.5s infinite alternate;
+        z-index: 9999; /* 최상단에 배치 */
         pointer-events: none;
     }
-    @keyframes pulse {
-        0% { opacity: 0.8; transform: scale(1) translate(-50%, 0); }
-        100% { opacity: 1.1; transform: scale(1.1) translate(-50%, 0); }
-    }
-    */
-    @keyframes twinkle {
-        0% { opacity: 0.1; }
-        50% { opacity: 0.8; }
-        100% { opacity: 0.1; }
+    @keyframes star-glow {
+        0% { opacity: 0.8; transform: scale(1); }
+        100% { opacity: 1.0; transform: scale(1.1); }
     }
     /* === Starry Sky and Pulsating Star CSS 끝 === */
     
@@ -652,20 +650,20 @@ def generate_star_background(num_stars=50): # 개수 50개로 조정
         """)
     return f'<div class="star-field-container">{stars_html}</div>'
 
-# 유난히 빛나는 큰 별 HTML (하나만 유지됨)
-BIG_STAR_HTML = textwrap.dedent("""
-    
-""") # 큰 별 삭제
-
-# === Starry Background and Big Star Functions 끝 ===
+# 베들레헴의 별 (Bethlehem Star)
+BETHLEHEM_STAR_HTML = textwrap.dedent("""
+    <div class="bethlehem-star">
+        ✨
+    </div>
+""")
 
 # --- 제목 렌더링 ---
 icons_html_str = generate_christmas_icons()
 
-# 1. 별 배경 및 큰 별 삽입 (z-index 1 및 999로 설정)
-stars_background_html = generate_star_background(50) # 50개로 호출
+# 1. 별 배경 및 베들레헴의 별 삽입 (제목 위에 배치)
+stars_background_html = generate_star_background(50) 
 st.markdown(stars_background_html, unsafe_allow_html=True)
-# st.markdown(BIG_STAR_HTML, unsafe_allow_html=True) # 큰 별 하나만 표시
+st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 표시
 
 title_cantata = _('title_cantata')
 title_year = _('title_year')
@@ -1187,6 +1185,7 @@ with tab_map:
             final_link = nav_scheme_link
             
             # 팝업에 링크 추가
+            # === [수정] "(웹 지도 보기)" 텍스트 삭제 ===
             popup_html += f"""
                 <span style="display: block; margin-top: 10px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
@@ -1194,7 +1193,6 @@ with tab_map:
                         style="color: #1A73E8; text-decoration: none;">
                         {_("google_link")}
                     </a>
-                    <br><a href="{web_link}" target="_blank" style="font-size: 0.8em; color: #6495ED; text-decoration: none;"> (웹 지도 보기) </a>
                 </span>
             """
         # === Google Maps URL 수정 완료 ===
