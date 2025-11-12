@@ -68,10 +68,10 @@ LANG = {
         "post_content": "포스트 내용",
         "media_attachment": "사진/동영상 첨부",
         "post_success": "포스트가 성공적으로 업로드되었습니다!",
-        "no_posts": "현재 포스트가 없습니다.",
-        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", 
+        "no_posts": "현재 포스트가 없습니다。",
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다。", 
         "probability": "가능성",
-        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요.",
+        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요。",
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -532,7 +532,7 @@ st.markdown(
         z-index: 1; 
     }
     
-    /* === [수정] 베들레헴의 별 (Bethlehem Star) CSS - 위치 조정 (더 내림) === */
+    /* === [수정] 베들레헴의 별 (Bethlehem Star) CSS - 위치 조정 (8vh) === */
     .bethlehem-star {
         position: fixed; 
         top: 8vh; /* 뷰포트 높이의 8% 위치로 조정 */
@@ -548,7 +548,9 @@ st.markdown(
         0% { opacity: 0.8; transform: scale(1); }
         100% { opacity: 1.0; transform: scale(1.1); }
     }
-    @keyframes twinkle {
+    
+    /* === [추가] 느리게 반짝이는 애니메이션 키프레임 (트리거용) === */
+    @keyframes twinkle-slow {
         0% { opacity: 0.1; }
         50% { opacity: 0.8; }
         100% { opacity: 0.1; }
@@ -580,17 +582,17 @@ st.markdown(
     """),
     unsafe_allow_html=True
 )
-# === 수정 끝 ===
+# === CSS 수정 완료 ===
 
 # --- 크리스마스 아이콘 목록 ---
 christmas_icons_list = [
     "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
 ]
 
-# === 3. 수정: 아이콘 스타일 (겹침 수정) ===
+# === 3. 수정: 아이콘 스타일 (겹침 수정 및 선물 상자 위치 조정) ===
 # 8개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
 icon_styles = [
-    {"left": 12, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
+    {"left": 6, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁 (12% -> 6%로 이동)
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
     {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
     {"left": 45, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (50% -> 45%)
@@ -627,34 +629,46 @@ def generate_christmas_icons(): # num_icons 제거
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === Starry Background and Big Star Functions (수정: 별 크기 및 개수 조정, Y축 밀도 조정) ===
-def generate_star_background(num_stars=50): # 개수 50개로 조정
+def generate_star_background(num_stars=60, twinkling_count=7): # 개수 60개로 조정
     stars_html = ""
+    twinkling_indices = random.sample(range(num_stars), twinkling_count)
+    
     # 배경에 고정된 작은 별들을 생성합니다.
-    for _ in range(num_stars):
+    for i in range(num_stars):
         left = random.randint(0, 100)
         
-        # === [수정] Y축 위치를 조정하여 50vh 이상은 별이 없도록 함 ===
+        # Y축 위치를 조정하여 50vh 이상은 별이 없도록 함
         top = random.randint(0, 50) # 상단 50vh까지만 별이 생성되도록 조정
             
-        size = random.uniform(1.0, 3.0) * 2 # 별 크기 두배로 증가
-        twinkle_duration = random.uniform(2, 5) 
+        # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
+        size = random.uniform(1.0, 3.0) * (2/3) 
+        twinkle_duration = random.uniform(3, 7) # 느린 반짝임 속도 조정
         twinkle_delay = random.uniform(0, 5)
+
+        is_twinkling = i in twinkling_indices
         
+        # 반짝이는 별만 애니메이션 적용, 나머지는 고정된 opacity로 설정
+        style_attributes = [
+            f"position: fixed;",
+            f"left: {left}%;",
+            f"top: {top}vh;",
+            f"width: {size}px;",
+            f"height: {size}px;",
+            f"background-color: rgba(255, 255, 255, {random.uniform(0.7, 1.0):.2f});", # 밝기 증가
+            f"border-radius: 50%;",
+            f"box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);", # 그림자 효과 감소
+            f"z-index: 1;",
+        ]
+
+        if is_twinkling:
+            style_attributes.append(f"animation: twinkle-slow {twinkle_duration:.2f}s infinite alternate;")
+            style_attributes.append(f"animation-delay: {twinkle_delay:.2f}s;")
+            style_attributes.append(f"opacity: 0.1;") # 시작 시 낮은 투명도 (반짝임 시작)
+        else:
+            style_attributes.append(f"opacity: {random.uniform(0.7, 1.0):.2f};") # 고정된 별은 반짝이지 않고 고정된 밝기 유지
+
         stars_html += textwrap.dedent(f"""
-            <span style="
-                position: fixed; 
-                left: {left}%;
-                top: {top}vh;
-                width: {size}px;
-                height: {size}px;
-                background-color: rgba(255, 255, 255, {random.uniform(0.5, 1.0):.2f}); /* 밝기 증가 */
-                border-radius: 50%;
-                animation: twinkle {twinkle_duration:.2f}s infinite alternate;
-                animation-delay: {twinkle_delay:.2f}s;
-                opacity: 0;
-                box-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* 그림자 효과 증가 */
-                z-index: 1;
-            "></span>
+            <span style="{' '.join(style_attributes)}"></span>
         """)
     return f'<div class="star-field-container">{stars_html}</div>'
 
@@ -669,7 +683,7 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(50) # 50개로 호출
+stars_background_html = generate_star_background(60, 7) # 60개 별, 7개 반짝임
 st.markdown(stars_background_html, unsafe_allow_html=True)
 st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
 
