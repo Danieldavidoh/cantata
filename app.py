@@ -1107,4 +1107,163 @@ with tab_map:
 
                             if all(current_city_coords) and all(next_city_coords):
                                 distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe
+                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                            else:
+                                    st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
+
+            else: st.write(_("no_schedule"))
+
+
+    # --- 지도 표시 (사용자 & 관리자 공통) ---
+    st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
+    current_date = date.today()
+    schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
+
+    AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
+    start_coords = [AURANGABAD_COORDS['lat'], AURANGABAD_COORDS['lon']]
+
+    m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
+    locations = []
+    city_names_for_map = [] 
+ 
+    for item in schedule_for_map:
+        lat = item['lat']; lon = item['lon']; date_str_map = item['date']
+        city_name_map = item.get('city', 'N/A') 
+
+        try: event_date = datetime.strptime(date_str_map, "%Y-%m-%d").date()
+        except ValueError: event_date = current_date + timedelta(days=365)
+
+        is_past = event_date < current_date
+
+        icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
+
+        type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+        
+        # --- 실내/실외 색상 및 아이콘 변경 ---
+        type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
+        map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' # FontAwesome 아이콘
+        
+        probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
+
+        red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
+
+        # 팝업 HTML (최소 높이 190px)
+        popup_html = f"""
+        <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
+            <div style="color: #1A1A1A;">
+                <b>{_('city')}:</b> {red_city_name}<br>
+                <b>{_('date')}:</b> {date_str_map}<br>
+                <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
+                <b>{_('type')}:</b> <span style="color: {type_color_html};"><i class="fa {map_type_icon_fa}" style="margin-right: 5px;"></i> {translated_type}</span><br>
+                <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
+                
+                <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
+                    <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
+                </div>
+            </div>
+        """
+
+        # === 5. 수정: 구글맵 링크를 내비게이션 URL로 변경 ===
+        if item.get('google_link'):
+            google_link_data = item['google_link']
+            final_google_link = ""
+
+            # 입력값이 URL인지 텍스트인지 확인
+            if google_link_data.startswith('http'):
+                # URL이면, 기존처럼 링크
+                final_google_link = google_link_data
+            else:
+                # URL이 아니면 (장소 이름이면), 'destination'을 사용한 내비게이션 URL 생성
+                encoded_query = quote(f"{google_link_data}, {item.get('city', '')}") # URL 인코딩
+                # (수정) 'http://googleusercontent.com/maps/google.com/0' (웹/모바일 호환)
+                final_google_link = f"http://googleusercontent.com/maps/google.com/0{encoded_query}"
+
+            # 아이콘(갈색, 클릭X)과 텍스트(파란색, 클릭O)를 분리
+            popup_html += f"""
+                <span style="display: block; margin-top: 5px; font-weight: bold;">
+                    <i class="fa fa-car" style="color: #A52A2A; margin-right: 5px;"></i> 
+                    <a href="{final_google_link}" target="_blank" 
+                       style="color: #1A73E8; text-decoration: none;">
+                       {_("google_link")}
+                    </a>
+                </span>
+            """
+        # === 수정 끝 ===
+
+        popup_html += "</div>" # 팝업 전체 닫기
+
+        # 마커 아이콘
+        city_initial = item.get('city', 'A')[0]
+        marker_icon_html = f"""
+            <div style="
+                transform: scale(0.666);
+                opacity: {0.5 if is_past else 1.0};
+                text-align: center;
+                white-space: nowrap;
+            ">
+                <i class="fa fa-map-marker fa-3x" style="color: #BB3333;"></i>
+                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
+            </div>
+        """
+
+        folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
+        locations.append([lat, lon])
+        city_names_for_map.append(city_name_map) 
+
+
+    # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
+    if len(locations) > 1:
+        current_index = -1
+
+        for i, item in enumerate(schedule_for_map):
+            try:
+                event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
+                if event_date >= current_date: current_index = i; break
+            except ValueError: continue
+
+        if current_index == -1: past_segments = locations; future_segments = []
+        elif current_index == 0: past_segments = []; future_segments = locations
+        else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
+
+        # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
+        if len(past_segments) > 1:
+            for i in range(len(past_segments) - 1):
+                segment = [past_segments[i], past_segments[i+1]]
+                dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
+                tooltip_text = f"{dist_time}"
+                
+                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
+                
+                folium.PolyLine(
+                    locations=segment, 
+                    color="#BB3333", 
+                    weight=5, 
+                    opacity=0.125, 
+                    tooltip=tooltip_obj 
+                ).add_to(m)
+
+        # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
+        if len(future_segments) > 1:
+            for i in range(len(future_segments) - 1):
+                segment = [future_segments[i], future_segments[i+1]]
+                dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
+                tooltip_text = f"{dist_time}"
+
+                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
+
+                AntPath(
+                    segment, 
+                    use="regular", 
+                    dash_array='30, 20', 
+                    color='#BB3333', 
+                    weight=5, 
+                    opacity=0.8, 
+                    options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
+                    tooltip=tooltip_obj 
+                ).add_to(m)
+
+    # 지도 표시 (전체 너비 활용)
+    st_folium(m, width=1000, height=600, key="tour_map_render")
+
+    st.caption(_("caption"))
