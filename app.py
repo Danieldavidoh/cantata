@@ -12,7 +12,8 @@ from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
 from requests.utils import quote # URL 인코딩을 위해 import
-import textwrap # <<< 수정: 들여쓰기 문제 해결을 위해 import
+import textwrap 
+import re # <<< 네비게이션 테스트를 위해 추가
 
 # --- 파일 저장 경로 설정 ---
 UPLOAD_DIR = "uploads"
@@ -40,7 +41,7 @@ USER_POST_FILE = "user_posts.json"
 LANG = {
     "ko": {
         "title_cantata": "칸타타 투어", "title_year": "2025", "title_region": "마하라스트라",
-        "tab_notice": "공지", "tab_map": "칸타타 투어", "indoor": "실내", "outdoor": "실외", 
+        "tab_notice": "공지", "tab_map": "칸타타 투어", "tab_nav_test": "🌐 네비게이션 테스트", "indoor": "실내", "outdoor": "실외", 
         "venue": "공연 장소", "seats": "예상 인원", "note": "특이사항", "google_link": "구글맵",
         "warning": "도시와 장소를 입력하세요", "delete": "제거", "menu": "메뉴", "login": "로그인", "logout": "로그아웃",
         "add_city": "추가", "register": "등록", "update": "수정", "remove": "제거",
@@ -68,13 +69,22 @@ LANG = {
         "media_attachment": "사진/동영상 첨부",
         "post_success": "포스트가 성공적으로 업로드되었습니다!",
         "no_posts": "현재 포스트가 없습니다.",
-        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", # 이 키는 이제 관리자 뷰에서만 사용됨
+        "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다.", 
         "probability": "가능성",
-        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요."
+        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요.",
+        # 네비게이션 테스트 탭용
+        "nav_title": "🚗 Google Maps 네비게이션 연결기",
+        "nav_description": "아래에 Google 지도 링크를 붙여넣으면, 바로 네비게이션으로 연결됩니다.",
+        "nav_input_placeholder": "예: https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6",
+        "nav_success": "✅ 유효한 Google 지도 링크입니다!",
+        "nav_button": "📍 구글 네비로 이동",
+        "nav_info": "📱 모바일에서는 이 버튼을 누르면 Google Maps 앱이 바로 열립니다.",
+        "nav_error": "⚠️ 유효하지 않은 Google Maps 링크 형식입니다.",
+        "nav_example": "👇 예시 링크: "
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
-        "tab_notice": "Notice", "tab_map": "Cantata Tour", "indoor": "Indoor", "outdoor": "Outdoor", 
+        "tab_notice": "Notice", "tab_map": "Cantata Tour", "tab_nav_test": "🌐 Navigation Test", "indoor": "Indoor", "outdoor": "Outdoor", 
         "venue": "Venue", "seats": "Expected", "note": "Note", "google_link": "Google Maps",
         "warning": "Enter city and venue", "delete": "Remove", "menu": "Menu", "login": "Login", "logout": "Logout",
         "add_city": "Add", "register": "Register", "update": "Update", "remove": "Remove",
@@ -99,11 +109,20 @@ LANG = {
         "media_attachment": "Attach Photo/Video", "post_success": "Post uploaded successfully!", "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "Probability",
-        "caption": "Click icons or routes on the map for details."
+        "caption": "Click icons or routes on the map for details.",
+        # 네비게이션 테스트 탭용
+        "nav_title": "🚗 Google Maps Navigation Connector",
+        "nav_description": "Paste the Google Maps link below to directly connect to navigation.",
+        "nav_input_placeholder": "e.g.: https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6",
+        "nav_success": "✅ Valid Google Maps link!",
+        "nav_button": "📍 Go to Google Navigation",
+        "nav_info": "📱 On mobile, tapping this button will directly open the Google Maps app.",
+        "nav_error": "⚠️ Invalid Google Maps link format.",
+        "nav_example": "👇 Example Link: "
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
-        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "indoor": "इनडोर", "outdoor": "आउटडोर", 
+        "tab_notice": "सूचना", "tab_map": "कंटटा टूर", "tab_nav_test": "🌐 नेविगेशन परीक्षण", "indoor": "इनडोर", "outdoor": "आउटडोर", 
         "venue": "स्थल", "seats": "अपेक्षित", "note": "नोट", "google_link": "गूगल मैप्स",
         "warning": "शहर और स्थल दर्ज करें", "delete": "हटाएं", "menu": "मेनू", "login": "लॉगिन", "logout": "लॉगआउट",
         "add_city": "जोड़ें", "register": "रजिस्टर", "update": "अपडेट", "remove": "हटाएं",
@@ -129,7 +148,16 @@ LANG = {
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।"
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।",
+        # नेविगेशन परीक्षण टैब के लिए
+        "nav_title": "🚗 गूगल मैप्स नेविगेशन कनेक्टर",
+        "nav_description": "सीधे नेविगेशन से कनेक्ट करने के लिए नीचे Google Maps लिंक पेस्ट करें।",
+        "nav_input_placeholder": "उदाहरण: https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6",
+        "nav_success": "✅ वैध Google Maps लिंक!",
+        "nav_button": "📍 गूगल नेविगेशन पर जाएं",
+        "nav_info": "📱 मोबाइल पर, इस बटन को टैप करने से Google Maps ऐप सीधे खुल जाएगा।",
+        "nav_error": "⚠️ अमान्य Google Maps लिंक प्रारूप।",
+        "nav_example": "👇 उदाहरण लिंक: "
     }
 }
 
@@ -560,8 +588,21 @@ st.markdown(
         color: #f0f0f0;
     }
     
-    /* === [요청] 컨트롤 숨기기 CSS 제거 === */
-    /* .hidden-controls ... (제거됨) ... */
+    /* 네비게이션 테스트 버튼 스타일 */
+    .nav-button-style {
+        display:inline-block;
+        padding: 12px 24px;
+        background-color:#34A853; /* Google Green */
+        color:white;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:600;
+        font-size:16px;
+        transition: background-color 0.2s;
+    }
+    .nav-button-style:hover {
+        background-color:#2e8a4d;
+    }
     
     </style>
     
@@ -736,7 +777,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
+tab_notice, tab_map, tab_nav_test = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}", _('tab_nav_test')])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -939,7 +980,7 @@ with tab_map:
 
                 expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
                 
-                # === [수정] Google Maps Link 입력 필드 유지 (데이터 저장용) ===
+                # === Google Maps Link 입력 필드 유지 (데이터 저장용) ===
                 google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
 
                 # === 1. 수정: 슬라이더에 % 포맷 적용 ===
@@ -1031,7 +1072,7 @@ with tab_map:
                         seats_value = item.get('seats', '0')
                         updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
                         
-                        # === [수정] Google Maps Link 입력 필드 유지 (데이터 수정용) ===
+                        # === Google Maps Link 입력 필드 유지 (데이터 수정용) ===
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         
                         # === 1. 수정: 슬라이더에 % 포맷 적용 ===
@@ -1115,8 +1156,7 @@ with tab_map:
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
-        # 팝업 HTML (최소 높이 190px)
-        # Google Maps 링크 섹션(if item.get('google_link')) 전체 삭제
+        # 팝업 HTML (Google Maps 링크 명령 모두 삭제됨)
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
@@ -1132,11 +1172,6 @@ with tab_map:
             </div>
         </div>
         """
-        # === Google Maps URL: 모바일 내비게이션 최적화 로직 (삭제됨) ===
-        # if item.get('google_link'):
-        #     ... (삭제) ...
-        #     popup_html += f""" ... (삭제) ... """
-        # === Google Maps URL 수정 완료 ===
 
         # 마커 아이콘
         city_initial = item.get('city', 'A')[0]
@@ -1212,3 +1247,45 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
+
+
+# =============================================================================
+# 탭 3: 네비게이션 테스트 (Navigation Test)
+# =============================================================================
+with tab_nav_test:
+    st.title(_("nav_title"))
+    st.write(_("nav_description"))
+
+    # --- 입력창 ---
+    url = st.text_input(_("google_link"), placeholder=_("nav_input_placeholder"), label_visibility="collapsed")
+
+    # --- 유효성 검사 ---
+    def is_valid_google_maps_url(url):
+        # maps.app.goo.gl (단축 링크) 또는 www.google.com/maps (일반 링크)
+        pattern = r"(https:\/\/)?(maps\.app\.goo\.gl|www\.google\.com\/maps)"
+        return re.match(pattern, url) is not None
+
+    if url:
+        if is_valid_google_maps_url(url):
+            st.success(_("nav_success"))
+
+            # --- 모바일에서 바로 네비로 연결되는 링크 만들기 ---
+            # maps.app.goo.gl 링크는 이미 리디렉션이 포함되어 있으므로 그대로 사용 가능
+            st.markdown(
+                f"""
+                <a href="{url}" target="_blank" class="nav-button-style">
+                    {_("nav_button")}
+                </a>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.info(_("nav_info"))
+        else:
+            st.error(_("nav_error"))
+    else:
+        st.write(f'{_("nav_example")}`https://maps.app.goo.gl/zBHJqdXPb5pfBsqk6`')
+
+    # --- 푸터 ---
+    st.markdown("---")
+    st.caption("Made with ❤️ using Streamlit")
