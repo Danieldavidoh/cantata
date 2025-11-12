@@ -719,8 +719,8 @@ with col_auth:
 st.markdown('</div>', unsafe_allow_html=True)
 
 
-# --- 탭 구성 (수정: 아이콘 추가) ---
-tab_notice, tab_map = st.tabs([f"📢 {_('tab_notice')}", f"🚌 {_('tab_map')}"])
+# --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
+tab_notice, tab_map = st.tabs([f"📢&nbsp;&nbsp;{_('tab_notice')}", f"🚌&nbsp;&nbsp;{_('tab_map')}"])
 
 # =============================================================================
 # 탭 1: 공지사항 (Notice)
@@ -956,7 +956,8 @@ with tab_map:
                 # --- 실내/실외 색상 변경 ---
                 type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
                 
-                header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} (:{type_color_md}[{translated_type}]) | {_('probability')}: **{probability_val}%**"
+                # === 2. 수정: expander 제목에서 (:#1E90FF[실내]) 대신 (실내)로 표시 ===
+                header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
 
                 with st.expander(header_text, expanded=False): 
 
