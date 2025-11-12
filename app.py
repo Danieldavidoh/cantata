@@ -47,13 +47,13 @@ LANG = {
         "add_city": "추가", "register": "등록", "update": "수정", "remove": "제거",
         "date": "날짜", "city_name": "도시 이름", "search_placeholder": "도시/장소 검색...",
         "general": "일반", "urgent": "긴급", "admin_login": "관리자 로그인", "update_content": "내용 수정",
-        "existing_notices": "기존 공지사항", "no_notices": "공지사항이 없습니다.", "content": "내용",
+        "existing_notices": "기존 공지사항", "no_notices": "공지사항이 없습니다。", "content": "내용",
         "no_content": "내용 없음", "no_title": "제목 없음", 
         "tour_schedule_management": "공연도시 정보 입력", 
         "venue_list_title": "공연 도시 목록", 
         "set_data": "데이터 설정", "type": "유형", "city": "도시", "link": "링크", "past_route": "지난 경로",
-        "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다.",
-        "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요.",
+        "single_location": "단일 위치", "legend": "범례", "no_schedule": "일정이 없습니다。",
+        "city_coords_error": "좌표를 찾을 수 없습니다. city_dict에 추가해 주세요。",
         "logged_in_success": "관리자로 로그인했습니다。", "logged_out_success": "로그아웃했습니다。",
         "incorrect_password": "비밀번호가 틀렸습니다。", "fill_in_fields": "제목과 내용을 채워주세요。",
         "notice_reg_success": "공지사항이 성공적으로 등록되었습니다!", "notice_del_success": "공지사항이 삭제되었습니다。",
@@ -72,8 +72,8 @@ LANG = {
         "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다。", 
         "probability": "가능성",
         "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요。",
-        "delete_all_data": "전체 데이터 영구 삭제 (관리자용)",
-        "delete_all_warning": "경고: 모든 공지, 일정 및 사용자 포스트가 영구 삭제됩니다. 계속하시려면 비밀번호(0691)를 입력하세요.",
+        "delete_all_data": "전체 데이터 영구 삭제",
+        "delete_all_warning": "경고: 모든 공지, 일정 및 사용자 포스트가 영구 삭제됩니다. 계속하시려면 비밀번호를 입력하세요。",
         "delete_all_confirm": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다!",
         "delete_all_success": "모든 데이터가 성공적으로 삭제되었습니다!",
     },
@@ -110,8 +110,8 @@ LANG = {
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "Probability",
         "caption": "Click icons or routes on the map for details.",
-        "delete_all_data": "Permanently Delete All Data (Admin Only)",
-        "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password (0691) to proceed.",
+        "delete_all_data": "Permanently Delete All Data",
+        "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password to proceed.",
         "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
         "delete_all_success": "All data successfully deleted!",
     },
@@ -143,16 +143,16 @@ LANG = {
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।",
-        "delete_all_data": "Permanently Delete All Data (Admin Only)",
-        "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password (0691) to proceed.",
+        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें。",
+        "delete_all_data": "Permanently Delete All Data",
+        "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password to proceed.",
         "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
         "delete_all_success": "All data successfully deleted!",
     }
 }
 
 # --- 세션 초기화 ---
-defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False, "show_controls": False} 
+defaults = {"admin": False, "lang": "ko", "notice_open": False, "map_open": False, "logged_in_user": None, "show_login_form": False, "show_controls": False, "current_tab_index": 0} 
 for k, v in defaults.items():
     if k not in st.session_state: st.session_state[k] = v
     elif k == "lang" and not isinstance(st.session_state[k], str): st.session_state[k] = "ko"
@@ -362,8 +362,8 @@ user_posts = load_json(USER_POST_FILE)
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
-# === [추가] 전체 삭제 비밀번호 ===
-DELETE_ALL_PASS = "0691"
+# === [수정] 전체 삭제 비밀번호 (0610으로 가정) ===
+DELETE_ALL_PASS = "0610"
 
 # ----------------------------------------------------------------------
 # 6. 제목 및 크리스마스 UI
@@ -659,9 +659,11 @@ def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개�
         
         # Y축 시작 위치를 결정 (숫자 그라데이션) - 0 ~ 33vh 공간에 별을 배치
         # random.random()을 제곱하여 0에 가까운 값(상단)이 나올 확률을 높입니다.
+        # 이 방식으로 상단 33vh 내에서도 상단에 별이 더 집중됩니다.
         normalized_y_start = random.random() ** 2 
         top_start = int(normalized_y_start * 33) # 0vh (높은 밀도) ~ 33vh (낮은 밀도)
-        
+
+            
         # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
         size = random.uniform(1.0, 3.0) * (2/3) 
         
@@ -671,7 +673,7 @@ def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개�
 
         is_twinkling = i in twinkling_indices
         
-        # 기본 스타일 (반짝이지 않는 별은 고정된 밝기를 가집니다)
+        # 기본 스타일 
         style_attributes = [
             f"position: fixed;",
             f"left: {left}%;",
@@ -844,555 +846,562 @@ def delete_all_data_permanently():
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-# tab_nav_test 삭제
-tab_notice, tab_map = st.tabs([f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"])
+# 탭 리스트 정의
+tab_names = [f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"]
 
-# =============================================================================
-# 탭 1: 공지사항 (Notice)
-# =============================================================================
-with tab_notice:
+# 탭 선택 시 상태 저장 및 리로드 (모든 확장 상태를 닫기 위함)
+def set_tab(index):
+    if st.session_state.current_tab_index != index:
+        st.session_state.current_tab_index = index
+        # 탭 변경 시 페이지를 다시 로드하여 모든 expander가 expanded=False로 초기화되도록 유도
+        st.rerun() 
+    
+tab_notice_obj, tab_map_obj = st.tabs(tab_names)
 
-    # 1. 관리자 공지사항 관리
-    if st.session_state.admin:
-        st.subheader(f"🔔 공지 관리") 
+# 현재 활성화된 탭에 따라 내용 렌더링
+if st.session_state.current_tab_index == 0:
+    with tab_notice_obj:
+        # 탭 1 내용 시작 (공지)
 
-        # --- 관리자: 공지사항 등록/수정 폼 ---
-        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-        with st.expander(_("register"), expanded=False): 
-            with st.form("notice_form", clear_on_submit=True):
-                notice_title = st.text_input("제목")
-                notice_content = st.text_area(_("note"))
+        # 1. 관리자 공지사항 관리
+        if st.session_state.admin:
+            st.subheader(f"🔔 공지 관리") 
 
-                uploaded_files = st.file_uploader(
-                    _("file_attachment"),
-                    type=["png", "jpg", "jpeg", "pdf", "txt", "zip"],
-                    accept_multiple_files=True,
-                    key="notice_file_uploader"
-                )
+            # --- 관리자: 공지사항 등록/수정 폼 ---
+            with st.expander(_("register"), expanded=False): 
+                with st.form("notice_form", clear_on_submit=True):
+                    notice_title = st.text_input("제목")
+                    notice_content = st.text_area(_("note"))
 
-                type_options = {"General": _("general"), "Urgent": _("urgent")}
-                selected_display_type = st.radio(_("type"), list(type_options.values()))
-                notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
+                    uploaded_files = st.file_uploader(
+                        _("file_attachment"),
+                        type=["png", "jpg", "jpeg", "pdf", "txt", "zip"],
+                        accept_multiple_files=True,
+                        key="notice_file_uploader"
+                    )
 
-                submitted = st.form_submit_button(_("register"))
+                    type_options = {"General": _("general"), "Urgent": _("urgent")}
+                    selected_display_type = st.radio(_("type"), list(type_options.values()))
+                    notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
 
-                if submitted and notice_title and notice_content:
-                    file_info_list = save_uploaded_files(uploaded_files)
+                    submitted = st.form_submit_button(_("register"))
 
-                    new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
-                elif submitted: st.warning(_("fill_in_fields"))
+                    if submitted and notice_title and notice_content:
+                        file_info_list = save_uploaded_files(uploaded_files)
 
-        # --- 관리자: 공지사항 목록 및 수정/삭제 ---
-        valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('id') and n.get('title')]
-        notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
-        type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
+                        new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
+                        tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
+                    elif submitted: st.warning(_("fill_in_fields"))
 
-        for notice in notices_to_display:
-            notice_id = notice['id']; notice_type_key = notice.get('type', 'General')
-            translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice['title']
-
-            prefix = "🚨 " if notice_type_key == "Urgent" else ""
-            header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
-
-            # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-            with st.expander(header_text, expanded=False): 
-                col_del, col_title = st.columns([1, 4])
-                with col_del:
-                    if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
-                        for file_info in notice.get('files', []):
-                            if os.path.exists(file_info['path']): os.remove(file_info['path'])
-
-                        tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
-                        save_json(NOTICE_FILE, tour_notices); st.success(_("notice_del_success")); safe_rerun()
-
-                with col_title:
-                    st.markdown(f"**{_('content')}:** {notice.get('content', _('no_content'))}")
-
-                    attached_files = notice.get('files', [])
-                    if attached_files:
-                        st.markdown(f"**{_('attached_files')}:**")
-                        for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=True, is_user_post=False)
-                    else: st.markdown(f"**{_('attached_files')}:** {_('no_files')}")
-
-                # --- 수정 폼 ---
-                with st.form(f"update_notice_{notice_id}", clear_on_submit=True):
-                    current_type_index = list(type_options_rev.keys()).index(notice_type_key)
-                    updated_display_type = st.radio(_("type"), list(type_options_rev.values()), index=current_type_index, key=f"update_type_{notice_id}")
-                    updated_type_key = list(type_options_rev.keys())[list(type_options_rev.values()).index(updated_display_type)]
-
-                    updated_content = st.text_area(_("update_content"), value=notice.get('content', ''))
-
-                    if st.form_submit_button(_("update")):
-                        for n in tour_notices:
-                            if n.get('id') == notice_id:
-                                n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
-
-        # === 6. 수정: 관리자 제목 변경 ===
-        st.subheader(f"📸 포스트 관리")
-        valid_posts_admin = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
-        if not valid_posts_admin: 
-            st.write(_("no_posts"))
-        else:
-            posts_to_display_admin = sorted(valid_posts_admin, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
-            for post in posts_to_display_admin:
-                post_id = post['id']
-                
-                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-                with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
-                    st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                    
-                    attached_media = post.get('files', [])
-                    if attached_media:
-                        st.markdown(f"**{_('attached_files')}:**")
-                        # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
-                        for media_file in attached_media:
-                            display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
-                    
-                    # 관리자용 삭제 버튼
-                    if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
-                        # 파일 먼저 삭제
-                        for file_info in post.get('files', []):
-                            if os.path.exists(file_info['path']):
-                                try:
-                                    os.remove(file_info['path'])
-                                except Exception as e:
-                                    st.warning(f"파일 삭제 실패: {e}")
-                        # 목록에서 포스트 제거
-                        user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
-                        save_json(USER_POST_FILE, user_posts)
-                        st.success("포스트가 삭제되었습니다.")
-                        safe_rerun()
-        # === 수정 끝 ===
-
-    # 2. 일반 사용자 공지사항 & 포스트 보기
-    if not st.session_state.admin:
-        st.subheader(f"📢 {_('tab_notice')}"); valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('title')]
-        if not valid_notices: st.write(_("no_notices"))
-        else:
+            # --- 관리자: 공지사항 목록 및 수정/삭제 ---
+            valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('id') and n.get('title')]
             notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
             type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
 
             for notice in notices_to_display:
-                notice_id = notice.get('id'); notice_type_key = notice.get('type', 'General')
-                translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
-                prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
+                notice_id = notice['id']; notice_type_key = notice.get('type', 'General')
+                translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice['title']
 
-                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+                prefix = "🚨 " if notice_type_key == "Urgent" else ""
+                header_text = f"{prefix}[{translated_type}] {notice_title} ({notice.get('date', 'N/A')[:10]})"
+
                 with st.expander(header_text, expanded=False): 
-                    st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                    attached_files = notice.get('files', [])
-                    if attached_files:
-                        st.markdown(f"**{_('attached_files')}:**")
-                        for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=false, is_user_post=False)
+                    col_del, col_title = st.columns([1, 4])
+                    with col_del:
+                        if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
+                            for file_info in notice.get('files', []):
+                                if os.path.exists(file_info['path']): os.remove(file_info['path'])
 
-        # --- 사용자 포스트 섹션 ---
-        st.subheader(f"📸 {_('user_posts')}")
+                            tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
+                            save_json(NOTICE_FILE, tour_notices); st.success(_("notice_del_success")); safe_rerun()
 
-        # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
-        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-        with st.expander(_("new_post"), expanded=False): 
-            with st.form("user_post_form", clear_on_submit=True):
-                post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
-                uploaded_media = st.file_uploader(_("media_attachment"), type=["png", "jpg", "jpeg", "mp4", "mov"], accept_multiple_files=True, key="user_media_uploader")
-                post_submitted = st.form_submit_button(_("register"))
+                    with col_title:
+                        st.markdown(f"**{_('content')}:** {notice.get('content', _('no_content'))}")
 
-                if post_submitted and (post_content or uploaded_media):
-                    media_info_list = save_uploaded_files(uploaded_media)
+                        attached_files = notice.get('files', [])
+                        if attached_files:
+                            st.markdown(f"**{_('attached_files')}:**")
+                            for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=True, is_user_post=False)
+                        else: st.markdown(f"**{_('attached_files')}:** {_('no_files')}")
 
-                    new_post = {"id": str(uuid.uuid4()), "content": post_content, "files": media_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                    user_posts.insert(0, new_post); save_json(USER_POST_FILE, user_posts); st.success(_("post_success")); safe_rerun()
-                elif post_submitted: st.warning(_("fill_in_fields"))
+                    # --- 수정 폼 ---
+                    with st.form(f"update_notice_{notice_id}", clear_on_submit=True):
+                        current_type_index = list(type_options_rev.keys()).index(notice_type_key)
+                        updated_display_type = st.radio(_("type"), list(type_options_rev.values()), index=current_type_index, key=f"update_type_{notice_id}")
+                        updated_type_key = list(type_options_rev.keys())[list(type_options_rev.values()).index(updated_display_type)]
 
-        # --- 사용자 포스트 목록 표시 ---
-        valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
-        if not valid_posts: st.write(_("no_posts"))
-        else:
-            posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
-            for post in posts_to_display:
-                post_id = post['id']
-                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-                with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
-                    st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
-                    
-                    # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
-                    attached_media = post.get('files', [])
-                    if attached_media:
-                        st.markdown(f"**{_('attached_files')}:**")
-                        for media_file in attached_media:
-                            display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
-                    # === 수정 끝 ===
-    
-    # 3. === [추가] 전체 삭제 버튼 (관리자 전용) ===
-    if st.session_state.admin:
-        st.markdown("---")
-        st.subheader(_("delete_all_data")) 
+                        updated_content = st.text_area(_("update_content"), value=notice.get('content', ''))
 
-        # --- 전체 삭제 폼 ---
-        with st.form("delete_all_form", clear_on_submit=False):
-            st.warning(_("delete_all_warning"))
-            
-            delete_password = st.text_input("비밀번호 (0691)", type="password", key="delete_all_pass")
-            
-            # 2단계 확인을 위한 체크박스
-            confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
-            
-            submitted = st.form_submit_button("전체 삭제 실행")
-            
-            if submitted:
-                if delete_password == DELETE_ALL_PASS:
-                    if confirm_delete:
-                        delete_all_data_permanently()
-                    else:
-                        st.error("데이터 삭제를 확인해 주세요.")
-                else:
-                    st.error("잘못된 비밀번호입니다.")
-    # === [추가] 끝 ===
+                        if st.form_submit_button(_("update")):
+                            for n in tour_notices:
+                                if n.get('id') == notice_id:
+                                    n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
-
-# =============================================================================
-# 탭 2: 칸타타 투어 (Map)
-# =============================================================================
-with tab_map:
-
-    # --- 1. 관리자: 일정 관리 섹션 ---
-    if st.session_state.admin:
-        st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
-
-        # --- 도시/일정 등록 폼 (Admin Only) ---
-        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-        with st.expander(_("add_city"), expanded=False): 
-            with st.form("schedule_form", clear_on_submit=True):
-                col_c, col_d, col_v = st.columns(3)
-                registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
-                available_cities = [c for c in city_dict if c not in registered_cities] # city_options 대신 city_dict 사용
-
-                # === [수정] selectbox -> multiselect 로 변경 ===
-                city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
-                
-                schedule_date = col_d.date_input(_("date"), key="new_date_input")
-                venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
-
-                col_l, col_s, col_ug, col_up = st.columns(4)
-                type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
-                selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
-                type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
-
-                expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
-                
-                google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
-
-                # === 1. 수정: 슬라이더에 % 포맷 적용 ===
-                probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
-
-                note = st.text_area(_("note"), placeholder=_("note_placeholder"))
-
-                submitted = st.form_submit_button(_("register"))
-
-                # === [수정] 제출 로직: city_name_list만 검사하도록 수정 (나머지는 N/A 허용) ===
-                if submitted:
-                    if not city_name_list: 
-                        st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
-                    else:
-                        cities_added_count = 0
-                        # schedule_date나 venue_name이 비어있더라도 등록은 진행
-                        for city_name in city_name_list: # 선택된 도시 리스트를 순회
-                            if city_name not in city_dict:
-                                st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
-                                continue # 이 도시 건너뛰기
-                            
-                            city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
-                            # schedule_date와 venue_name이 비어있으면 빈 문자열 또는 N/A로 저장
-                            date_str = schedule_date.strftime("%Y-%m-%d") if schedule_date else "N/A"
-                            venue_str = venue_name if venue_name else "N/A"
-
-                            new_schedule_entry = {
-                                "id": str(uuid.uuid4()), 
-                                "city": city_name, # 개별 도시 이름
-                                "venue": venue_str, 
-                                "lat": city_coords["lat"], 
-                                "lon": city_coords["lon"], 
-                                "date": date_str, 
-                                "type": type_sel, 
-                                "seats": str(expected_seats), 
-                                "note": note, 
-                                "google_link": google_link, 
-                                "probability": probability, 
-                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
-                            }
-                            tour_schedule.append(new_schedule_entry)
-                            cities_added_count += 1
-                        
-                        if cities_added_count > 0:
-                            save_json(CITY_FILE, tour_schedule)
-                            st.success(_("schedule_reg_success")) # 성공 메시지
-                            safe_rerun()
-                # === 로직 수정 완료 ===
-
-        # --- 관리자: 일정 보기 및 수정/삭제 ---
-        valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
-
-        if valid_schedule:
-            st.subheader(_("venue_list_title")) # '공연 도시 목록'
-            schedule_dict = {item['id']: item for item in valid_schedule}
-            sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
-            type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
-
-            for i, (item_id, item) in enumerate(sorted_schedule_items):
-                current_type_key = item.get('type', 'outdoor')
-                translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
-                probability_val = item.get('probability', 100)
-
-                city_name_display = item.get('city', 'N/A')
-                
-                # --- 실내/실외 색상 변경 ---
-                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
-                
-                # === 2. 수정: expander 제목에서 (:#1E90FF[실내]) 대신 (실내)로 표시 ===
-                header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
-
-                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
-                with st.expander(header_text, expanded=False): 
-
-                    with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
-                        st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
-
-                        col_uc, col_ud, col_uv = st.columns(3)
-
-                        updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
-
-                        try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
-                        except ValueError: initial_date = date.today()
-
-                        updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
-                        updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
-
-                        col_ul, col_us, col_ug, col_up = st.columns(4)
-                        current_map_type = item.get('type', 'outdoor')
-                        current_map_index = 0 if current_map_type == "indoor" else 1
-                        map_type_list = list(type_options_map_rev.values())
-                        updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
-                        updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
-
-                        seats_value = item.get('seats', '0')
-                        updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
-                        
-                        updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
-                        
-                        # === 1. 수정: 슬라이더에 % 포맷 적용 ===
-                        updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, key=f"upd_prob_{item_id}", format="%d%%")
-
-                        updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
-
-                        st.markdown("---")
-                        # === [수정] 등록과 제거 버튼을 양쪽 끝에 배치 ===
-                        col_save, col_space, col_del = st.columns([1, 4, 1])
-
-                        # "등록" (Save) 버튼
-                        with col_save:
-                            if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
-                                for idx, s in enumerate(tour_schedule):
-                                    if s.get('id') == item_id:
-                                        coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
-
-                                        tour_schedule[idx].update({
-                                            "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
-                                            "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
-                                            "note": updated_note, "google_link": updated_google, "probability": updated_probability,
-                                        })
-                                        save_json(CITY_FILE, tour_schedule)
-                                        st.success(_("schedule_upd_success"))
-                                        safe_rerun()
-
-                        # "제거" (Remove) 버튼
-                        with col_del:
-                            if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
-                                tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
-                                save_json(CITY_FILE, tour_schedule)
-                                st.success(_("schedule_del_success"))
-                                safe_rerun()
-                        # === 수정 끝 ===
-
-                    # Display distance/time between current city and the next city in the expander
-                    if i < len(sorted_schedule_items) - 1:
-                        current_city_coords = (item.get('lat'), item.get('lon'))
-                        next_item = sorted_schedule_items[i+1][1]
-                        next_city_coords = (next_item.get('lat'), next_item.get('lon'))
-
-                        if all(current_city_coords) and all(next_city_coords):
-                            distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                            st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
-                        else:
-                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
-
-        else: st.write(_("no_schedule"))
-
-
-    # --- 지도 표시 (사용자 & 관리자 공통) ---
-    st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
-    current_date = date.today()
-    schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
-
-    AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
-    start_coords = [AURANGABAD_COORDS['lat'], AURANGABAD_COORDS['lon']]
-
-    m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
-    locations = []
-    city_names_for_map = [] 
- 
-    for item in schedule_for_map:
-        lat = item['lat']; lon = item['lon']; date_str_map = item['date']
-        city_name_map = item.get('city', 'N/A') 
-
-        try: event_date = datetime.strptime(date_str_map, "%Y-%m-%d").date()
-        except ValueError: event_date = current_date + timedelta(days=365)
-
-        is_past = event_date < current_date
-
-        icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
-
-        type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
-        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
-        
-        # --- 실내/실외 색상 및 아이콘 변경 ---
-        type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
-        map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' # FontAwesome 아이콘
-        
-        probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
-
-        red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
-
-        # 팝업 HTML 시작 (아직 최상위 DIV를 닫지 않음)
-        popup_html = f"""
-        <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
-            <div style="color: #1A1A1A;">
-                <b>{_('city')}:</b> {red_city_name}<br>
-                <b>{_('date')}:</b> {date_str_map}<br>
-                <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
-                <b>{_('type')}:</b> <span style="color: {type_color_html};"><i class="fa {map_type_icon_fa}" style="margin-right: 5px;"></i> {translated_type}</span><br>
-                <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
-                
-                <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
-                    <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
-                </div>
-            </div>
-        """
-        
-        # === Google Maps URL: 모바일 내비게이션 최적화 (오류 수정 로직) ===
-        google_link_data = item.get('google_link')
-        if google_link_data:
-            
-            # --- 1. 목적지 쿼리 추출 ---
-            destination_query = ""
-            
-            # Google Maps 좌표 패턴 (예: @19.07609,72.877426)
-            coord_match = re.search(r"@(-?\d+\.\d+),(-?\d+\.\d+)", google_link_data)
-            
-            # 1b. 좌표가 추출된 경우 (가장 정확)
-            if coord_match:
-                lat_str, lon_str = coord_match.groups()
-                destination_query = f"{lat_str},{lon_str}"
-            # 1c. URL이 아니거나, URL에서 좌표를 추출하지 못한 경우 (장소 이름/주소 사용)
+            # === 6. 수정: 관리자 제목 변경 ===
+            st.subheader(f"📸 포스트 관리")
+            valid_posts_admin = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
+            if not valid_posts_admin: 
+                st.write(_("no_posts"))
             else:
-                 destination_query = f"{item.get('venue', '')}, {item.get('city', '')}"
-            
-            # --- 2. URL 생성 ---
-            encoded_query = quote(destination_query) 
-            
-            # Google Maps URL Scheme (네이티브 앱 실행 유도)
-            # 현위치(saddr=)에서 목적지(daddr=)로 길찾기를 시작합니다.
-            # saddr 파라미터를 생략하면 모바일 앱이 자동으로 현위치를 사용합니다.
-            nav_scheme_link = f"comgooglemaps://?daddr={encoded_query}&dir_action=navigate"
+                posts_to_display_admin = sorted(valid_posts_admin, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+                for post in posts_to_display_admin:
+                    post_id = post['id']
+                    
+                    # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+                    with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
+                        st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                        
+                        attached_media = post.get('files', [])
+                        if attached_media:
+                            st.markdown(f"**{_('attached_files')}:**")
+                            # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
+                            for media_file in attached_media:
+                                display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
+                        
+                        # 관리자용 삭제 버튼
+                        if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
+                            # 파일 먼저 삭제
+                            for file_info in post.get('files', []):
+                                if os.path.exists(file_info['path']):
+                                    try:
+                                        os.remove(file_info['path'])
+                                    except Exception as e:
+                                        st.warning(f"파일 삭제 오류: {e}")
+                            # 목록에서 포스트 제거
+                            user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
+                            save_json(USER_POST_FILE, user_posts)
+                            st.success("포스트가 삭제되었습니다.")
+                            safe_rerun()
+            # === 수정 끝 ===
 
-            final_link = nav_scheme_link
+        # 2. 일반 사용자 공지사항 & 포스트 보기
+        if not st.session_state.admin:
+            st.subheader(f"📢 {_('tab_notice')}"); valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('title')]
+            if not valid_notices: st.write(_("no_notices"))
+            else:
+                notices_to_display = sorted(valid_notices, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+                type_options_rev = {"General": _("general"), "Urgent": _("urgent")}
+
+                for notice in notices_to_display:
+                    notice_id = notice.get('id'); notice_type_key = notice.get('type', 'General')
+                    translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
+                    prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
+
+                    # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+                    with st.expander(header_text, expanded=False): 
+                        st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                        attached_files = notice.get('files', [])
+                        if attached_files:
+                            st.markdown(f"**{_('attached_files')}:**")
+                            for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=false, is_user_post=False)
+
+            # --- 사용자 포스트 섹션 ---
+            st.subheader(f"📸 {_('user_posts')}")
+
+            # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
+            # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+            with st.expander(_("new_post"), expanded=False): 
+                with st.form("user_post_form", clear_on_submit=True):
+                    post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
+                    uploaded_media = st.file_uploader(_("media_attachment"), type=["png", "jpg", "jpeg", "mp4", "mov"], accept_multiple_files=True, key="user_media_uploader")
+                    post_submitted = st.form_submit_button(_("register"))
+
+                    if post_submitted and (post_content or uploaded_media):
+                        media_info_list = save_uploaded_files(uploaded_media)
+
+                        new_post = {"id": str(uuid.uuid4()), "content": post_content, "files": media_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
+                        user_posts.insert(0, new_post); save_json(USER_POST_FILE, user_posts); st.success(_("post_success")); safe_rerun()
+                    elif post_submitted: st.warning(_("fill_in_fields"))
+
+            # --- 사용자 포스트 목록 표시 ---
+            valid_posts = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
+            if not valid_posts: st.write(_("no_posts"))
+            else:
+                posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
+                for post in posts_to_display:
+                    post_id = post['id']
+                    # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+                    with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
+                        st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
+                        
+                        # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
+                        attached_media = post.get('files', [])
+                        if attached_media:
+                            st.markdown(f"**{_('attached_files')}:**")
+                            for media_file in attached_media:
+                                display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
+                        # === 수정 끝 ===
+        
+        # 3. === [추가] 전체 삭제 버튼 (관리자 전용) ===
+        if st.session_state.admin:
+            st.markdown("---")
+            st.subheader(_("delete_all_data")) 
+
+            # --- 전체 삭제 폼 ---
+            with st.form("delete_all_form", clear_on_submit=False):
+                st.warning(_("delete_all_warning"))
+                
+                # === [수정] 비밀번호 필드: (0610) 제거, 플레이스홀더에 0610 노출 ===
+                delete_password = st.text_input("비밀번호", type="password", placeholder="0610", key="delete_all_pass")
+                
+                # 2단계 확인을 위한 체크박스
+                confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
+                
+                submitted = st.form_submit_button("전체 삭제 실행")
+                
+                if submitted:
+                    if delete_password == DELETE_ALL_PASS:
+                        if confirm_delete:
+                            delete_all_data_permanently()
+                        else:
+                            st.error("데이터 삭제를 확인해 주세요.")
+                    else:
+                        st.error("잘못된 비밀번호입니다.")
+        # === [추가] 끝 ===
+
+
+if st.session_state.current_tab_index == 1:
+    with tab_map_obj:
+        # 탭 2 내용 시작 (지도)
+        
+        # --- 1. 관리자: 일정 관리 섹션 ---
+        if st.session_state.admin:
+            st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
+
+            # --- 도시/일정 등록 폼 (Admin Only) ---
+            # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+            with st.expander(_("add_city"), expanded=False): 
+                with st.form("schedule_form", clear_on_submit=True):
+                    col_c, col_d, col_v = st.columns(3)
+                    registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
+                    available_cities = [c for c in city_dict if c not in registered_cities] # city_options 대신 city_dict 사용
+
+                    # === [수정] selectbox -> multiselect 로 변경 ===
+                    city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
+                    
+                    schedule_date = col_d.date_input(_("date"), key="new_date_input")
+                    venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
+
+                    col_l, col_s, col_ug, col_up = st.columns(4)
+                    type_options_map = {_("indoor"): "indoor", _("outdoor"): "outdoor"}
+                    selected_display_type = col_l.radio(_("type"), list(type_options_map.values()))
+                    type_sel = list(type_options_map.keys())[list(type_options_map.values()).index(selected_display_type)] 
+
+                    expected_seats = col_s.number_input(_("seats"), min_value=0, value=500, step=50, help=_("seats_tooltip"))
+                    
+                    google_link = col_ug.text_input(f"🚗 {_('google_link')}", placeholder=_("google_link_placeholder"))
+
+                    # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                    probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
+
+                    note = st.text_area(_("note"), placeholder=_("note_placeholder"))
+
+                    submitted = st.form_submit_button(_("register"))
+
+                    # === [수정] 제출 로직: city_name_list만 검사하도록 수정 (나머지는 N/A 허용) ===
+                    if submitted:
+                        if not city_name_list: 
+                            st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
+                        else:
+                            cities_added_count = 0
+                            # schedule_date나 venue_name이 비어있더라도 등록은 진행
+                            for city_name in city_name_list: # 선택된 도시 리스트를 순회
+                                if city_name not in city_dict:
+                                    st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
+                                    continue # 이 도시 건너뛰기
+                                
+                                city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
+                                # schedule_date와 venue_name이 비어있으면 빈 문자열 또는 N/A로 저장
+                                date_str = schedule_date.strftime("%Y-%m-%d") if schedule_date else "N/A"
+                                venue_str = venue_name if venue_name else "N/A"
+
+                                new_schedule_entry = {
+                                    "id": str(uuid.uuid4()), 
+                                    "city": city_name, # 개별 도시 이름
+                                    "venue": venue_str, 
+                                    "lat": city_coords["lat"], 
+                                    "lon": city_coords["lon"], 
+                                    "date": date_str, 
+                                    "type": type_sel, 
+                                    "seats": str(expected_seats), 
+                                    "note": note, 
+                                    "google_link": google_link, 
+                                    "probability": probability, 
+                                    "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                                }
+                                tour_schedule.append(new_schedule_entry)
+                                cities_added_count += 1
+                            
+                            if cities_added_count > 0:
+                                save_json(CITY_FILE, tour_schedule)
+                                st.success(_("schedule_reg_success")) # 성공 메시지
+                                safe_rerun()
+                    # === 로직 수정 완료 ===
+
+            # --- 관리자: 일정 보기 및 수정/삭제 ---
+            valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
+
+            if valid_schedule:
+                st.subheader(_("venue_list_title")) # '공연 도시 목록'
+                schedule_dict = {item['id']: item for item in valid_schedule}
+                sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
+                type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+
+                for i, (item_id, item) in enumerate(sorted_schedule_items):
+                    current_type_key = item.get('type', 'outdoor')
+                    translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
+                    probability_val = item.get('probability', 100)
+
+                    city_name_display = item.get('city', 'N/A')
+                    
+                    # --- 실내/실외 색상 변경 ---
+                    type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
+                    
+                    # === 2. 수정: expander 제목에서 (:#1E90FF[실내]) 대신 (실내)로 표시 ===
+                    header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
+
+                    # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
+                    with st.expander(header_text, expanded=False): 
+
+                        with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
+                            st.markdown(f"**{_('date')}:** {item.get('date', 'N/A')} (등록일: {item.get('reg_date', '')})")
+
+                            col_uc, col_ud, col_uv = st.columns(3)
+
+                            updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
+
+                            try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
+                            except ValueError: initial_date = date.today()
+
+                            updated_date = col_ud.date_input(_("date"), value=initial_date, key=f"upd_date_{item_id}")
+                            updated_venue = col_uv.text_input(_("venue"), value=item.get('venue'), key=f"upd_venue_{item_id}")
+
+                            col_ul, col_us, col_ug, col_up = st.columns(4)
+                            current_map_type = item.get('type', 'outdoor')
+                            current_map_index = 0 if current_map_type == "indoor" else 1
+                            map_type_list = list(type_options_map_rev.values())
+                            updated_display_type = col_ul.radio(_("type"), map_type_list, index=current_map_index, key=f"update_map_type_{item_id}")
+                            updated_type = "indoor" if updated_display_type == _("indoor") else "outdoor"
+
+                            seats_value = item.get('seats', '0')
+                            updated_seats = col_us.number_input(_("seats"), min_value=0, value=int(seats_value) if str(seats_value).isdigit() else 500, step=50, key=f"upd_seats_{item_id}")
+                            
+                            updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
+                            
+                            # === 1. 수정: 슬라이더에 % 포맷 적용 ===
+                            updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, format="%d%%")
+
+                            updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
+
+                            st.markdown("---")
+                            # === [수정] 등록과 제거 버튼을 양쪽 끝에 배치 ===
+                            col_save, col_space, col_del = st.columns([1, 4, 1])
+
+                            # "등록" (Save) 버튼
+                            with col_save:
+                                if st.form_submit_button(_("register"), help="수정 내용을 저장하고 창을 닫습니다"):
+                                    for idx, s in enumerate(tour_schedule):
+                                        if s.get('id') == item_id:
+                                            coords = city_dict.get(updated_city, {'lat': s.get('lat', 0), 'lon': s.get('lon', 0)})
+
+                                            tour_schedule[idx].update({
+                                                "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
+                                                "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
+                                                "note": updated_note, "google_link": updated_google, "probability": updated_probability,
+                                            })
+                                            save_json(CITY_FILE, tour_schedule)
+                                            st.success(_("schedule_upd_success"))
+                                            safe_rerun()
+
+                            # "제거" (Remove) 버튼
+                            with col_del:
+                                if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
+                                    tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
+                                    save_json(CITY_FILE, tour_schedule)
+                                    st.success(_("schedule_del_success"))
+                                    safe_rerun()
+                            # === 수정 끝 ===
+
+                        # Display distance/time between current city and the next city in the expander
+                        if i < len(sorted_schedule_items) - 1:
+                            current_city_coords = (item.get('lat'), item.get('lon'))
+                            next_item = sorted_schedule_items[i+1][1]
+                            next_city_coords = (next_item.get('lat'), next_item.get('lon'))
+
+                            if all(current_city_coords) and all(next_city_coords):
+                                distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
+                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                            else:
+                                    st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
+
+            else: st.write(_("no_schedule"))
+
+
+        # --- 지도 표시 (사용자 & 관리자 공통) ---
+        st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
+        current_date = date.today()
+        schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
+
+        AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
+        start_coords = [AURANGABAD_COORDS['lat'], AURANGABAD_COORDS['lon']]
+
+        m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
+        locations = []
+        city_names_for_map = [] 
+    
+        for item in schedule_for_map:
+            lat = item['lat']; lon = item['lon']; date_str_map = item['date']
+            city_name_map = item.get('city', 'N/A') 
+
+            try: event_date = datetime.strptime(date_str_map, "%Y-%m-%d").date()
+            except ValueError: event_date = current_date + timedelta(days=365)
+
+            is_past = event_date < current_date
+
+            icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
+
+            type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+            translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
             
-            # 팝업에 링크 추가
-            # === [수정] "(웹 지도 보기)" 텍스트 삭제 ===
-            popup_html += f"""
-                <span style="display: block; margin-top: 10px; font-weight: bold;">
-                    <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
-                    <a href="{final_link}" target="_blank" 
-                        style="color: #1A73E8; text-decoration: none;">
-                        {_("google_link")}
-                    </a>
-                </span>
+            # --- 실내/실외 색상 및 아이콘 변경 ---
+            type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
+            map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' # FontAwesome 아이콘
+            
+            probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
+
+            red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
+
+            # 팝업 HTML 시작 (아직 최상위 DIV를 닫지 않음)
+            popup_html = f"""
+            <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
+                <div style="color: #1A1A1A;">
+                    <b>{_('city')}:</b> {red_city_name}<br>
+                    <b>{_('date')}:</b> {date_str_map}<br>
+                    <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
+                    <b>{_('type')}:</b> <span style="color: {type_color_html};"><i class="fa {map_type_icon_fa}" style="margin-right: 5px;"></i> {translated_type}</span><br>
+                    <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
+                    
+                    <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
+                        <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
+                    </div>
+                </div>
             """
-        # === Google Maps URL 수정 완료 ===
-
-        # 최상위 DIV 닫기
-        popup_html += "</div>"
-
-        # 마커 아이콘
-        city_initial = item.get('city', 'A')[0]
-        marker_icon_html = f"""
-            <div style="
-                transform: scale(0.666);
-                opacity: {0.5 if is_past else 1.0};
-                text-align: center;
-                white-space: nowrap;
-            ">
-                <i class="fa fa-map-marker fa-3x" style="color: #BB3333;"></i>
-                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
-            </div>
-        """
-
-        folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
-        locations.append([lat, lon])
-        city_names_for_map.append(city_name_map) 
-
-
-    # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
-    if len(locations) > 1:
-        current_index = -1
-
-        for i, item in enumerate(schedule_for_map):
-            try:
-                event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
-                if event_date >= current_date: current_index = i; break
-            except ValueError: continue
-
-        if current_index == -1: past_segments = locations; future_segments = []
-        elif current_index == 0: past_segments = []; future_segments = locations
-        else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
-
-        # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
-        if len(past_segments) > 1:
-            for i in range(len(past_segments) - 1):
-                segment = [past_segments[i], past_segments[i+1]]
-                dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
-                tooltip_text = f"{dist_time}"
+            
+            # === Google Maps URL: 모바일 내비게이션 최적화 (오류 수정 로직) ===
+            google_link_data = item.get('google_link')
+            if google_link_data:
                 
-                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
+                # --- 1. 목적지 쿼리 추출 ---
+                destination_query = ""
                 
-                folium.PolyLine(
-                    locations=segment, 
-                    color="#BB3333", 
-                    weight=5, 
-                    opacity=0.125, 
-                    tooltip=tooltip_obj 
-                ).add_to(m)
+                # Google Maps 좌표 패턴 (예: @19.07609,72.877426)
+                coord_match = re.search(r"@(-?\d+\.\d+),(-?\d+\.\d+)", google_link_data)
+                
+                # 1b. 좌표가 추출된 경우 (가장 정확)
+                if coord_match:
+                    lat_str, lon_str = coord_match.groups()
+                    destination_query = f"{lat_str},{lon_str}"
+                # 1c. URL이 아니거나, URL에서 좌표를 추출하지 못한 경우 (장소 이름/주소 사용)
+                else:
+                    destination_query = f"{item.get('venue', '')}, {item.get('city', '')}"
+                
+                # --- 2. URL 생성 ---
+                encoded_query = quote(destination_query) 
+                
+                # Google Maps URL Scheme (네이티브 앱 실행 유도)
+                # 현위치(saddr=)에서 목적지(daddr=)로 길찾기를 시작합니다.
+                # saddr 파라미터를 생략하면 모바일 앱이 자동으로 현위치를 사용합니다.
+                nav_scheme_link = f"comgooglemaps://?daddr={encoded_query}&dir_action=navigate"
 
-        # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
-        if len(future_segments) > 1:
-            for i in range(len(future_segments) - 1):
-                segment = [future_segments[i], future_segments[i+1]]
-                dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
-                tooltip_text = f"{dist_time}"
+                final_link = nav_scheme_link
+                
+                # 팝업에 링크 추가
+                # === [수정] "(웹 지도 보기)" 텍스트 삭제 ===
+                popup_html += f"""
+                    <span style="display: block; margin-top: 10px; font-weight: bold;">
+                        <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
+                        <a href="{final_link}" target="_blank" 
+                            style="color: #1A73E8; text-decoration: none;">
+                            {_("google_link")}
+                        </a>
+                    </span>
+                """
+            # === Google Maps URL 수정 완료 ===
 
-                tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
+            # 최상위 DIV 닫기
+            popup_html += "</div>"
 
-                AntPath(
-                    segment, 
-                    use="regular", 
-                    dash_array='30, 20', 
-                    color='#BB3333', 
-                    weight=5, 
-                    opacity=0.8, 
-                    options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
-                    tooltip=tooltip_obj 
-                ).add_to(m)
+            # 마커 아이콘
+            city_initial = item.get('city', 'A')[0]
+            marker_icon_html = f"""
+                <div style="
+                    transform: scale(0.666);
+                    opacity: {0.5 if is_past else 1.0};
+                    text-align: center;
+                    white-space: nowrap;
+                ">
+                    <i class="fa fa-map-marker fa-3x" style="color: #BB3333;"></i>
+                    <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
+                </div>
+            """
 
-    # 지도 표시 (전체 너비 활용)
-    st_folium(m, width=1000, height=600, key="tour_map_render")
+            folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
+            locations.append([lat, lon])
+            city_names_for_map.append(city_name_map) 
 
-    st.caption(_("caption"))
+
+        # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
+        if len(locations) > 1:
+            current_index = -1
+
+            for i, item in enumerate(schedule_for_map):
+                try:
+                    event_date = datetime.strptime(item['date'], "%Y-%m-%d").date()
+                    if event_date >= current_date: current_index = i; break
+                except ValueError: continue
+
+            if current_index == -1: past_segments = locations; future_segments = []
+            elif current_index == 0: past_segments = []; future_segments = locations
+            else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
+
+            # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
+            if len(past_segments) > 1:
+                for i in range(len(past_segments) - 1):
+                    segment = [past_segments[i], past_segments[i+1]]
+                    dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
+                    tooltip_text = f"{dist_time}"
+                    
+                    tooltip_obj = folium.Tooltip(tooltip_text, sticky=False) 
+                    
+                    folium.PolyLine(
+                        locations=segment, 
+                        color="#BB3333", 
+                        weight=5, 
+                        opacity=0.125, 
+                        tooltip=tooltip_obj 
+                    ).add_to(m)
+
+            # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
+            if len(future_segments) > 1:
+                for i in range(len(future_segments) - 1):
+                    segment = [future_segments[i], future_segments[i+1]]
+                    dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
+                    tooltip_text = f"{dist_time}"
+
+                    tooltip_obj = folium.Tooltip(tooltip_text, sticky=False)
+
+                    AntPath(
+                        segment, 
+                        use="regular", 
+                        dash_array='30, 20', 
+                        color='#BB3333', 
+                        weight=5, 
+                        opacity=0.8, 
+                        options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
+                        tooltip=tooltip_obj 
+                    ).add_to(m)
+
+        # 지도 표시 (전체 너비 활용)
+        st_folium(m, width=1000, height=600, key="tour_map_render")
+
+        st.caption(_("caption"))
