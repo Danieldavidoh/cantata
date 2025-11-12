@@ -361,7 +361,8 @@ st.markdown(
     }
 
     .stApp {
-        background: linear-gradient(to bottom, #0d1a26 0%, #1a3a52 100%);
+        /* === [수정] 배경색: 검은색(#0d1a26)에서 파란색(#1a3a52)으로 그라데이션 === */
+        background: linear-gradient(to bottom, #000000 0%, #0d1a26 15%, #1a3a52 100%);
         background-attachment: fixed;
     }
 
@@ -1160,18 +1161,8 @@ with tab_map:
             # --- 1. 목적지 쿼리 추출 ---
             destination_query = ""
             
-            # 1a. 좌표 또는 장소 이름 추출 (URL에서 추출)
-            # URL 형식: https://maps.app.goo.gl/xxxxyyyy
-            # 또는 URL 형식: https://www.google.com/maps/@19.07609,72.877426,15z (좌표)
-            
             # Google Maps 좌표 패턴 (예: @19.07609,72.877426)
             coord_match = re.search(r"@(-?\d+\.\d+),(-?\d+\.\d+)", google_link_data)
-            
-            # Google Maps Place ID/App Link (일반적으로 짧은 goo.gl 링크는 리디렉션을 통해 처리되므로, 그냥 전체 링크를 쿼리로 사용)
-            if google_link_data.startswith("http") and not coord_match:
-                 # URL 자체가 목적지를 포함하고 있을 경우, 인코딩을 피하기 위해 URL 그대로 사용 (최종 리디렉션에 의존)
-                 # 다만, Scheme URL에서는 단순 URL 쿼리는 종종 실패하므로, 대신 city/venue 이름을 사용합니다.
-                 pass # 아래에서 city/venue 이름으로 폴백.
             
             # 1b. 좌표가 추출된 경우 (가장 정확)
             if coord_match:
