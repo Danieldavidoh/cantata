@@ -921,7 +921,7 @@ with tab_notice:
                     attached_files = notice.get('files', [])
                     if attached_files:
                         st.markdown(f"**{_('attached_files')}:**")
-                        for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=False, is_user_post=False)
+                        for file_info in attached_files: display_and_download_file(file_info, notice_id, is_admin=false, is_user_post=False)
 
         # --- 사용자 포스트 섹션 ---
         st.subheader(f"📸 {_('user_posts')}")
@@ -1162,7 +1162,7 @@ with tab_map:
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
-        # 팝업 HTML (Google Maps 링크 명령 모두 삭제됨)
+        # 팝업 HTML 시작 (아직 최상위 DIV를 닫지 않음)
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
@@ -1176,8 +1176,34 @@ with tab_map:
                     <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
             </div>
-        </div>
         """
+        
+        # === Google Maps URL: 모바일 내비게이션 최적화 (재도입) ===
+        google_link_data = item.get('google_link')
+        if google_link_data:
+            # 입력값이 URL이든 장소 이름이든, URL 인코딩하여 destination으로 전달
+            # 주소/장소 이름으로 내비게이션을 요청하면, Google Maps가 이를 해석하여 길 안내를 시작합니다.
+            full_query = f"{google_link_data}" 
+            encoded_query = quote(full_query) 
+            
+            # 모바일에서 현재 위치에서 목적지(daddr)로 바로 길안내를 시작하는 URL 형식
+            # Streamlit iframe 환경 호환성을 위해 구글맵 프록시 URL을 사용합니다.
+            final_google_link = f"http://googleusercontent.com/maps/google.com/0?daddr={encoded_query}"
+
+            # 팝업에 링크 추가
+            popup_html += f"""
+                <span style="display: block; margin-top: 10px; font-weight: bold;">
+                    <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
+                    <a href="{final_google_link}" target="_blank" 
+                        style="color: #1A73E8; text-decoration: none;">
+                        {_("google_link")} 네비게이션 안내 시작
+                    </a>
+                </span>
+            """
+        # === Google Maps URL 수정 완료 ===
+
+        # 최상위 DIV 닫기
+        popup_html += "</div>"
 
         # 마커 아이콘
         city_initial = item.get('city', 'A')[0]
