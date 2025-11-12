@@ -342,7 +342,6 @@ ADMIN_PASS = "0009"
 # ----------------------------------------------------------------------
 
 # --- 크리스마스 테마 CSS 및 애니메이션 (추가) ---
-# === 수정된 부분: textwrap.dedent()를 사용하여 들여쓰기 오류 수정 ===
 st.markdown(
     textwrap.dedent("""
     <style>
@@ -455,6 +454,7 @@ st.markdown(
         position: relative;
         z-index: 10;
         margin-bottom: 20px;
+        /* === 1. 수정: 네온사인 효과 제거 (기본값) === */
     }
 
     /* === 1. 수정: 네온 효과를 위한 새 클래스 === */
@@ -462,8 +462,7 @@ st.markdown(
         text-shadow:
             0 0 5px #fff,
             0 0 10px #fff,
-            0 0 20px #BB3333,
-            0 0 35px #BB3333;
+            0 0 20px #BB3333;
     }
     
     /* 제목 컨테이너 (h1 내부) */
@@ -572,16 +571,16 @@ christmas_icons_list = [
     "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
 ]
 
-# === 수정: 아이콘 스타일 고정 (새로고침 시 위치 변경 방지) ===
+# === 3. 수정: 아이콘 스타일 (겹침 수정) ===
 # 8개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
 icon_styles = [
-    {"left": 10, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁
+    {"left": 12, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁 (10% -> 12%)
     {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
-    {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔 (수정: 35% -> 30%)
+    {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
     {"left": 50, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬
     {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
-    {"left": 80, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟
-    {"left": 55, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (수정: 48% -> 55%)
+    {"left": 83, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟 (80% -> 83%)
+    {"left": 48, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (55% -> 48%)
     {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
 ]
 # === 수정 끝 ===
@@ -612,7 +611,7 @@ def generate_christmas_icons(): # num_icons 제거
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === 8. 눈 결정체 생성 (CSS 기반) (복원) ===
-def generate_snowflakes(num_flakes=25): # === 수정: 밀도 조절 (56 -> 25) ===
+def generate_snowflakes(num_flakes=25): # === 2. 수정: 밀도 조절 (56 -> 25) ===
     snowflakes_html = ""
     for _ in range(num_flakes):
         size = random.uniform(0.5, 1.2) # 눈 결정체 크기 (em)
@@ -643,7 +642,7 @@ title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
 
-# === 수정: 네온 효과를 '칸타타 투어'에만 적용 ===
+# === 1. 수정: 네온 효과를 '칸타타 투어'에만 적용 ===
 title_html = textwrap.dedent(f"""
     <div class="christmas-title-container">
         <span class="neon-effect" style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
