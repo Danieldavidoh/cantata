@@ -532,16 +532,16 @@ st.markdown(
         z-index: 1; 
     }
     
-    /* === [수정] 베들레헴의 별 (Bethlehem Star) CSS - 위치 조정 === */
+    /* === [수정] 베들레헴의 별 (Bethlehem Star) CSS - 위치 조정 (더 내림) === */
     .bethlehem-star {
         position: fixed; 
-        top: 5vh; /* 뷰포트 높이의 5% 위치 (메뉴바 아래) */
+        top: 8vh; /* 뷰포트 높이의 8% 위치로 조정 */
         left: 50px; /* 좌측 상단에 위치 */
-        font-size: 35px; /* 눈에 띄게 큰 크기 */
-        color: #FFD700; /* 골드 색상 */
-        text-shadow: 0 0 15px #FFD700, 0 0 30px rgba(255, 215, 0, 0.9); /* 강한 빛 효과 */
+        font-size: 35px; 
+        color: #FFD700; 
+        text-shadow: 0 0 15px #FFD700, 0 0 30px rgba(255, 215, 0, 0.9); 
         animation: star-glow 1.5s infinite alternate;
-        z-index: 9999; /* 최상단에 배치 */
+        z-index: 9999; 
         pointer-events: none;
     }
     @keyframes star-glow {
@@ -633,12 +633,8 @@ def generate_star_background(num_stars=50): # 개수 50개로 조정
     for _ in range(num_stars):
         left = random.randint(0, 100)
         
-        # Y축 위치를 조정하여 상단(0vh)에 별이 더 많이 나타나고 하단(100vh)으로 갈수록 적어지게 함
-        # 상단 30% 영역(0~30vh)에 70%의 별을 집중시키기 위해 가중치 사용
-        if random.random() < 0.7:
-            top = random.randint(0, 30) # 상단 30vh에 집중
-        else:
-            top = random.randint(30, 100) # 나머지 70vh에 분산
+        # === [수정] Y축 위치를 조정하여 50vh 이상은 별이 없도록 함 ===
+        top = random.randint(0, 50) # 상단 50vh까지만 별이 생성되도록 조정
             
         size = random.uniform(1.0, 3.0) * 2 # 별 크기 두배로 증가
         twinkle_duration = random.uniform(2, 5) 
