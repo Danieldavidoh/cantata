@@ -1214,7 +1214,7 @@ with tab_map:
                     color="#BB3333", 
                     weight=5, 
                     opacity=0.125, 
-                    tooltip=tooltip_obj 
+                    tooltip=obj 
                 ).add_to(m)
 
         # 2. 미래 경로 (AntPath animation, 구간별 툴팁)
@@ -1241,4 +1241,3 @@ with tab_map:
     st_folium(m, width=1000, height=600, key="tour_map_render")
 
     st.caption(_("caption"))
-
