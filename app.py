@@ -154,6 +154,7 @@ for k, v in defaults.items():
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
+# DELETE_ALL_PASS는 삭제됨.
 
 # === [추가] 활동 감지 및 자동 로그아웃 로직 ===
 if "last_activity_time" not in st.session_state:
@@ -182,12 +183,6 @@ if st.session_state.admin:
 # (Streamlit 위젯의 on_change/on_click 이벤트에 활동 업데이트를 명시적으로 추가했습니다.)
 # === 활동 감지 및 자동 로그아웃 로직 끝 ===
 
-
-# --- 자동 새로고침 ---
-# === [수정] 일반 사용자 모드 자동 새로고침 (오류 해결 및 간격 15초 적용) ===
-if not st.session_state.get("admin", False) and 'auto_refresh_user' not in st.session_state:
-    # `st_autorefresh`를 한 번만 호출하여 중복 키 오류 방지
-    st_autorefresh(interval=15000, key="auto_refresh_user")
 
 # --- 번역 함수 ---
 def _(key):
@@ -394,6 +389,7 @@ user_posts = load_json(USER_POST_FILE)
 
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
+# DELETE_ALL_PASS가 코드에서 제거됨
 
 # ----------------------------------------------------------------------
 # 6. 제목 및 크리스마스 UI
@@ -547,6 +543,17 @@ st.markdown(
         z-index: 10; 
     }
 
+    .christmas-icon {
+        position: absolute;
+        display: block;
+        font-size: 20px; 
+        color: #FFFFFF;
+        animation-name: bob-up-down; 
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        opacity: 0.8;
+    }
+
     @keyframes bob-up-down {
         0%    { transform: translateY(0px) rotate(-5deg); }
         50%  { transform: translateY(-10px) rotate(5deg); }
@@ -591,7 +598,7 @@ st.markdown(
     /* === [추가] 느리게 반짝이는 애니메이션 키프레임 (트리거용) === */
     @keyframes twinkle-slow {
         0% { opacity: 0.1; }
-        55% { opacity: 0.8; }
+        50% { opacity: 0.8; }
         100% { opacity: 0.1; }
     }
     /* === Starry Sky and Pulsating Star CSS 끝 === */
@@ -668,7 +675,7 @@ def generate_christmas_icons(): # num_icons 제거
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이, 눈 효과) ===
-def generate_star_background(num_stars=480, twinkling_count=7): # 개수 480개로 조정
+def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개로 조정
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
     
@@ -686,10 +693,9 @@ def generate_star_background(num_stars=480, twinkling_count=7): # 개수 480개�
         # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
         size = random.uniform(1.0, 3.0) * (2/3) 
         
-        # === [수정] 떨어지는 속도 및 애니메이션 지연 시간 (느린 눈처럼, 속도 1/2) ===
-        FALL_FACTOR = 2 # 속도를 절반으로 줄이기 위해 지속 시간을 2배로 늘림
-        fall_duration = random.uniform(10 * FALL_FACTOR, 25 * FALL_FACTOR) # 20초 ~ 50초 동안 떨어짐
-        fall_delay = random.uniform(0, 15 * FALL_FACTOR) # 애니메이션 시작 지연도 2배로 조정
+        # 떨어지는 속도 및 애니메이션 지연 시간 (느린 눈처럼)
+        fall_duration = random.uniform(10, 25) # 10초 ~ 25초 동안 떨어짐
+        fall_delay = random.uniform(0, 15) # 애니메이션 시작 지연
 
         is_twinkling = i in twinkling_indices
         
@@ -736,7 +742,7 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(480, 7) # 480개 별, 7개 반짝임
+stars_background_html = generate_star_background(240, 7) # 240개 별, 7개 반짝임
 st.markdown(stars_background_html, unsafe_allow_html=True)
 st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
 
@@ -762,7 +768,7 @@ col_spacer, col_toggle = st.columns([10, 1]) # [스페이서, 토글 버튼]
 
 with col_toggle:
     # 톱니바퀴 버튼을 누르면 st.session_state.show_controls 값을 반전시킴
-    if st.button("⚙️", key="toggle_controls", on_click=update_activity):
+    if st.button("⚙️", key="toggle_controls"):
         st.session_state.show_controls = not st.session_state.show_controls
 
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
@@ -788,8 +794,8 @@ if st.session_state.show_controls:
             "language", # [요청] 레이블이 보이도록 "language" 키 사용
             options=lang_display_names,
             index=current_lang_index,
-            key="lang_select",
-            on_change=update_activity # 활동 업데이트
+            key="lang_select"
+            # [요청] label_visibility="collapsed" 제거
         )
         selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
         if selected_lang_key != st.session_state.lang:
@@ -801,15 +807,16 @@ if st.session_state.show_controls:
         st.write("") # 버튼을 selectbox와 수직 정렬하기 위한 공백
         st.write("") 
         if st.session_state.admin:
-            if st.button(_("logout"), key="logout_btn_visible_menu", on_click=update_activity):
+            if st.button(_("logout"), key="logout_btn_visible_menu"):
                 st.session_state.admin = False
                 st.session_state.logged_in_user = None
                 st.session_state.show_login_form = False
                 st.session_state.show_controls = False # 메뉴 닫기
                 safe_rerun()
         else:
-            if st.button(_("login"), key="login_btn_visible_menu", on_click=handle_login_button_click): 
-                pass # 핸들러에서 이미 상태 업데이트 및 rerun 처리
+            if st.button(_("login"), key="login_btn_visible_menu"): 
+                handle_login_button_click()
+                st.session_state.show_controls = False # 메뉴 닫기
 
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
@@ -819,8 +826,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
-            # === [수정] on_change 제거 (StreamlitInvalidFormCallbackError 해결) ===
-            password = st.text_input("Password", type="password") 
+            password = st.text_input("Password", type="password")
             submitted = st.form_submit_button(_("login"))
 
             if submitted:
@@ -828,14 +834,24 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
                     st.session_state.show_login_form = False
-                    update_activity() # 폼 제출 성공 시 활동 업데이트
                     safe_rerun()
                 else: st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
+# === [제거] 전체 데이터 삭제 함수 ===
+# def delete_all_data_permanently(): ... (삭제됨) ...
+
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
 # 탭 리스트 정의
 tab_names = [f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"]
+
+# 탭 선택 시 상태 저장 및 리로드 (모든 확장 상태를 닫기 위함)
+# 이 함수는 탭 전환을 처리하고, 상태를 업데이트하며, reran을 트리거하여 모든 expander가 닫힌 상태로 렌더링되게 합니다.
+def set_tab_index(index):
+    # 탭 변경 시에만 rerun을 통해 expander를 접습니다.
+    if st.session_state.current_tab_index != index:
+        st.session_state.current_tab_index = index
+        st.rerun() 
     
 # st.tabs를 사용하여 탭을 렌더링합니다.
 # 탭을 전환할 때마다 Streamlit은 전체 페이지를 다시 실행합니다.
@@ -848,12 +864,11 @@ with tab_notice_obj:
 
     # 1. 관리자 공지사항 관리
     if st.session_state.admin:
-        st.subheader(f"🔔 公지 관리") 
+        st.subheader(f"🔔 공지 관리") 
 
         # --- 관리자: 공지사항 등록/수정 폼 ---
         with st.expander(_("register"), expanded=False): 
             with st.form("notice_form", clear_on_submit=True):
-                # === [수정] on_change 제거 ===
                 notice_title = st.text_input("제목")
                 notice_content = st.text_area(_("note"))
 
@@ -870,14 +885,12 @@ with tab_notice_obj:
 
                 submitted = st.form_submit_button(_("register"))
 
-                if submitted:
-                    update_activity() # 폼 제출 시 활동 업데이트
-                    if notice_title and notice_content:
-                        file_info_list = save_uploaded_files(uploaded_files)
+                if submitted and notice_title and notice_content:
+                    file_info_list = save_uploaded_files(uploaded_files)
 
-                        new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                        tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
-                    else: st.warning(_("fill_in_fields"))
+                    new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
+                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
+                elif submitted: st.warning(_("fill_in_fields"))
 
         # --- 관리자: 공지사항 목록 및 수정/삭제 ---
         valid_notices = [n for n in tour_notices if isinstance(n, dict) and n.get('id') and n.get('title')]
@@ -894,7 +907,7 @@ with tab_notice_obj:
             with st.expander(header_text, expanded=False): 
                 col_del, col_title = st.columns([1, 4])
                 with col_del:
-                    if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove"), on_click=update_activity):
+                    if st.button(_("remove"), key=f"del_n_{notice_id}", help=_("remove")):
                         for file_info in notice.get('files', []):
                             if os.path.exists(file_info['path']): os.remove(file_info['path'])
 
@@ -913,14 +926,12 @@ with tab_notice_obj:
                     # --- 수정 폼 ---
                     with st.form(f"update_notice_{notice_id}", clear_on_submit=True):
                         current_type_index = list(type_options_rev.keys()).index(notice_type_key)
-                        # === [수정] on_change 제거 ===
                         updated_display_type = st.radio(_("type"), list(type_options_rev.values()), index=current_type_index, key=f"update_type_{notice_id}")
                         updated_type_key = list(type_options_rev.keys())[list(type_options_rev.values()).index(updated_display_type)]
 
                         updated_content = st.text_area(_("update_content"), value=notice.get('content', ''))
 
                         if st.form_submit_button(_("update")):
-                            update_activity() # 폼 제출 시 활동 업데이트
                             for n in tour_notices:
                                 if n.get('id') == notice_id:
                                     n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
@@ -947,7 +958,7 @@ with tab_notice_obj:
                                 display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
                         
                         # 관리자용 삭제 버튼
-                        if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다。", on_click=update_activity):
+                        if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
                             # 파일 먼저 삭제
                             for file_info in post.get('files', []):
                                 if os.path.exists(file_info['path']):
@@ -990,14 +1001,14 @@ with tab_notice_obj:
             # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
             with st.expander(_("new_post"), expanded=False): 
                 with st.form("user_post_form", clear_on_submit=True):
-                    post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요。")
+                    post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
                     uploaded_media = st.file_uploader(_("media_attachment"), type=["png", "jpg", "jpeg", "mp4", "mov"], accept_multiple_files=True, key="user_media_uploader")
                     post_submitted = st.form_submit_button(_("register"))
 
                     if post_submitted and (post_content or uploaded_media):
-                        file_info_list = save_uploaded_files(uploaded_media)
+                        media_info_list = save_uploaded_files(uploaded_media)
 
-                        new_post = {"id": str(uuid.uuid4()), "content": post_content, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
+                        new_post = {"id": str(uuid.uuid4()), "content": post_content, "files": media_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
                         user_posts.insert(0, new_post); save_json(USER_POST_FILE, user_posts); st.success(_("post_success")); safe_rerun()
                     elif post_submitted: st.warning(_("fill_in_fields"))
 
@@ -1019,6 +1030,9 @@ with tab_notice_obj:
                             for media_file in attached_media:
                                 display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
                         # === 수정 끝 ===
+        
+        # 3. === [제거] 전체 삭제 버튼 (관리자 전용) ===
+        # if st.session_state.admin: ... (제거됨) ...
 
 
 with tab_map_obj:
