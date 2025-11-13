@@ -178,9 +178,6 @@ if st.session_state.admin:
         st.session_state.show_controls = False
         st.session_state.show_login_form = False
         st.rerun()
-
-# 2. 모든 입력/버튼 클릭 전에 활동 시간 업데이트
-# (Streamlit 위젯의 on_change/on_click 이벤트에 활동 업데이트를 명시적으로 추가했습니다.)
 # === 활동 감지 및 자동 로그아웃 로직 끝 ===
 
 
@@ -214,17 +211,14 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
     file_type = file_info['type']; file_path = file_info['path']; file_name = file_info['name']
     key_prefix = "admin" if is_admin else "user"
 
-    # === 수정된 부분: 관리자 모드에서는 포스트 삭제 버튼이 따로 있으므로, "관리자만..." 메시지 표시 안함 ===
     if is_user_post and not is_admin and not os.path.exists(file_path):
           st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
           return
-    # === 수정 끝 ===
 
     if os.path.exists(file_path):
         if file_type.startswith('image/'):
             base64_data = get_file_as_base64(file_path)
             if base64_data:
-                # === 수정: use_column_width=True -> use_container_width=True (경고 메시지 제거) ===
                 st.image(f"data:{file_type};base64,{base64_data}", caption=f"🖼️ {file_name} ({file_size_kb} KB)", use_container_width=True)
             else:
                 st.markdown(f"**🖼️ {file_name} ({file_size_kb} KB)** (다운로드 버튼)")
@@ -246,10 +240,8 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
             except Exception:
                 pass
     else:
-        # 파일이 존재하지 않는 경우 메시지 표시
-        if is_admin or not is_user_post: # 관리자거나, 공지사항인 경우 항상 메시지 표시
+        if is_admin or not is_user_post: 
               st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
-        # (일반 사용자의 사용자 포스트인 경우, 파일 없으면 아무것도 표시 안함 - 위에서 처리)
 
 
 # --- JSON 헬퍼 ---
@@ -302,7 +294,6 @@ def calculate_distance_and_time(p1, p2):
     return f"{distance_str} / {time_str}"
 
 # --- 5. 도시 목록 및 좌표 정의 ---
-# === [요청] 6개 도시 추가 (Bandra, Kodoli, Mira Road, Miraj, Paratwada, Wadala) ===
 city_dict = {
     "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
     "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
@@ -634,34 +625,29 @@ christmas_icons_list = [
     "🎁", "🎄", "🔔", "🍬", "🍭", "🌟", "🕯️", "☃️"
 ]
 
-# === 3. 수정: 아이콘 스타일 (겹침 수정 및 선물 상자 위치 조정) ===
 # 8개 아이콘 리스트 (christmas_icons_list)와 순서대로 매칭됨
 icon_styles = [
-    {"left": 6, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, # 🎁 (12% -> 6%로 이동)
-    {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, # 🎄
-    {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, # 🔔
-    {"left": 45, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, # 🍬 (50% -> 45%)
-    {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, # 🍭
-    {"left": 83, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, # 🌟 (80% -> 83%)
-    {"left": 50, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, # 🕯️ (48% -> 50%)
-    {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, # ☃️
+    {"left": 6, "top": 15, "duration": 4.5, "delay": 0.2, "size": 30}, 
+    {"left": 20, "top": 5,  "duration": 5.0, "delay": 1.5, "size": 25}, 
+    {"left": 30, "top": 20, "duration": 4.2, "delay": 1.0, "size": 28}, 
+    {"left": 45, "top": 10, "duration": 5.5, "delay": 3.0, "size": 22}, 
+    {"left": 65, "top": 0,  "duration": 3.5, "delay": 0.0, "size": 22}, 
+    {"left": 83, "top": 15, "duration": 4.8, "delay": 1.2, "size": 28}, 
+    {"left": 50, "top": 30, "duration": 5.8, "delay": 3.5, "size": 25}, 
+    {"left": 70, "top": 30, "duration": 5.2, "delay": 4.0, "size": 35}, 
 ]
-# === 수정 끝 ===
 
 # --- 크리스마스 아이콘 생성 및 애니메이션 주입 (수정) ---
-def generate_christmas_icons(): # num_icons 제거
+def generate_christmas_icons(): 
     icons_html = ""
-    # === 수정: 8개 고유 아이콘 리스트와 스타일 리스트를 함께 순회 ===
     for i, icon in enumerate(christmas_icons_list):
-        # 고정된 스타일 값 가져오기
         style = icon_styles[i]
         left = style["left"]
         top = style["top"]
         duration = style["duration"]
         delay = style["delay"]
-        size = style["size"] # size 가져오기
+        size = style["size"] 
         
-        # === 수정: 모든 랜덤 값 제거 ===
         icons_html += textwrap.dedent(f"""
             <span class="christmas-icon" style="
                 font-size: {size}px;
@@ -673,49 +659,39 @@ def generate_christmas_icons(): # num_icons 제거
         """)
     return f'<div class="christmas-icons">{icons_html}</div>'
 
-# === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이, 눈 효과) ===
-def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개로 조정
+# === Starry Background and Big Star Functions ===
+def generate_star_background(num_stars=240, twinkling_count=7): 
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
     
-    # 배경에 고정된 작은 별들을 생성합니다.
     for i in range(num_stars):
         left = random.randint(0, 100)
         
-        # Y축 시작 위치를 결정 (숫자 그라데이션) - 0 ~ 33vh 공간에 별을 배치
-        # random.random()을 제곱하여 0에 가까운 값(상단)이 나올 확률을 높입니다.
-        # 이 방식으로 상단 33vh 내에서도 상단에 별이 더 집중됩니다.
         normalized_y_start = random.random() ** 2 
-        top_start = int(normalized_y_start * 33) # 0vh (높은 밀도) ~ 33vh (낮은 밀도)
+        top_start = int(normalized_y_start * 33) 
 
+        size = random.uniform(1.0, 3.0) * (2/3)  
         
-        # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
-        size = random.uniform(1.0, 3.0) * (2/3) 
-        
-        # 떨어지는 속도 및 애니메이션 지연 시간 (느린 눈처럼)
-        fall_duration = random.uniform(10, 25) # 10초 ~ 25초 동안 떨어짐
-        fall_delay = random.uniform(0, 15) # 애니메이션 시작 지연
+        fall_duration = random.uniform(10, 25) 
+        fall_delay = random.uniform(0, 15) 
 
         is_twinkling = i in twinkling_indices
         
-        # 기본 스타일 
         style_attributes = [
             f"position: fixed;",
             f"left: {left}%;",
-            f"top: {top_start}vh;", # 시작 위치는 0~33vh 사이
+            f"top: {top_start}vh;", 
             f"width: {size}px;",
             f"height: {size}px;",
             f"background-color: rgba(255, 255, 255, {random.uniform(0.7, 1.0):.2f});", 
             f"border-radius: 50%;",
             f"box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);",
             f"z-index: 1;",
-            f"opacity: 0;", # 초기 투명도는 0으로 설정 (애니메이션이 시작하면 나타나게)
+            f"opacity: 0;", 
         ]
 
-        # 모든 별에 눈 내리는 애니메이션 적용 (star-fall)
         animation_name = "star-fall"
         if is_twinkling:
-            # 반짝이는 별은 떨어지는 애니메이션에 느린 반짝임을 추가
             animation_name += f", twinkle-slow {random.uniform(3, 7):.2f}s infinite alternate"
         
         style_attributes.append(f"animation: {animation_name};")
@@ -741,15 +717,14 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(240, 7) # 240개 별, 7개 반짝임
+stars_background_html = generate_star_background(240, 7) 
 st.markdown(stars_background_html, unsafe_allow_html=True)
-st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
+st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) 
 
 title_cantata = _('title_cantata')
 title_year = _('title_year')
 title_region = _('title_region')
 
-# === 1. 수정: 네온 효과를 '칸타타 투어'와 '2025'에 적용 ===
 title_html = textwrap.dedent(f"""
     <div class="christmas-title-container">
         <span class="neon-effect" style="color: #BB3333; margin-right: 10px;">{title_cantata}</span>
@@ -757,8 +732,6 @@ title_html = textwrap.dedent(f"""
         <span style="color: #66BB66; font-size: 0.66em;">{title_region}</span>
     </div>
 """)
-# === 수정 끝 ===
-# === 수정: h1 태그 내부에 아이콘(icons_html_str)을 먼저 삽입하여 그룹화 ===
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
@@ -779,6 +752,7 @@ def handle_login_button_click():
     # safe_rerun()은 호출하는 버튼 로직에서 수행됩니다.
 
 # [FIX] NameError 방지를 위해 st.columns를 조건문 밖에서 정의합니다.
+# 이 컬럼들은 show_controls가 False일 때는 비어있습니다.
 col_spacer_hidden, col_lang, col_auth = st.columns([7, 3, 2])
 
 # 톱니바퀴 버튼(show_controls)이 True일 때만 언어 선택 및 로그인 버튼 표시
@@ -820,8 +794,7 @@ if st.session_state.show_controls:
 
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
-    # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
-    col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
+    col_spacer_form, col_form = st.columns([1, 3]) 
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
@@ -833,26 +806,23 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
                     st.session_state.show_login_form = False
-                    safe_rerun()
-                else: st.warning(_("incorrect_password"))
+                    # [FIX-1] 로그인 성공 시 활동 시간 업데이트 (자동 로그아웃 방지)
+                    update_activity() 
+                    st.success(_("logged_in_success")) # 성공 메시지 출력
+                    # [FIX-2] 폼 제출은 이미 Rerun을 유발하므로, 수동 RERUN을 제거하여 이중 새로고침 방지
+                else: 
+                    st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
-# 탭 리스트 정의
 tab_names = [f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"]
 
-# 탭 선택 시 상태 저장 및 리로드 (모든 확장 상태를 닫기 위함)
-# 이 함수는 탭 전환을 처리하고, 상태를 업데이트하며, reran을 트리거하여 모든 expander가 닫힌 상태로 렌더링되게 합니다.
 def set_tab_index(index):
-    # 탭 변경 시에만 rerun을 통해 expander를 접습니다.
     if st.session_state.current_tab_index != index:
         st.session_state.current_tab_index = index
         st.rerun() 
     
-# st.tabs를 사용하여 탭을 렌더링합니다.
-# 탭을 전환할 때마다 Streamlit은 전체 페이지를 다시 실행합니다.
-# 이 때, st.expander가 expanded=False로 설정되어 있으면 닫힌 상태로 렌더링됩니다.
 tab_notice_obj, tab_map_obj = st.tabs(tab_names)
 
 # 현재 활성화된 탭에 따라 내용 렌더링
@@ -943,32 +913,27 @@ with tab_notice_obj:
                 for post in posts_to_display_admin:
                     post_id = post['id']
                     
-                    # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                     with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]} (ID: {post_id[:8]})", expanded=False):
                         st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                         
                         attached_media = post.get('files', [])
                         if attached_media:
                             st.markdown(f"**{_('attached_files')}:**")
-                            # 관리자는 모든 파일을 볼 수 있음 (is_admin=True)
                             for media_file in attached_media:
                                 display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
                         
                         # 관리자용 삭제 버튼
                         if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다."):
-                            # 파일 먼저 삭제
                             for file_info in post.get('files', []):
                                 if os.path.exists(file_info['path']):
                                     try:
                                         os.remove(file_info['path'])
                                     except Exception as e:
                                         st.warning(f"파일 삭제 오류: {e}")
-                            # 목록에서 포스트 제거
                             user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
                             save_json(USER_POST_FILE, user_posts)
                             st.success("포스트가 삭제되었습니다.")
                             safe_rerun()
-            # === 수정 끝 ===
 
     # 2. 일반 사용자 공지사항 & 포스트 보기
     if not st.session_state.admin:
@@ -983,7 +948,6 @@ with tab_notice_obj:
                 translated_type = type_options_rev.get(notice_type_key, _("general")); notice_title = notice.get('title', _("no_title"))
                 prefix = "🚨 " if notice_type_key == "Urgent" else ""; header_text = f"{prefix}[{translated_type}] {notice_title} - *{notice.get('date', 'N/A')[:16]}*"
 
-                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                 with st.expander(header_text, expanded=False): 
                     st.markdown(f'<div class="notice-content-box">{notice.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                     attached_files = notice.get('files', [])
@@ -995,7 +959,6 @@ with tab_notice_obj:
             st.subheader(f"📸 {_('user_posts')}")
 
             # --- 사용자 포스트 작성 폼 (일반 사용자 모두 허용) ---
-            # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
             with st.expander(_("new_post"), expanded=False): 
                 with st.form("user_post_form", clear_on_submit=True):
                     post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
@@ -1016,17 +979,14 @@ with tab_notice_obj:
                 posts_to_display = sorted(valid_posts, key=lambda x: x.get('date', '9999-12-31'), reverse=True)
                 for post in posts_to_display:
                     post_id = post['id']
-                    # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                     with st.expander(f"익명 사용자 - {post.get('date', 'N/A')[:16]}", expanded=False):
                         st.markdown(f'<div class="notice-content-box">{post.get("content", _("no_content"))}</div>', unsafe_allow_html=True)
                         
-                        # === 수정된 부분: 사용자가 모든 첨부파일을 볼 수 있도록 수정 ===
                         attached_media = post.get('files', [])
                         if attached_media:
                             st.markdown(f"**{_('attached_files')}:**")
                             for media_file in attached_media:
                                 display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
-                        # === 수정 끝 ===
         
         # 3. === [제거] 전체 삭제 버튼 (관리자 전용) ===
 
@@ -1039,12 +999,11 @@ with tab_map_obj:
         st.subheader(f"⚙️ {_('tour_schedule_management')}") # '공연도시 정보 입력'
 
         # --- 도시/일정 등록 폼 (Admin Only) ---
-        # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
         with st.expander(_("add_city"), expanded=False): 
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
                 registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
-                available_cities = [c for c in city_dict if c not in registered_cities] # city_options 대신 city_dict 사용
+                available_cities = [c for c in city_dict if c not in registered_cities] 
 
                 # === [수정] selectbox -> multiselect 로 변경 ===
                 city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
@@ -1074,20 +1033,18 @@ with tab_map_obj:
                         st.warning(_("fill_in_fields")) # 도시 이름이 비어있으면 경고
                     else:
                         cities_added_count = 0
-                        # schedule_date나 venue_name이 비어있더라도 등록은 진행
-                        for city_name in city_name_list: # 선택된 도시 리스트를 순회
+                        for city_name in city_name_list: 
                             if city_name not in city_dict:
-                                st.warning(f"{city_name}: {_('city_coords_error')}") # 특정 도시에 대해 경고
-                                continue # 이 도시 건너뛰기
+                                st.warning(f"{city_name}: {_('city_coords_error')}") 
+                                continue 
                             
                             city_coords = city_dict.get(city_name, {'lat': 0, 'lon': 0}) 
-                            # schedule_date와 venue_name이 비어있으면 빈 문자열 또는 N/A로 저장
                             date_str = schedule_date.strftime("%Y-%m-%d") if schedule_date else "N/A"
                             venue_str = venue_name if venue_name else "N/A"
 
                             new_schedule_entry = {
                                 "id": str(uuid.uuid4()), 
-                                "city": city_name, # 개별 도시 이름
+                                "city": city_name, 
                                 "venue": venue_str, 
                                 "lat": city_coords["lat"], 
                                 "lon": city_coords["lon"], 
@@ -1104,7 +1061,7 @@ with tab_map_obj:
                         
                         if cities_added_count > 0:
                             save_json(CITY_FILE, tour_schedule)
-                            st.success(_("schedule_reg_success")) # 성공 메시지
+                            st.success(_("schedule_reg_success")) 
                             safe_rerun()
                         # === 로직 수정 완료 ===
 
@@ -1112,7 +1069,7 @@ with tab_map_obj:
         valid_schedule = [item for item in tour_schedule if isinstance(item, dict) and item.get('id') and item.get('city') and item.get('venue')]
 
         if valid_schedule:
-            st.subheader(_("venue_list_title")) # '공연 도시 목록'
+            st.subheader(_("venue_list_title")) 
             schedule_dict = {item['id']: item for item in valid_schedule}
             sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
             type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
@@ -1124,13 +1081,10 @@ with tab_map_obj:
 
                 city_name_display = item.get('city', 'N/A')
                 
-                # --- 실내/실외 색상 변경 ---
-                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
+                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" 
                 
-                # === 2. 수정: expander 제목에서 (:#1E90FF[실내]) 대신 (실내)로 표시 ===
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
 
-                # === [수정] expander 초기 상태를 닫힘(expanded=False)로 설정 ===
                 with st.expander(header_text, expanded=False): 
 
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
@@ -1158,13 +1112,11 @@ with tab_map_obj:
                         
                         updated_google = col_ug.text_input(f"🚗 {_('google_link')}", value=item.get('google_link', ''), key=f"upd_google_{item_id}")
                         
-                        # === 1. 수정: 슬라이더에 % 포맷 적용 ===
                         updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, format="%d%%")
 
                         updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
 
                         st.markdown("---")
-                        # === [수정] 등록과 제거 버튼을 양쪽 끝에 배치 ===
                         col_save, col_space, col_del = st.columns([1, 4, 1])
 
                         # "등록" (Save) 버튼
@@ -1190,7 +1142,6 @@ with tab_map_obj:
                                 save_json(CITY_FILE, tour_schedule)
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
-                        # === 수정 끝 ===
 
                         # Display distance/time between current city and the next city in the expander
                         if i < len(sorted_schedule_items) - 1:
@@ -1208,7 +1159,7 @@ with tab_map_obj:
 
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
-    st.subheader(f"🗺️ {_('tab_map')} 보기") # '칸타타 투어 보기'
+    st.subheader(f"🗺️ {_('tab_map')} 보기") 
     current_date = date.today()
     schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
 
@@ -1233,15 +1184,13 @@ with tab_map_obj:
         type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
         translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
         
-        # --- 실내/실외 색상 및 아이콘 변경 ---
-        type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" # 파란색 또는 연한 갈색
-        map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' # FontAwesome 아이콘
+        type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" 
+        map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' 
         
         probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
-        # 팝업 HTML 시작 (아직 최상위 DIV를 닫지 않음)
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
             <div style="color: #1A1A1A;">
@@ -1257,36 +1206,27 @@ with tab_map_obj:
             </div>
         """
         
-        # === Google Maps URL: 모바일 내비게이션 최적화 (오류 수정 로직) ===
         google_link_data = item.get('google_link')
         if google_link_data:
             
             # --- 1. 목적지 쿼리 추출 ---
             destination_query = ""
             
-            # Google Maps 좌표 패턴 (예: @19.07609,72.877426)
             coord_match = re.search(r"@(-?\d+\.\d+),(-?\d+\.\d+)", google_link_data)
             
-            # 1b. 좌표가 추출된 경우 (가장 정확)
             if coord_match:
                 lat_str, lon_str = coord_match.groups()
                 destination_query = f"{lat_str},{lon_str}"
-            # 1c. URL이 아니거나, URL에서 좌표를 추출하지 못한 경우 (장소 이름/주소 사용)
             else:
                 destination_query = f"{item.get('venue', '')}, {item.get('city', '')}"
             
             # --- 2. URL 생성 ---
             encoded_query = quote(destination_query) 
             
-            # Google Maps URL Scheme (네이티브 앱 실행 유도)
-            # 현위치(saddr=)에서 목적지(daddr=)로 길찾기를 시작합니다.
-            # saddr 파라미터를 생략하면 모바일 앱이 자동으로 현위치를 사용합니다.
             nav_scheme_link = f"comgooglemaps://?daddr={encoded_query}&dir_action=navigate"
 
             final_link = nav_scheme_link
             
-            # 팝업에 링크 추가
-            # === [수정] "(웹 지도 보기)" 텍스트 삭제 ===
             popup_html += f"""
                 <span style="display: block; margin-top: 10px; font-weight: bold;">
                     <i class="fa fa-car" style="color: #1A73E8; margin-right: 5px;"></i> 
@@ -1296,7 +1236,6 @@ with tab_map_obj:
                     </a>
                 </span>
             """
-        # === Google Maps URL 수정 완료 ===
 
         # 최상위 DIV 닫기
         popup_html += "</div>"
