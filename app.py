@@ -777,31 +777,12 @@ def safe_rerun():
 
 def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
-    safe_rerun()
+    # safe_rerun() # 이 라인은 삭제하거나 유지할 수 있습니다.
+    # 단, 아래 버튼 로직에서 직접 호출하는 것이 더 명확합니다.
 
 # 톱니바퀴 버튼(show_controls)이 True일 때만 언어 선택 및 로그인 버튼 표시
 if st.session_state.show_controls:
-    # 컨트롤들을 오른쪽에 정렬하기 위한 컬럼
-    col_spacer_hidden, col_lang, col_auth = st.columns([7, 3, 2]) # [스페이서, 언어, 로그인]
-
-    # 4a. 언어 선택 (col_lang에 배치)
-    with col_lang:
-        LANG_OPTIONS = {"ko": "한국어", "en": "English", "hi": "हिन्दी"}
-        lang_keys = list(LANG_OPTIONS.keys())
-        lang_display_names = list(LANG_OPTIONS.values())
-        current_lang_index = lang_keys.index(st.session_state.lang)
-        selected_lang_display = st.selectbox(
-            "language", # [요청] 레이블이 보이도록 "language" 키 사용
-            options=lang_display_names,
-            index=current_lang_index,
-            key="lang_select"
-            # [요청] label_visibility="collapsed" 제거
-        )
-        selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
-        if selected_lang_key != st.session_state.lang:
-            st.session_state.lang = selected_lang_key
-            st.rerun()
-
+    # ... (생략) ...
     # 4b. 로그인/로그아웃 버튼 (col_auth에 배치)
     with col_auth:
         st.write("") # 버튼을 selectbox와 수직 정렬하기 위한 공백
@@ -817,16 +798,14 @@ if st.session_state.show_controls:
             if st.button(_("login"), key="login_btn_visible_menu"): 
                 handle_login_button_click()
                 st.session_state.show_controls = False # 메뉴 닫기
-
+                safe_rerun() # <<< [수정] 로그인 폼 토글 후 즉시 RERUN
+                
 # 4c. 로그인 폼 (조건부로 *보이게* 표시, 공간 차지)
 if st.session_state.show_login_form and not st.session_state.admin:
-    # 폼이 나타날 때만 col_auth를 생성하여 공간을 차지하게 함
-    # ===> [TypeError FIX] `_` 변수를 `col_spacer_form`으로 변경
-    col_spacer_form, col_form = st.columns([1, 3]) # [1, 3] 비율 유지
+    # ... (생략) ...
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
-            st.write(_("admin_login"))
-            password = st.text_input("Password", type="password")
+            # ... (생략) ...
             submitted = st.form_submit_button(_("login"))
 
             if submitted:
@@ -834,7 +813,7 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
                     st.session_state.show_login_form = False
-                    safe_rerun()
+                    safe_rerun() # <<< [확인] 로그인 성공 시 RERUN (이미 잘 되어 있음)
                 else: st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
