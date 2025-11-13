@@ -248,7 +248,7 @@ def display_and_download_file(file_info, notice_id, is_admin=False, is_user_post
                 pass
     else:
         if is_admin or not is_user_post: 
-             st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
+              st.markdown(f"**{file_name}** (파일을 찾을 수 없습니다.)")
 
 
 # --- JSON 헬퍼 ---
@@ -316,9 +316,12 @@ city_dict = {
     "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
     "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
     "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, "Badlapur": {"lat": 19.1088, "lon": 73.1311},
-    "Bandra": {"lat": 19.0544, "lon": 72.8406}, # [요청] 추가
+    "Bandra": {"lat": 19.0544, "lon": 72.8406},
     "Bhandara": {"lat": 21.180052, "lon": 79.564987}, "Bhiwandi": {"lat": 19.300282, "lon": 73.069645},
-    "Bhusawal": {"lat": 21.02606, "lon": 75.830095}, "Chandrapur": {"lat": 19.957275, "lon": 79.296875},
+    "Bhusawal": {"lat": 21.02606, "lon": 75.830095},
+    # [수정] Buldhana 추가
+    "Buldhana": {"lat": 20.5312, "lon": 76.1706},
+    "Chandrapur": {"lat": 19.957275, "lon": 79.296875},
     "Chiplun": {"lat": 17.5322, "lon": 73.516}, "Dhule": {"lat": 20.904964, "lon": 74.774651},
     "Dombivli": {"lat": 19.2183, "lon": 73.0865}, "Gondia": {"lat": 21.4598, "lon": 80.195},
     "Hingoli": {"lat": 19.7146, "lon": 77.1424}, "Ichalkaranji": {"lat": 16.6956, "lon": 74.4561},
@@ -327,7 +330,7 @@ city_dict = {
     "Karanja": {"lat": 20.7083, "lon": 76.93}, "Karanja Lad": {"lat": 20.3969, "lon": 76.8908},
     "Karjat": {"lat": 18.9121, "lon": 73.3259}, "Kavathe Mahankal": {"lat": 17.218, "lon": 74.416},
     "Khamgaon": {"lat": 20.691, "lon": 76.6886}, "Khopoli": {"lat": 18.6958, "lon": 73.3207},
-    "Kodoli": {"lat": 16.8764, "lon": 74.1909}, # [요청] 추가
+    "Kodoli": {"lat": 16.8764, "lon": 74.1909},
     "Kolad": {"lat": 18.5132, "lon": 73.2166}, "Kolhapur": {"lat": 16.691031, "lon": 74.229523},
     "Kopargaon": {"lat": 19.883333, "lon": 74.483333}, "Koparkhairane": {"lat": 19.0873, "lon": 72.9856},
     "Kothrud": {"lat": 18.507399, "lon": 73.807648}, "Kudal": {"lat": 16.033333, "lon": 73.683333},
@@ -335,15 +338,15 @@ city_dict = {
     "Lonavala": {"lat": 18.75, "lon": 73.4}, "Mahad": {"lat": 18.086, "lon": 73.3006},
     "Malegaon": {"lat": 20.555256, "lon": 74.525539}, "Malkapur": {"lat": 20.4536, "lon": 76.3886},
     "Manmad": {"lat": 20.3333, "lon": 74.4333}, 
-    "Mira Road": {"lat": 19.2799, "lon": 72.8561}, # [요청] 추가
+    "Mira Road": {"lat": 19.2799, "lon": 72.8561},
     "Mira-Bhayandar": {"lat": 19.271112, "lon": 72.854094},
-    "Miraj": {"lat": 16.8295, "lon": 74.6433}, # [요청] 추가
+    "Miraj": {"lat": 16.8295, "lon": 74.6433},
     "Mumbai": {"lat": 19.07609, "lon": 72.877426}, "Nagpur": {"lat": 21.1458, "lon": 79.088154},
     "Nanded": {"lat": 19.148733, "lon": 77.321011}, "Nandurbar": {"lat": 21.317, "lon": 74.02},
     "Nashik": {"lat": 20.011645, "lon": 73.790332}, "Niphad": {"lat": 20.074, "lon": 73.834},
     "Osmanabad": {"lat": 18.169111, "lon": 76.035309}, "Palghar": {"lat": 19.691644, "lon": 72.768478},
     "Panaji": {"lat": 15.4909, "lon": 73.8278}, "Panvel": {"lat": 18.989746, "lon": 73.117069},
-    "Paratwada": {"lat": 21.3019, "lon": 77.5178}, # [요청] 추가
+    "Paratwada": {"lat": 21.3019, "lon": 77.5178},
     "Parbhani": {"lat": 19.270335, "lon": 76.773347}, "Peth": {"lat": 18.125, "lon": 74.514},
     "Phaltan": {"lat": 17.9977, "lon": 74.4066}, "Pune": {"lat": 18.52043, "lon": 73.856743},
     "Raigad": {"lat": 18.515048, "lon": 73.179436}, "Ramtek": {"lat": 21.3142, "lon": 79.2676},
@@ -355,7 +358,7 @@ city_dict = {
     "Shrirampur": {"lat": 19.6214, "lon": 73.8653}, "Sinnar": {"lat": 19.8531, "lon": 73.9976},
     "Solan": {"lat": 30.9083, "lon": 77.0989}, "Solapur": {"lat": 17.659921, "lon": 75.906393},
     "Talegaon": {"lat": 18.7519, "lon": 73.487}, "Thane": {"lat": 19.218331, "lon": 72.978088},
-    "Wadala": {"lat": 19.0216, "lon": 72.8646}, # [요청] 추가
+    "Wadala": {"lat": 19.0216, "lon": 72.8646},
     "Achalpur": {"lat": 20.1833, "lon": 77.6833}, "Akot": {"lat": 21.1, "lon": 77.1167},
     "Ambajogai": {"lat": 18.9667, "lon": 76.6833}, "Amalner": {"lat": 21.0333, "lon": 75.3333},
     "Anjangaon Surji": {"lat": 21.1167, "lon": 77.8667}, "Arvi": {"lat": 20.45, "lon": 78.15},
@@ -630,7 +633,13 @@ st.markdown(
         color: #f0f0f0;
     }
     
-    /* 11. 도시 목록 사이 이동 정보 스타일 (제거됨 - 인라인 스타일 사용) */
+    /* 11. 도시 목록 사이 이동 정보 스타일 */
+    .route-info {
+        text-align: center; 
+        margin-top: 5px; 
+        margin-bottom: 10px; 
+        font-size: 1.1em;
+    }
     
     </style>
     
@@ -1012,8 +1021,40 @@ with tab_notice_obj:
                             for media_file in attached_media:
                                 display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
         
-        # 3. 전체 삭제 버튼 (관리자 전용) - (Note: 실제 삭제 로직은 Admin 모드에만 있어야 하지만, UI 코드는 Admin 블록 밖에 위치할 수 있습니다. 여기서는 Admin 블록 안에 이미 있으므로 생략)
-
+    # 3. 전체 삭제 버튼 (관리자 전용)
+    if st.session_state.admin:
+        st.markdown("---")
+        st.subheader(f"⚠️ {_('delete_all_data')}")
+        
+        with st.form("delete_all_form", clear_on_submit=True):
+            st.warning(_("delete_all_warning"))
+            delete_password = st.text_input("Confirm Password", type="password", key="delete_all_pass")
+            confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
+            
+            if st.form_submit_button(_("delete_all_data")):
+                if delete_password == ADMIN_PASS and confirm_delete:
+                    # 모든 데이터 파일 삭제
+                    if os.path.exists(NOTICE_FILE): os.remove(NOTICE_FILE)
+                    if os.path.exists(CITY_FILE): os.remove(CITY_FILE)
+                    if os.path.exists(USER_POST_FILE): os.remove(USER_POST_FILE)
+                    
+                    # 업로드된 파일 삭제 (간단한 구현, 실제로는 안전한 삭제 필요)
+                    for filename in os.listdir(UPLOAD_DIR):
+                        file_path = os.path.join(UPLOAD_DIR, filename)
+                        try:
+                            if os.path.isfile(file_path) or os.path.islink(file_path):
+                                os.unlink(file_path)
+                        except Exception: pass
+                    
+                    # 세션 초기화 및 성공 메시지
+                    st.session_state.admin = False
+                    st.session_state.logged_in_user = None
+                    st.success(_("delete_all_success"))
+                    safe_rerun()
+                elif delete_password != ADMIN_PASS:
+                    st.error(_("incorrect_password"))
+                else:
+                    st.error("삭제를 확인하는 체크박스를 선택해야 합니다.")
 
 with tab_map_obj:
     # 탭 2 내용 시작 (지도)
@@ -1225,7 +1266,7 @@ with tab_map_obj:
                         
                         # [FIX 5-1] 박스 제거, 도시명 주황색, 화살표 사용
                         st.markdown(f"""
-                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px; font-size: 1.1em;">
+                        <p class="route-info">
                             <span style='color: #FF8C00; font-weight: bold;'>{current_city_name}</span> 
                             <span style='color: #f0f0f0;'> ➡️ </span>
                             <span style='color: #FF8C00; font-weight: bold;'>{next_city_name}</span>
@@ -1240,7 +1281,7 @@ with tab_map_obj:
                         current_city_name = item.get('city', 'N/A')
                         # [FIX 5-2] 박스 제거, 도시명 주황색, 화살표 사용 (좌표 불충분)
                         st.markdown(f"""
-                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px; color: #888; font-size: 1.1em;">
+                        <p class="route-info" style="color: #888;">
                             <span style='color: #FF8C00; font-weight: bold;'>{current_city_name}</span> 
                             <span style='color: #888;'> ➡️ </span>
                             <span style='color: #FF8C00; font-weight: bold;'>{next_city_name}</span>
