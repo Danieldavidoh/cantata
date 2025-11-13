@@ -3,18 +3,28 @@ import os
 import uuid
 import base64
 import random
-from datetime import datetime, date, timedelta
-from math import radians, cos, sin, asin, sqrt, atan2, degrees
-import re # 정규식 사용을 위해 추가
-import textwrap # 들여쓰기 문제 해결을 위해 import
-
 import streamlit as st
+from datetime import datetime, date, timedelta
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import AntPath
 from pytz import timezone
+from math import radians, cos, sin, asin, sqrt, atan2, degrees
+import requests
+from requests.utils import quote # URL 인코딩을 위해 import
+import textwrap # 들여쓰기 문제 해결을 위해 import
+import re # 정규식 사용을 위해 추가
 
-# st_autorefresh와 관련된 모든 로직과 import를 삭제했습니다.
+# --- 파일 저장 경로 설정 ---
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# 가짜 라이브러리 임포트 (st_autorefresh는 Streamlit 환경에서만 유효)
+try:
+    from streamlit_autorefresh import st_autorefresh
+except ImportError:
+    # Streamlit 환경이 아닐 경우 dummy 함수 정의
+    st_autorefresh = lambda **kwargs: None
 
 st.set_page_config(page_title="칸타타 투어 2025", layout="wide")
 
@@ -146,8 +156,36 @@ for k, v in defaults.items():
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
 
-# === 활동 감지 및 자동 로그아웃 로직 (삭제됨) ===
-# 1분 자동 로그아웃 로직은 삭제되었습니다.
+# === [추가] 활동 감지 및 자동 로그아웃 로직 ===
+if "last_activity_time" not in st.session_state:
+    st.session_state.last_activity_time = datetime.now()
+
+def update_activity():
+    """활동 시간을 현재 시간으로 갱신합니다."""
+    st.session_state.last_activity_time = datetime.now()
+
+# [FIX 1-1] 모든 Streamlit 호출에 앞서 활동 시간 갱신 (가장 확실한 방법)
+update_activity()
+
+
+# 1. 자동 로그아웃 검사
+if st.session_state.admin:
+    # 1초마다 자동 새로고침 설정 (관리자 모드에서만)
+    st_autorefresh(interval=1000, key="auto_refresh_admin") 
+    
+    time_since_last_activity = (datetime.now() - st.session_state.last_activity_time).total_seconds()
+    # [FIX 1-2] 타임아웃 시간을 1분(60초)에서 2분(120초)으로 늘림
+    TIMEOUT_SECONDS = 120 
+    
+    if time_since_last_activity > TIMEOUT_SECONDS:
+        st.session_state.admin = False
+        st.session_state.logged_in_user = None
+        st.info("관리자 활동이 2분 이상 없어 자동으로 로그아웃되었습니다.")
+        st.session_state.show_controls = False
+        st.session_state.show_login_form = False
+        st.rerun()
+# === 활동 감지 및 자동 로그아웃 로직 끝 ===
+
 
 # --- 번역 함수 ---
 def _(key):
@@ -628,7 +666,8 @@ def generate_christmas_icons():
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === Starry Background and Big Star Functions ===
-def generate_star_background(num_stars=240, twinkling_count=7): 
+# num_stars를 2배(480)로, twinkling_count를 2배(14)로, fall_duration을 1.5배로 조정
+def generate_star_background(num_stars=480, twinkling_count=14): 
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
     
@@ -640,7 +679,8 @@ def generate_star_background(num_stars=240, twinkling_count=7):
 
         size = random.uniform(1.0, 3.0) * (2/3)  
         
-        fall_duration = random.uniform(10, 25) 
+        # 속도를 2/3으로 줄이기 위해 지속 시간을 1.5배로 늘림 (10->15, 25->37.5)
+        fall_duration = random.uniform(15, 37.5) 
         fall_delay = random.uniform(0, 15) 
 
         is_twinkling = i in twinkling_indices
@@ -685,7 +725,7 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(240, 7) 
+stars_background_html = generate_star_background(480, 14) 
 st.markdown(stars_background_html, unsafe_allow_html=True)
 st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) 
 
@@ -713,14 +753,16 @@ with col_toggle:
 
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
 def safe_rerun():
+    """Rerun을 호출합니다."""
+    # [FIX 1-1] safe_rerun() 시에도 활동 시간 갱신 (선택 박스 변경 등에도 적용)
+    update_activity() 
     if hasattr(st, 'rerun'): st.rerun()
 
 def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
-    # safe_rerun()은 호출하는 버튼 로직에서 수행됩니다.
+    # Rerun은 이 함수를 호출하는 버튼 로직에서 수행됩니다.
 
 # [FIX] NameError 방지를 위해 st.columns를 조건문 밖에서 정의합니다.
-# 이 컬럼들은 show_controls가 False일 때는 비어있습니다.
 col_spacer_hidden, col_lang, col_auth = st.columns([7, 3, 2])
 
 # 톱니바퀴 버튼(show_controls)이 True일 때만 언어 선택 및 로그인 버튼 표시
@@ -732,6 +774,7 @@ if st.session_state.show_controls:
         lang_keys = list(LANG_OPTIONS.keys())
         lang_display_names = list(LANG_OPTIONS.values())
         current_lang_index = lang_keys.index(st.session_state.lang)
+        # on_change를 사용하지 않으므로, selectbox 변경만으로 rerun이 발생하도록 처리
         selected_lang_display = st.selectbox(
             "language", 
             options=lang_display_names,
@@ -741,7 +784,7 @@ if st.session_state.show_controls:
         selected_lang_key = lang_keys[lang_display_names.index(selected_lang_display)]
         if selected_lang_key != st.session_state.lang:
             st.session_state.lang = selected_lang_key
-            st.rerun()
+            safe_rerun() # safe_rerun 사용
 
     # 4b. 로그인/로그아웃 버튼 (col_auth에 배치)
     with col_auth:
@@ -764,6 +807,7 @@ if st.session_state.show_controls:
 if st.session_state.show_login_form and not st.session_state.admin:
     col_spacer_form, col_form = st.columns([1, 3]) 
     with col_form:
+        # st.form은 제출 시 자동으로 한 번의 Rerun을 유발합니다.
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
             password = st.text_input("Password", type="password")
@@ -774,11 +818,14 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
                     st.session_state.show_login_form = False
-                    # 자동 로그아웃 기능이 제거되어 update_activity() 호출도 제거됨.
-                    st.success(_("logged_in_success")) 
-                    # 폼 제출은 이미 Rerun을 유발하므로, 수동 RERUN 제거
-                else: 
-                    st.warning(_("incorrect_password"))
+                    
+                    # 로그인 성공 시 활동 시간 업데이트 (자동 로그아웃 방지)
+                    update_activity() 
+                    st.success(_("logged_in_success")) # 성공 메시지 출력
+                    
+                    # 폼 제출에 의한 자동 RERUN을 사용하므로, 수동 RERUN은 제거합니다.
+                    
+                else: st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
 
@@ -788,7 +835,7 @@ tab_names = [f"📢  {_('tab_notice')}", f"🚌  {_('tab_map')}"]
 def set_tab_index(index):
     if st.session_state.current_tab_index != index:
         st.session_state.current_tab_index = index
-        st.rerun() 
+        safe_rerun() 
     
 tab_notice_obj, tab_map_obj = st.tabs(tab_names)
 
@@ -823,9 +870,7 @@ with tab_notice_obj:
                     file_info_list = save_uploaded_files(uploaded_files)
 
                     new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); 
-                    # update_activity() 제거됨
-                    st.success(_("notice_reg_success")); safe_rerun()
+                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
                 elif submitted: st.warning(_("fill_in_fields"))
 
         # --- 관리자: 공지사항 목록 및 수정/삭제 ---
@@ -848,7 +893,6 @@ with tab_notice_obj:
                             if os.path.exists(file_info['path']): os.remove(file_info['path'])
 
                         tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
-                        # update_activity() 제거됨
                         save_json(NOTICE_FILE, tour_notices); st.success(_("notice_del_success")); safe_rerun()
 
                 with col_title:
@@ -871,9 +915,7 @@ with tab_notice_obj:
                         if st.form_submit_button(_("update")):
                             for n in tour_notices:
                                 if n.get('id') == notice_id:
-                                    n['content'] = updated_content; n['type'] = updated_type_key; 
-                                    # update_activity() 제거됨
-                                    save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
+                                    n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
             # === 6. 수정: 관리자 제목 변경 ===
             st.subheader(f"📸 포스트 관리")
@@ -903,7 +945,6 @@ with tab_notice_obj:
                                     except Exception as e:
                                         st.warning(f"파일 삭제 오류: {e}")
                             user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
-                            # update_activity() 제거됨
                             save_json(USER_POST_FILE, user_posts)
                             st.success("포스트가 삭제되었습니다.")
                             safe_rerun()
@@ -1034,7 +1075,6 @@ with tab_map_obj:
                         
                         if cities_added_count > 0:
                             save_json(CITY_FILE, tour_schedule)
-                            # update_activity() 제거됨
                             st.success(_("schedule_reg_success")) 
                             safe_rerun()
                         # === 로직 수정 완료 ===
@@ -1106,7 +1146,6 @@ with tab_map_obj:
                                             "note": updated_note, "google_link": updated_google, "probability": updated_probability,
                                         })
                                         save_json(CITY_FILE, tour_schedule)
-                                        # update_activity() 제거됨
                                         st.success(_("schedule_upd_success"))
                                         safe_rerun()
 
@@ -1115,7 +1154,6 @@ with tab_map_obj:
                             if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
                                 tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
                                 save_json(CITY_FILE, tour_schedule)
-                                # update_activity() 제거됨
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
 
@@ -1139,7 +1177,7 @@ with tab_map_obj:
     current_date = date.today()
     schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
 
-    AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, 'lon': 75.343314})
+    AURANGABAD_COORDS = city_dict.get("Aurangabad", {'lat': 19.876165, "lon": 75.343314})
     start_coords = [AURANGABAD_COORDS['lat'], AURANGABAD_COORDS['lon']]
 
     m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
