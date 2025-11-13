@@ -749,10 +749,9 @@ def safe_rerun():
 
 def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
-    # safe_rerun()은 호출하는 버튼 로직에서 수행됩니다.
+    # Rerun은 이 함수를 호출하는 버튼 로직에서 수행됩니다.
 
 # [FIX] NameError 방지를 위해 st.columns를 조건문 밖에서 정의합니다.
-# 이 컬럼들은 show_controls가 False일 때는 비어있습니다.
 col_spacer_hidden, col_lang, col_auth = st.columns([7, 3, 2])
 
 # 톱니바퀴 버튼(show_controls)이 True일 때만 언어 선택 및 로그인 버튼 표시
@@ -796,6 +795,8 @@ if st.session_state.show_controls:
 if st.session_state.show_login_form and not st.session_state.admin:
     col_spacer_form, col_form = st.columns([1, 3]) 
     with col_form:
+        # st.form은 제출 시 자동으로 한 번의 Rerun을 유발합니다.
+        # 따라서 성공 시 safe_rerun()을 호출할 필요가 없습니다.
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
             password = st.text_input("Password", type="password")
@@ -806,12 +807,15 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
                     st.session_state.show_login_form = False
+                    
                     # [FIX-1] 로그인 성공 시 활동 시간 업데이트 (자동 로그아웃 방지)
                     update_activity() 
                     st.success(_("logged_in_success")) # 성공 메시지 출력
-                    # [FIX-2] 폼 제출은 이미 Rerun을 유발하므로, 수동 RERUN을 제거하여 이중 새로고침 방지
-                else: 
-                    st.warning(_("incorrect_password"))
+                    
+                    # [CRITICAL FIX] 폼 제출 시 자동 RERUN을 사용하므로, 수동 RERUN을 제거합니다.
+                    # safe_rerun() 
+                    
+                else: st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
 
