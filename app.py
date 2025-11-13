@@ -899,7 +899,20 @@ def notice_tab():
             is_urgent = notice.get('type') == 'urgent'
             icon = "🚨" if is_urgent else "ℹ️"
             header_color = "#BB3333" if is_urgent else "#FFD700" # Urgent: Red, General: Gold
-
+            
+            # --- FIX: 'timestamp' 키가 없을 경우 처리 ---
+            timestamp_str = notice.get('timestamp')
+            
+            if timestamp_str:
+                try:
+                    display_time = datetime.fromisoformat(timestamp_str).strftime('%Y-%m-%d %H:%M')
+                except ValueError:
+                    # ISO 포맷이 아닐 경우 대비
+                    display_time = "Unknown Date"
+            else:
+                display_time = "Unknown Date"
+            # ----------------------------------------
+            
             st.markdown(f"""
                 <div style="
                     border: 2px solid {header_color}; 
@@ -909,9 +922,9 @@ def notice_tab():
                     background-color: rgba(0, 0, 0, 0.3);
                 ">
                     <h4 style="color: {header_color}; margin-top: 0;">{icon} {notice.get('title', _('no_title'))} 
-                    <span style="float: right; font-size: 0.7em; color: #888;">ID: {notice['id'][:8]}...</span></h4>
+                    <span style="float: right; font-size: 0.7em; color: #888;">ID: {notice.get('id', 'N/A')[:8]}...</span></h4>
                     <p style="font-size: 0.9em; color: #BBB;">{_(notice.get('type', 'general').lower()).capitalize()} | 
-                    {datetime.fromisoformat(notice['timestamp']).strftime('%Y-%m-%d %H:%M')}</p>
+                    {display_time}</p>
                     <div class="notice-content-box">
                         {notice.get('content', _('no_content')).replace('\n', '<br>')}
                     </div>
@@ -921,7 +934,7 @@ def notice_tab():
             
             if notice.get('files'):
                 for f_info in notice['files']:
-                    display_and_download_file(f_info, notice['id'], is_admin=st.session_state.admin)
+                    display_and_download_file(f_info, notice.get('id', 'N/A'), is_admin=st.session_state.admin)
             else:
                 st.markdown(f"<p style='margin-left: 10px; color: #888;'>{_('no_files')}</p>", unsafe_allow_html=True)
 
@@ -963,7 +976,16 @@ def user_posts_tab():
     else:
         for post in user_posts:
             post_id = post['id']
-            post_time = datetime.fromisoformat(post['timestamp']).strftime('%Y-%m-%d %H:%M')
+            # --- FIX: 'timestamp' 키가 없을 경우 처리 (Post도 동일하게 처리) ---
+            timestamp_str = post.get('timestamp')
+            if timestamp_str:
+                try:
+                    post_time = datetime.fromisoformat(timestamp_str).strftime('%Y-%m-%d %H:%M')
+                except ValueError:
+                    post_time = "Unknown Date"
+            else:
+                post_time = "Unknown Date"
+            # -------------------------------------------------------------
             
             st.markdown(f"""
                 <div style="
