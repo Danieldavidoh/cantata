@@ -819,8 +819,8 @@ if st.session_state.show_login_form and not st.session_state.admin:
     with col_form:
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
-            # === [수정] on_change 제거 ===
-            password = st.text_input("Password", type="password")
+            # === [수정] on_change 제거 (StreamlitInvalidFormCallbackError 해결) ===
+            password = st.text_input("Password", type="password") 
             submitted = st.form_submit_button(_("login"))
 
             if submitted:
