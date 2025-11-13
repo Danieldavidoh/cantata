@@ -315,8 +315,12 @@ def calculate_distance_and_time(p1, p2):
 city_dict = {
     "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
     "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
+    # [추가] Adul (Near Aurangabad)
+    "Adul": {"lat": 19.98, "lon": 75.35},
     "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, "Badlapur": {"lat": 19.1088, "lon": 73.1311},
     "Bandra": {"lat": 19.0544, "lon": 72.8406},
+    # [추가] Bazar (Near Akola)
+    "Bazar": {"lat": 20.75, "lon": 77.05},
     "Bhandara": {"lat": 21.180052, "lon": 79.564987}, "Bhiwandi": {"lat": 19.300282, "lon": 73.069645},
     "Bhusawal": {"lat": 21.02606, "lon": 75.830095},
     # [수정] Buldhana 추가
@@ -326,6 +330,8 @@ city_dict = {
     "Dombivli": {"lat": 19.2183, "lon": 73.0865}, "Gondia": {"lat": 21.4598, "lon": 80.195},
     "Hingoli": {"lat": 19.7146, "lon": 77.1424}, "Ichalkaranji": {"lat": 16.6956, "lon": 74.4561},
     "Jalgaon": {"lat": 21.007542, "lon": 75.562554}, "Jalna": {"lat": 19.833333, "lon": 75.883333},
+    # [추가] Jawla (Near Parbhani/Hingoli)
+    "Jawla": {"lat": 19.50, "lon": 77.30},
     "Kalyan": {"lat": 19.240283, "lon": 73.13073}, "Karad": {"lat": 17.284, "lon": 74.1779},
     "Karanja": {"lat": 20.7083, "lon": 76.93}, "Karanja Lad": {"lat": 20.3969, "lon": 76.8908},
     "Karjat": {"lat": 18.9121, "lon": 73.3259}, "Kavathe Mahankal": {"lat": 17.218, "lon": 74.416},
@@ -389,6 +395,7 @@ city_dict = {
 }
 
 major_cities_available = [c for c in ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Kalyan", "Vasai-Virar", "Aurangabad", "Solapur", "Mira-Bhayandar", "Bhiwandi", "Amravati", "Nanded", "Kolhapur", "Ulhasnagar", "Sangli", "Malegaon", "Jalgaon", "Akola", "Latur", "Dhule", "Ahmadnagar", "Chandrapur", "Parbhani", "Ichalkaranji", "Jalna", "Ambernath", "Bhusawal", "Panvel", "Dombivli"] if c in city_dict]
+# city_options는 이제 모든 도시를 포함하며, 중복 선택이 가능해지므로, 남아있는 도시 목록을 만들 필요가 없습니다.
 remaining_cities = sorted([c for c in city_dict if c not in major_cities_available])
 city_options = major_cities_available + remaining_cities
 
@@ -1067,11 +1074,14 @@ with tab_map_obj:
         with st.expander(_("add_city"), expanded=False): 
             with st.form("schedule_form", clear_on_submit=True):
                 col_c, col_d, col_v = st.columns(3)
-                registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
-                available_cities = [c for c in city_dict if c not in registered_cities] 
-
+                
+                # [수정] 등록 여부와 상관없이 모든 도시를 선택할 수 있게 함
+                # registered_cities = {s['city'] for s in tour_schedule if s.get('city')}
+                # available_cities = [c for c in city_dict if c not in registered_cities] 
+                # city_options는 이미 모든 도시를 포함하고 있으므로 이를 사용
+                
                 # === [수정] selectbox -> multiselect 로 변경 ===
-                city_name_list = col_c.multiselect(_('city_name'), options=available_cities, key="new_city_multiselect")
+                city_name_list = col_c.multiselect(_('city_name'), options=city_options, key="new_city_multiselect")
                 
                 schedule_date = col_d.date_input(_("date"), key="new_date_input")
                 venue_name = col_v.text_input(_("venue"), placeholder=_("venue_placeholder"), key="new_venue_input")
@@ -1194,6 +1204,7 @@ with tab_map_obj:
 
                         col_uc, col_ud, col_uv = st.columns(3)
 
+                        # [수정] 모든 도시를 옵션으로 제공
                         updated_city = col_uc.selectbox(_("city"), city_options, index=city_options.index(item.get('city', "Pune") if item.get('city') in city_options else city_options[0]), key=f"upd_city_{item_id}")
 
                         try: initial_date = datetime.strptime(item.get('date', '2025-01-01'), "%Y-%m-%d").date()
@@ -1394,17 +1405,17 @@ with tab_map_obj:
         # 최상위 DIV 닫기
         popup_html += "</div>"
 
-        # --- 요청 사항: 마커에 순서 번호(흰색) 또는 X 표시 (흰색) ---
+        # --- 요청 사항: 마커에 순서 번호(흰색) 또는 X 표시 (흰색) (크기 2배로 확대) ---
         if item_no_show:
             marker_content = "X"
-            text_size = "16px" 
+            text_size = "32px" # Doubled from 16px 
             pin_color = "#666666" # Grey pin for No Show
-            text_top = "10px"
+            text_top = "8px" # Adjusted
         else:
             marker_content = str(performance_order)
-            text_size = "12px" 
+            text_size = "24px" # Doubled from 12px 
             pin_color = "#BB3333" # Red pin for performance
-            text_top = "12px" if len(marker_content) <= 2 else "10px" # Adjust vertical position for 3 digits
+            text_top = "10px" if len(marker_content) <= 2 else "8px" # Adjusted
 
         # 마커 아이콘
         marker_icon_html = f"""
@@ -1445,7 +1456,10 @@ with tab_map_obj:
         if current_index == -1: past_segments = locations; future_segments = []
         elif current_index == 0: past_segments = []; future_segments = locations
         else: past_segments = locations[:current_index + 1]; future_segments = locations[current_index:]
-
+        
+        # 도시간 연결 라인 색상 (하늘색: #87CEEB)
+        SKY_BLUE = "#87CEEB" 
+        
         # 1. 과거 경로 (투명도 0.125, 구간별 툴팁)
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
@@ -1458,7 +1472,8 @@ with tab_map_obj:
                 
                 folium.PolyLine(
                     locations=segment, 
-                    color="#BB3333", 
+                    # [수정] 라인 색상을 하늘색으로 변경
+                    color=SKY_BLUE, 
                     weight=5, 
                     opacity=0.125, 
                     tooltip=tooltip_obj 
@@ -1478,10 +1493,12 @@ with tab_map_obj:
                     segment, 
                     use="regular", 
                     dash_array='30, 20', 
-                    color='#BB3333', 
+                    # [수정] 라인 색상을 하늘색으로 변경
+                    color=SKY_BLUE, 
                     weight=5, 
                     opacity=0.8, 
-                    options={"delay": 24000, "dash_factor": -0.1, "color": "#BB3333"},
+                    # [수정] 옵션의 색상도 하늘색으로 변경
+                    options={"delay": 24000, "dash_factor": -0.1, "color": SKY_BLUE},
                     tooltip=tooltip_obj 
                 ).add_to(m)
 
