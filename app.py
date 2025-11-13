@@ -1265,7 +1265,10 @@ with tab_map_obj:
     locations = []
     city_names_for_map = [] 
     
-    for item in schedule_for_map:
+    # 순회하며 마커를 추가하고 순서를 부여합니다.
+    for i, item in enumerate(schedule_for_map):
+        performance_order = i + 1 # 1부터 시작하는 순서 번호
+
         lat = item['lat']; lon = item['lon']; date_str_map = item['date']
         city_name_map = item.get('city', 'N/A') 
 
@@ -1311,7 +1314,7 @@ with tab_map_obj:
         google_link_data = item.get('google_link')
         if google_link_data:
             
-            # --- 1. Google Maps 링크 생성 로직 수정 (요청 사항 반영) ---
+            # --- 1. Google Maps 링크 생성 로직 수정 ---
             
             # A. 유효한 Google Maps URL인지 확인
             is_valid_url = google_link_data.startswith('http') and ('google.com/maps' in google_link_data or 'goo.gl/maps' in google_link_data)
@@ -1350,8 +1353,19 @@ with tab_map_obj:
         # 최상위 DIV 닫기
         popup_html += "</div>"
 
+        # --- 요청 사항: 마커에 순서 번호(흰색) 또는 X 표시 (흰색) ---
+        if item_no_show:
+            marker_content = "X"
+            text_size = "16px" 
+            pin_color = "#666666" # Grey pin for No Show
+            text_top = "10px"
+        else:
+            marker_content = str(performance_order)
+            text_size = "12px" 
+            pin_color = "#BB3333" # Red pin for performance
+            text_top = "12px" if len(marker_content) <= 2 else "10px" # Adjust vertical position for 3 digits
+
         # 마커 아이콘
-        city_initial = item.get('city', 'A')[0]
         marker_icon_html = f"""
             <div style="
                 transform: scale(0.666);
@@ -1359,8 +1373,16 @@ with tab_map_obj:
                 text-align: center;
                 white-space: nowrap;
             ">
-                <i class="fa fa-map-marker fa-3x" style="color: #BB3333;"></i>
-                <div style="font-size: 10px; color: black; font-weight: bold; position: absolute; top: 12px; left: 13px;">{city_initial}</div>
+                <i class="fa fa-map-marker fa-3x" style="color: {pin_color};"></i>
+                <div style="
+                    font-size: {text_size}; 
+                    color: white; /* 흰색 글씨 */
+                    font-weight: bold; 
+                    position: absolute; 
+                    top: {text_top}; 
+                    left: 50%;
+                    transform: translate(-50%, 0); /* 수평 중앙 정렬 */
+                ">{marker_content}</div>
             </div>
         """
 
