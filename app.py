@@ -629,16 +629,7 @@ st.markdown(
         color: #f0f0f0;
     }
     
-    /* 11. 도시 목록 사이 이동 정보 스타일 */
-    .travel-info-box {
-        background-color: rgba(255, 255, 255, 0.05); /* 투명한 밝은 배경 */
-        border-radius: 8px;
-        padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-        text-align: center;
-        border: 1px solid rgba(255, 215, 0, 0.2); /* 골드 테두리 */
-    }
+    /* 11. 도시 목록 사이 이동 정보 스타일 (제거됨 - 인라인 스타일 사용) */
     
     </style>
     
@@ -1191,30 +1182,32 @@ with tab_map_obj:
                         
                         # 다음 도시 이름 가져오기
                         next_city_name = next_item.get('city', 'N/A')
+                        current_city_name = item.get('city', 'N/A')
                         
-                        # [FIX 4-3] 다음 도시로의 이동 정보를 별도의 박스로 명확하게 표시
+                        # [FIX 5] 박스를 제거하고 도시명만 빨간색으로 표시
                         st.markdown(f"""
-                        <div class="travel-info-box">
-                            <span style='color: #66BB66; font-weight: bold;'>
-                                🚌 {item.get('city')} → {next_city_name} 이동 정보:
-                            </span>
+                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px;">
+                            <span style='color: #BB3333; font-weight: bold;'>{current_city_name}</span> 
+                            <span style='color: #f0f0f0;'>🚌</span>
+                            <span style='color: #BB3333; font-weight: bold;'>{next_city_name}</span>
                             <span style='color: #FFD700; font-weight: bold; margin-left: 10px;'>
                                 {distance_time_info}
                             </span>
-                        </div>
+                        </p>
                         """, unsafe_allow_html=True)
                     else:
-                        # 좌표 정보 불충분 시에도 박스 형식 유지
+                        # 좌표 정보 불충분 시에도 형식 유지
                         next_city_name = next_item.get('city', 'N/A')
+                        current_city_name = item.get('city', 'N/A')
                         st.markdown(f"""
-                        <div class="travel-info-box">
-                            <span style='color: #66BB66; font-weight: bold;'>
-                                🚌 {item.get('city')} → {next_city_name} 이동 정보:
-                            </span>
-                            <span style='color: #888; margin-left: 10px;'>
+                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px; color: #888;">
+                            <span style='color: #BB3333; font-weight: bold;'>{current_city_name}</span> 
+                            <span style='color: #f0f0f0;'>🚌</span>
+                            <span style='color: #BB3333; font-weight: bold;'>{next_city_name}</span>
+                            <span style='margin-left: 10px;'>
                                 좌표 정보 불충분
                             </span>
-                        </div>
+                        </p>
                         """, unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
