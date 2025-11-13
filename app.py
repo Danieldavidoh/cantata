@@ -1026,7 +1026,7 @@ with tab_notice_obj:
                         if attached_media:
                             st.markdown(f"**{_('attached_files')}:**")
                             for media_file in attached_media:
-                                display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
+                                display_and_download_file(media_file, post_id, is_admin=false, is_user_post=true)
         
     # 3. 전체 삭제 버튼 (관리자 전용)
     if st.session_state.admin:
@@ -1306,7 +1306,17 @@ with tab_map_obj:
 
 
     # --- 지도 표시 (사용자 & 관리자 공통) ---
-    st.subheader(f"🗺️ {_('tab_map')} 보기") 
+    
+    # [수정된 로직] 제목과 체크박스를 컬럼으로 분리
+    col_map_title, col_route_check, col_spacer_map = st.columns([4, 2, 6])
+
+    with col_map_title:
+        st.subheader(f"🗺️ {_('tab_map')} 보기") 
+
+    with col_route_check:
+        st.write("") # Spacer for vertical alignment
+        show_route = st.checkbox("루트 보기", value=True, key="show_route_check")
+    
     current_date = date.today()
     schedule_for_map = sorted([s for s in tour_schedule if s.get('date') and s.get('lat') is not None and s.get('lon') is not None and s.get('id')], key=lambda x: x['date'])
 
@@ -1317,9 +1327,11 @@ with tab_map_obj:
     locations = []
     city_names_for_map = [] 
     
+    # [수정된 로직] 공연 순서 카운터를 초기화합니다.
+    performance_order = 0 
+    
     # 순회하며 마커를 추가하고 순서를 부여합니다.
     for i, item in enumerate(schedule_for_map):
-        performance_order = i + 1 # 1부터 시작하는 순서 번호
 
         lat = item['lat']; lon = item['lon']; date_str_map = item['date']
         city_name_map = item.get('city', 'N/A') 
@@ -1328,17 +1340,23 @@ with tab_map_obj:
         except ValueError: event_date = current_date + timedelta(days=365)
 
         is_past = event_date < current_date
-        item_no_show = item.get('no_show', False) # [FIX 6-6] no_show 상태 로드
+        item_no_show = item.get('no_show', False) 
 
-        icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
-
-        type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
-        translated_type = type_options_map_rev.get(item.get('type', 'outdoor'), _("outdoor"))
+        # [수정된 로직] '공연없음'이 아니면 카운터를 증가시킵니다.
+        if not item_no_show:
+            performance_order += 1
         
-        type_color_html = "#1E90FF" if item.get('type') == 'indoor' else "#A52A2A" 
-        map_type_icon_fa = 'fa-building' if item.get('type') == 'indoor' else 'fa-tree' 
-        
-        probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
+        # [수정된 로직] 마커 내용 설정
+        if item_no_show:
+            marker_content = "X"
+            text_size = "32px" 
+            pin_color = "#666666" # Grey pin for No Show
+            text_top = "8px" 
+        else:
+            marker_content = str(performance_order)
+            text_size = "24px" 
+            pin_color = "#BB3333" # Red pin for performance
+            text_top = "10px" if len(marker_content) <= 2 else "8px" # Adjusted
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
@@ -1405,18 +1423,6 @@ with tab_map_obj:
         # 최상위 DIV 닫기
         popup_html += "</div>"
 
-        # --- 요청 사항: 마커에 순서 번호(흰색) 또는 X 표시 (흰색) (크기 2배로 확대) ---
-        if item_no_show:
-            marker_content = "X"
-            text_size = "32px" # Doubled from 16px 
-            pin_color = "#666666" # Grey pin for No Show
-            text_top = "8px" # Adjusted
-        else:
-            marker_content = str(performance_order)
-            text_size = "24px" # Doubled from 12px 
-            pin_color = "#BB3333" # Red pin for performance
-            text_top = "10px" if len(marker_content) <= 2 else "8px" # Adjusted
-
         # 마커 아이콘
         marker_icon_html = f"""
             <div style="
@@ -1444,7 +1450,8 @@ with tab_map_obj:
 
 
     # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
-    if len(locations) > 1:
+    # [수정된 로직] show_route 체크박스 상태에 따라 경로 표시 여부 결정
+    if show_route and len(locations) > 1:
         current_index = -1
 
         for i, item in enumerate(schedule_for_map):
