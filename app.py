@@ -72,6 +72,7 @@ LANG = {
         "delete_all_warning": "경고: 모든 공지, 일정 및 사용자 포스트가 영구 삭제됩니다. 계속하시려면 비밀번호를 입력하세요。",
         "delete_all_confirm": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다!",
         "delete_all_success": "모든 데이터가 성공적으로 삭제되었습니다!",
+        "no_show": "공연없음" # [추가] 공연 없음 체크란
     },
     "en": {
         "title_cantata": "Cantata Tour", "title_year": "2025", "title_region": "Maharashtra",
@@ -110,6 +111,7 @@ LANG = {
         "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password to proceed.",
         "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
         "delete_all_success": "All data successfully deleted!",
+        "no_show": "No Show" # [추가] 공연 없음 체크란
     },
     "hi": {
         "title_cantata": "कंटटा टूर", "title_year": "२०२५", "title_region": "महाराष्ट्र",
@@ -144,6 +146,7 @@ LANG = {
         "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password to proceed.",
         "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
         "delete_all_success": "All data successfully deleted!",
+        "no_show": "कोई शो नहीं" # [추가] 공연 없음 체크란
     }
 }
 
@@ -1050,7 +1053,13 @@ with tab_map_obj:
                 # === 1. 수정: 슬라이더에 % 포맷 적용 ===
                 probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=100, step=5, format="%d%%")
 
-                note = st.text_area(_("note"), placeholder=_("note_placeholder"))
+                col_note, col_no_show_check = st.columns([3, 1])
+                note = col_note.text_area(_("note"), placeholder=_("note_placeholder"))
+                
+                # [FIX 6-1] 공연 없음 체크란 추가
+                col_no_show_check.write("") # 수직 정렬을 위한 공백
+                no_show = col_no_show_check.checkbox(_("no_show"), key="new_no_show_check")
+
 
                 submitted = st.form_submit_button(_("register"))
 
@@ -1081,7 +1090,8 @@ with tab_map_obj:
                                 "note": note, 
                                 "google_link": google_link, 
                                 "probability": probability, 
-                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")
+                                "reg_date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S"),
+                                "no_show": no_show # [FIX 6-2] no_show 상태 저장
                             }
                             tour_schedule.append(new_schedule_entry)
                             cities_added_count += 1
@@ -1105,6 +1115,7 @@ with tab_map_obj:
                 current_type_key = item.get('type', 'outdoor')
                 translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
                 probability_val = item.get('probability', 100)
+                current_no_show = item.get('no_show', False) # [FIX 6-3] no_show 상태 로드
 
                 city_name_display = item.get('city', 'N/A')
                 
@@ -1143,7 +1154,13 @@ with tab_map_obj:
                         
                         updated_probability = col_up.slider(_("probability"), min_value=0, max_value=100, value=item.get('probability', 100), step=5, format="%d%%")
 
-                        updated_note = st.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
+                        col_note_upd, col_no_show_upd = st.columns([3, 1])
+                        updated_note = col_note_upd.text_area(_("note"), value=item.get('note'), key=f"upd_note_{item_id}")
+                        
+                        # [FIX 6-4] 수정 폼에 공연 없음 체크란 추가
+                        col_no_show_upd.write("")
+                        updated_no_show = col_no_show_upd.checkbox(_("no_show"), value=current_no_show, key=f"upd_no_show_{item_id}")
+
 
                         st.markdown("---")
                         col_save, col_space, col_del = st.columns([1, 4, 1])
@@ -1159,6 +1176,7 @@ with tab_map_obj:
                                             "city": updated_city, "venue": updated_venue, "lat": coords["lat"], "lon": coords["lon"],
                                             "date": updated_date.strftime("%Y-%m-%d"), "type": updated_type, "seats": str(updated_seats),
                                             "note": updated_note, "google_link": updated_google, "probability": updated_probability,
+                                            "no_show": updated_no_show # [FIX 6-5] no_show 상태 업데이트
                                         })
                                         save_json(CITY_FILE, tour_schedule)
                                         st.success(_("schedule_upd_success"))
@@ -1171,6 +1189,7 @@ with tab_map_obj:
                                 save_json(CITY_FILE, tour_schedule)
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
+                                
                 # [FIX 4-2] Expander 닫힌 후, 다음 도시로의 이동 정보 표시
                 if i < len(sorted_schedule_items) - 1:
                     current_city_coords = (item.get('lat'), item.get('lon'))
@@ -1180,16 +1199,15 @@ with tab_map_obj:
                     if all(current_city_coords) and all(next_city_coords):
                         distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
                         
-                        # 다음 도시 이름 가져오기
                         next_city_name = next_item.get('city', 'N/A')
                         current_city_name = item.get('city', 'N/A')
                         
-                        # [FIX 5] 박스를 제거하고 도시명만 빨간색으로 표시
+                        # [FIX 5-1] 박스 제거, 도시명 주황색, 화살표 사용
                         st.markdown(f"""
-                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px;">
-                            <span style='color: #BB3333; font-weight: bold;'>{current_city_name}</span> 
-                            <span style='color: #f0f0f0;'>🚌</span>
-                            <span style='color: #BB3333; font-weight: bold;'>{next_city_name}</span>
+                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style='color: #FF8C00; font-weight: bold;'>{current_city_name}</span> 
+                            <span style='color: #f0f0f0;'> ➡️ </span>
+                            <span style='color: #FF8C00; font-weight: bold;'>{next_city_name}</span>
                             <span style='color: #FFD700; font-weight: bold; margin-left: 10px;'>
                                 {distance_time_info}
                             </span>
@@ -1199,11 +1217,12 @@ with tab_map_obj:
                         # 좌표 정보 불충분 시에도 형식 유지
                         next_city_name = next_item.get('city', 'N/A')
                         current_city_name = item.get('city', 'N/A')
+                        # [FIX 5-2] 박스 제거, 도시명 주황색, 화살표 사용 (좌표 불충분)
                         st.markdown(f"""
-                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px; color: #888;">
-                            <span style='color: #BB3333; font-weight: bold;'>{current_city_name}</span> 
-                            <span style='color: #f0f0f0;'>🚌</span>
-                            <span style='color: #BB3333; font-weight: bold;'>{next_city_name}</span>
+                        <p style="text-align: center; margin-top: 5px; margin-bottom: 10px; color: #888; font-size: 1.1em;">
+                            <span style='color: #FF8C00; font-weight: bold;'>{current_city_name}</span> 
+                            <span style='color: #888;'> ➡️ </span>
+                            <span style='color: #FF8C00; font-weight: bold;'>{next_city_name}</span>
                             <span style='margin-left: 10px;'>
                                 좌표 정보 불충분
                             </span>
@@ -1233,6 +1252,7 @@ with tab_map_obj:
         except ValueError: event_date = current_date + timedelta(days=365)
 
         is_past = event_date < current_date
+        item_no_show = item.get('no_show', False) # [FIX 6-6] no_show 상태 로드
 
         icon_color = '#BB3333'; opacity_val = 0.25 if is_past else 1.0
 
@@ -1246,8 +1266,14 @@ with tab_map_obj:
 
         red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
 
+        # [FIX 6-7] no_show 상태에 따라 팝업에 경고 메시지 추가
+        no_show_warning = ""
+        if item_no_show:
+            no_show_warning = f'<div style="color: #FF8C00; font-weight: bold; margin-bottom: 10px;">⚠️ {_("no_show")}</div>'
+        
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
+            {no_show_warning}
             <div style="color: #1A1A1A;">
                 <b>{_('city')}:</b> {red_city_name}<br>
                 <b>{_('date')}:</b> {date_str_map}<br>
