@@ -183,6 +183,11 @@ if st.session_state.admin:
 # === 활동 감지 및 자동 로그아웃 로직 끝 ===
 
 
+# --- 자동 새로고침 ---
+# 관리자가 아닐 경우 15초마다 새로고침 (기존 10초 -> 15초로 변경)
+if not st.session_state.get("admin", False):
+    st_autorefresh(interval=15000, key="auto_refresh_user")
+
 # --- 번역 함수 ---
 def _(key):
     lang = st.session_state.lang if isinstance(st.session_state.lang, str) else "ko"
@@ -585,7 +590,7 @@ st.markdown(
     /* === [추가] 느리게 반짝이는 애니메이션 키프레임 (트리거용) === */
     @keyframes twinkle-slow {
         0% { opacity: 0.1; }
-        50% { opacity: 0.8; }
+        55% { opacity: 0.8; }
         100% { opacity: 0.1; }
     }
     /* === Starry Sky and Pulsating Star CSS 끝 === */
@@ -662,7 +667,7 @@ def generate_christmas_icons(): # num_icons 제거
     return f'<div class="christmas-icons">{icons_html}</div>'
 
 # === Starry Background and Big Star Functions (수정: 별 밀도 조정, 1/3 높이, 눈 효과) ===
-def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개로 조정
+def generate_star_background(num_stars=480, twinkling_count=7): # 개수 480개로 조정
     stars_html = ""
     twinkling_indices = random.sample(range(num_stars), twinkling_count)
     
@@ -680,9 +685,10 @@ def generate_star_background(num_stars=240, twinkling_count=7): # 개수 240개�
         # 별 크기: 기존 크기 (1.0~3.0px) * 2 / 3
         size = random.uniform(1.0, 3.0) * (2/3) 
         
-        # 떨어지는 속도 및 애니메이션 지연 시간 (느린 눈처럼)
-        fall_duration = random.uniform(10, 25) # 10초 ~ 25초 동안 떨어짐
-        fall_delay = random.uniform(0, 15) # 애니메이션 시작 지연
+        # === [수정] 떨어지는 속도 및 애니메이션 지연 시간 (느린 눈처럼, 속도 1/2) ===
+        FALL_FACTOR = 2 # 속도를 절반으로 줄이기 위해 지속 시간을 2배로 늘림
+        fall_duration = random.uniform(10 * FALL_FACTOR, 25 * FALL_FACTOR) # 20초 ~ 50초 동안 떨어짐
+        fall_delay = random.uniform(0, 15 * FALL_FACTOR) # 애니메이션 시작 지연도 2배로 조정
 
         is_twinkling = i in twinkling_indices
         
@@ -729,7 +735,7 @@ BETHLEHEM_STAR_HTML = textwrap.dedent("""
 icons_html_str = generate_christmas_icons()
 
 # 1. 별 배경 및 베들레헴의 별 삽입
-stars_background_html = generate_star_background(240, 7) # 240개 별, 7개 반짝임
+stars_background_html = generate_star_background(480, 7) # 480개 별, 7개 반짝임
 st.markdown(stars_background_html, unsafe_allow_html=True)
 st.markdown(BETHLEHEM_STAR_HTML, unsafe_allow_html=True) # 베들레헴의 별 하나만 표시
 
