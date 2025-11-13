@@ -185,7 +185,7 @@ if st.session_state.admin:
 
 # --- 자동 새로고침 ---
 # === [수정] 일반 사용자 모드 자동 새로고침 (오류 해결 및 간격 15초 적용) ===
-if not st.session_state.get("admin", False) and 'autorefresh_user_key' not in st.session_state:
+if not st.session_state.get("admin", False) and 'auto_refresh_user' not in st.session_state:
     # `st_autorefresh`를 한 번만 호출하여 중복 키 오류 방지
     st_autorefresh(interval=15000, key="auto_refresh_user")
 
@@ -848,30 +848,30 @@ with tab_notice_obj:
 
     # 1. 관리자 공지사항 관리
     if st.session_state.admin:
-        st.subheader(f"🔔 공지 관리") 
+        st.subheader(f"🔔 公지 관리") 
 
         # --- 관리자: 공지사항 등록/수정 폼 ---
         with st.expander(_("register"), expanded=False): 
             with st.form("notice_form", clear_on_submit=True):
-                notice_title = st.text_input("제목", on_change=update_activity)
-                notice_content = st.text_area(_("note"), on_change=update_activity)
+                # === [수정] on_change 제거 ===
+                notice_title = st.text_input("제목")
+                notice_content = st.text_area(_("note"))
 
                 uploaded_files = st.file_uploader(
                     _("file_attachment"),
                     type=["png", "jpg", "jpeg", "pdf", "txt", "zip"],
                     accept_multiple_files=True,
-                    key="notice_file_uploader",
-                    on_change=update_activity
+                    key="notice_file_uploader"
                 )
 
                 type_options = {"General": _("general"), "Urgent": _("urgent")}
-                selected_display_type = st.radio(_("type"), list(type_options.values()), on_change=update_activity)
+                selected_display_type = st.radio(_("type"), list(type_options.values()))
                 notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
 
                 submitted = st.form_submit_button(_("register"))
 
                 if submitted:
-                    update_activity()
+                    update_activity() # 폼 제출 시 활동 업데이트
                     if notice_title and notice_content:
                         file_info_list = save_uploaded_files(uploaded_files)
 
@@ -913,13 +913,14 @@ with tab_notice_obj:
                     # --- 수정 폼 ---
                     with st.form(f"update_notice_{notice_id}", clear_on_submit=True):
                         current_type_index = list(type_options_rev.keys()).index(notice_type_key)
-                        updated_display_type = st.radio(_("type"), list(type_options_rev.values()), index=current_type_index, key=f"update_type_{notice_id}", on_change=update_activity)
+                        # === [수정] on_change 제거 ===
+                        updated_display_type = st.radio(_("type"), list(type_options_rev.values()), index=current_type_index, key=f"update_type_{notice_id}")
                         updated_type_key = list(type_options_rev.keys())[list(type_options_rev.values()).index(updated_display_type)]
 
-                        updated_content = st.text_area(_("update_content"), value=notice.get('content', ''), on_change=update_activity)
+                        updated_content = st.text_area(_("update_content"), value=notice.get('content', ''))
 
                         if st.form_submit_button(_("update")):
-                            update_activity()
+                            update_activity() # 폼 제출 시 활동 업데이트
                             for n in tour_notices:
                                 if n.get('id') == notice_id:
                                     n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
@@ -946,7 +947,7 @@ with tab_notice_obj:
                                 display_and_download_file(media_file, post_id, is_admin=True, is_user_post=True)
                         
                         # 관리자용 삭제 버튼
-                        if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다.", on_click=update_activity):
+                        if st.button(_("remove"), key=f"del_post_{post_id}", help="이 포스트를 영구적으로 삭제합니다。", on_click=update_activity):
                             # 파일 먼저 삭제
                             for file_info in post.get('files', []):
                                 if os.path.exists(file_info['path']):
