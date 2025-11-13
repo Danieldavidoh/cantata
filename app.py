@@ -159,7 +159,7 @@ for k, v in defaults.items():
 # --- 관리자 및 UI 설정 ---
 ADMIN_PASS = "0009"
 
-# === [추가] 활동 감지 및 자동 로그아웃 로직 ===
+# === 활동 감지 및 자동 로그아웃 로직 ===
 if "last_activity_time" not in st.session_state:
     st.session_state.last_activity_time = datetime.now()
 
@@ -167,7 +167,6 @@ def update_activity():
     """활동 시간을 현재 시간으로 갱신합니다."""
     st.session_state.last_activity_time = datetime.now()
 
-# [FIX 1-1] 모든 Streamlit 호출에 앞서 활동 시간 갱신 (가장 확실한 방법)
 update_activity()
 
 
@@ -177,7 +176,6 @@ if st.session_state.admin:
     st_autorefresh(interval=1000, key="auto_refresh_admin") 
     
     time_since_last_activity = (datetime.now() - st.session_state.last_activity_time).total_seconds()
-    # [FIX 1-2] 타임아웃 시간을 2분(120초)으로 늘림
     TIMEOUT_SECONDS = 120 
     
     if time_since_last_activity > TIMEOUT_SECONDS:
@@ -759,7 +757,7 @@ title_html = textwrap.dedent(f"""
 st.markdown(f'<h1 class="christmas-title">{icons_html_str}{title_html}</h1>', unsafe_allow_html=True)
 
 
-# --- 4. [요청] 숨겨진 컨트롤 메뉴 (톱니바퀴 아이콘 사용) ---
+# --- 4. 숨겨진 컨트롤 메뉴 (톱니바퀴 아이콘 사용) ---
 col_spacer, col_toggle = st.columns([10, 1]) # [스페이서, 토글 버튼]
 
 with col_toggle:
@@ -770,7 +768,6 @@ with col_toggle:
 # --- 로그인 / 로그아웃 로직 (핸들러) ---
 def safe_rerun():
     """Rerun을 호출합니다."""
-    # [FIX 1-1] safe_rerun() 시에도 활동 시간 갱신 (선택 박스 변경 등에도 적용)
     update_activity() 
     if hasattr(st, 'rerun'): st.rerun()
 
@@ -778,7 +775,6 @@ def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
     # Rerun은 이 함수를 호출하는 버튼 로직에서 수행됩니다.
 
-# [FIX] NameError 방지를 위해 st.columns를 조건문 밖에서 정의합니다.
 col_spacer_hidden, col_lang, col_auth = st.columns([7, 3, 2])
 
 # 톱니바퀴 버튼(show_controls)이 True일 때만 언어 선택 및 로그인 버튼 표시
@@ -839,10 +835,8 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     update_activity() 
                     st.success(_("logged_in_success")) # 성공 메시지 출력
                     
-                    # 폼 제출에 의한 자동 RERUN을 사용하므로, 수동 RERUN은 제거합니다.
                     
                 else: st.warning(_("incorrect_password"))
-# --- 4. 수정 끝 ---
 
 
 # --- 탭 구성 (수정: 아이콘 및 공백 추가) ---
@@ -933,7 +927,7 @@ with tab_notice_obj:
                                 if n.get('id') == notice_id:
                                     n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
-            # === 6. 수정: 관리자 제목 변경 ===
+            # === 포스트 관리 ===
             st.subheader(f"📸 포스트 관리")
             valid_posts_admin = [p for p in user_posts if isinstance(p, dict) and (p.get('content') or p.get('files'))]
             if not valid_posts_admin: 
@@ -1018,7 +1012,7 @@ with tab_notice_obj:
                             for media_file in attached_media:
                                 display_and_download_file(media_file, post_id, is_admin=False, is_user_post=True)
         
-        # 3. === [제거] 전체 삭제 버튼 (관리자 전용) ===
+        # 3. 전체 삭제 버튼 (관리자 전용) - (Note: 실제 삭제 로직은 Admin 모드에만 있어야 하지만, UI 코드는 Admin 블록 밖에 위치할 수 있습니다. 여기서는 Admin 블록 안에 이미 있으므로 생략)
 
 
 with tab_map_obj:
@@ -1339,7 +1333,6 @@ with tab_map_obj:
                 encoded_query = quote(query_string)
                 
                 # 웹 기반 Google Maps 검색 링크 (q=query) 사용
-                # 이 링크는 웹 브라우저나 모바일의 Google Maps 앱에서 자동으로 열릴 수 있습니다.
                 final_link = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
             
             # --- 수정된 링크를 팝업에 추가 ---
