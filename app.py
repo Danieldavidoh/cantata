@@ -292,7 +292,7 @@ def calculate_distance_and_time(p1, p2):
     lat2, lon2 = p2
     distance_km = haversine(lat1, lon1, lat2, lon2)
 
-    # [FIX 2-1] 모든 평균 속도를 50 km/h로 설정
+    # 모든 평균 속도를 50 km/h로 설정
     avg_speed_kmh = 50 
 
     travel_time_h_decimal = distance_km / avg_speed_kmh
@@ -305,7 +305,7 @@ def calculate_distance_and_time(p1, p2):
     # 거리 포맷 (km)
     distance_str = f"{distance_km:.0f} km"
     
-    # [FIX 2-2] 시간 포맷을 'Xh Ym' 형식으로 변경
+    # 시간 포맷을 'Xh Ym' 형식으로 변경
     time_str = f"{hours}h {minutes}m"
 
     return f"{distance_str} / {time_str}"
@@ -627,6 +627,17 @@ st.markdown(
         margin-top: 10px;
         margin-bottom: 10px;
         color: #f0f0f0;
+    }
+    
+    /* 11. 도시 목록 사이 이동 정보 스타일 */
+    .travel-info-box {
+        background-color: rgba(255, 255, 255, 0.05); /* 투명한 밝은 배경 */
+        border-radius: 8px;
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        text-align: center;
+        border: 1px solid rgba(255, 215, 0, 0.2); /* 골드 테두리 */
     }
     
     </style>
@@ -1108,8 +1119,10 @@ with tab_map_obj:
                 
                 type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" 
                 
+                # Expander 제목
                 header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
 
+                # [FIX 4-1] 현재 도시 정보 Expander 렌더링
                 with st.expander(header_text, expanded=False): 
 
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
@@ -1167,19 +1180,42 @@ with tab_map_obj:
                                 save_json(CITY_FILE, tour_schedule)
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
+                # [FIX 4-2] Expander 닫힌 후, 다음 도시로의 이동 정보 표시
+                if i < len(sorted_schedule_items) - 1:
+                    current_city_coords = (item.get('lat'), item.get('lon'))
+                    next_item = sorted_schedule_items[i+1][1]
+                    next_city_coords = (next_item.get('lat'), next_item.get('lon'))
 
-                        # Display distance/time between current city and the next city in the expander
-                        if i < len(sorted_schedule_items) - 1:
-                            current_city_coords = (item.get('lat'), item.get('lon'))
-                            next_item = sorted_schedule_items[i+1][1]
-                            next_city_coords = (next_item.get('lat'), next_item.get('lon'))
-
-                            if all(current_city_coords) and all(next_city_coords):
-                                # [FIX 3] 업데이트된 calculate_distance_and_time 함수 호출 및 명확한 표기
-                                distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #FFD700; font-weight: bold;'>{distance_time_info}</span>", unsafe_allow_html=True)
-                            else:
-                                    st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
+                    if all(current_city_coords) and all(next_city_coords):
+                        distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
+                        
+                        # 다음 도시 이름 가져오기
+                        next_city_name = next_item.get('city', 'N/A')
+                        
+                        # [FIX 4-3] 다음 도시로의 이동 정보를 별도의 박스로 명확하게 표시
+                        st.markdown(f"""
+                        <div class="travel-info-box">
+                            <span style='color: #66BB66; font-weight: bold;'>
+                                🚌 {item.get('city')} → {next_city_name} 이동 정보:
+                            </span>
+                            <span style='color: #FFD700; font-weight: bold; margin-left: 10px;'>
+                                {distance_time_info}
+                            </span>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        # 좌표 정보 불충분 시에도 박스 형식 유지
+                        next_city_name = next_item.get('city', 'N/A')
+                        st.markdown(f"""
+                        <div class="travel-info-box">
+                            <span style='color: #66BB66; font-weight: bold;'>
+                                🚌 {item.get('city')} → {next_city_name} 이동 정보:
+                            </span>
+                            <span style='color: #888; margin-left: 10px;'>
+                                좌표 정보 불충분
+                            </span>
+                        </div>
+                        """, unsafe_allow_html=True)
 
         else: st.write(_("no_schedule"))
 
