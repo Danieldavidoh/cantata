@@ -284,18 +284,29 @@ def haversine(lat1, lon1, lat2, lon2):
     return distance
 
 def calculate_distance_and_time(p1, p2):
-    """두 좌표 사이의 거리와 예상 소요 시간을 문자열로 반환합니다. (320 km / 5.5h 형식)"""
+    """
+    두 좌표 사이의 거리와 예상 소요 시간을 문자열로 반환합니다. 
+    평균 속도 50 km/h를 가정하며, 시간은 'Xh Ym' 형식으로 표기합니다.
+    """
     lat1, lon1 = p1
     lat2, lon2 = p2
     distance_km = haversine(lat1, lon1, lat2, lon2)
 
-    avg_speed_kmh = 60 if distance_km < 500 else 80
+    # [FIX 2-1] 모든 평균 속도를 50 km/h로 설정
+    avg_speed_kmh = 50 
 
-    travel_time_h = distance_km / avg_speed_kmh
-
-    # 거리와 시간 포맷 변경 (km / X.Xh)
-    distance_str = f"{distance_km:.0f} km" # 소수점 없이 km
-    time_str = f"{travel_time_h:.1f}h"      # 소수점 한 자리까지 h
+    travel_time_h_decimal = distance_km / avg_speed_kmh
+    
+    # 시간을 시(h)와 분(m)으로 분리
+    hours = int(travel_time_h_decimal)
+    minutes_decimal = travel_time_h_decimal - hours
+    minutes = round(minutes_decimal * 60)
+    
+    # 거리 포맷 (km)
+    distance_str = f"{distance_km:.0f} km"
+    
+    # [FIX 2-2] 시간 포맷을 'Xh Ym' 형식으로 변경
+    time_str = f"{hours}h {minutes}m"
 
     return f"{distance_str} / {time_str}"
 
@@ -1164,8 +1175,9 @@ with tab_map_obj:
                             next_city_coords = (next_item.get('lat'), next_item.get('lon'))
 
                             if all(current_city_coords) and all(next_city_coords):
+                                # [FIX 3] 업데이트된 calculate_distance_and_time 함수 호출 및 명확한 표기
                                 distance_time_info = calculate_distance_and_time(current_city_coords, next_city_coords)
-                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>{distance_time_info}</span>", unsafe_allow_html=True)
+                                st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #FFD700; font-weight: bold;'>{distance_time_info}</span>", unsafe_allow_html=True)
                             else:
                                     st.markdown(f"**<span style='color: #888;'>➡️ {item.get('city')}에서 {next_item.get('city')}까지:</span>** <span style='color: #888;'>좌표 정보 불충분</span>", unsafe_allow_html=True)
 
@@ -1291,6 +1303,7 @@ with tab_map_obj:
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
                 segment = [past_segments[i], past_segments[i+1]]
+                # [FIX 3] 업데이트된 calculate_distance_and_time 함수 호출
                 dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
                 tooltip_text = f"{dist_time}"
                 
@@ -1308,6 +1321,7 @@ with tab_map_obj:
         if len(future_segments) > 1:
             for i in range(len(future_segments) - 1):
                 segment = [future_segments[i], future_segments[i+1]]
+                # [FIX 3] 업데이트된 calculate_distance_and_time 함수 호출
                 dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
                 tooltip_text = f"{dist_time}"
 
