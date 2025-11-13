@@ -161,6 +161,7 @@ if "last_activity_time" not in st.session_state:
     st.session_state.last_activity_time = datetime.now()
 
 def update_activity():
+    # 이 함수가 호출되면 활동 시간을 현재로 업데이트하여 로그아웃을 방지합니다.
     st.session_state.last_activity_time = datetime.now()
 
 # 1. 자동 로그아웃 검사
@@ -749,9 +750,10 @@ def safe_rerun():
 
 def handle_login_button_click():
     st.session_state.show_login_form = not st.session_state.show_login_form
-    # Rerun은 이 함수를 호출하는 버튼 로직에서 수행됩니다.
+    # safe_rerun()은 호출하는 버튼 로직에서 수행됩니다.
 
 # [FIX] NameError 방지를 위해 st.columns를 조건문 밖에서 정의합니다.
+# 이 컬럼들은 show_controls가 False일 때는 비어있습니다.
 col_spacer_hidden, col_lang, col_auth = st.columns([7, 3, 2])
 
 # 톱니바퀴 버튼(show_controls)이 True일 때만 언어 선택 및 로그인 버튼 표시
@@ -795,8 +797,6 @@ if st.session_state.show_controls:
 if st.session_state.show_login_form and not st.session_state.admin:
     col_spacer_form, col_form = st.columns([1, 3]) 
     with col_form:
-        # st.form은 제출 시 자동으로 한 번의 Rerun을 유발합니다.
-        # 따라서 성공 시 safe_rerun()을 호출할 필요가 없습니다.
         with st.form("login_form_permanent", clear_on_submit=False):
             st.write(_("admin_login"))
             password = st.text_input("Password", type="password")
@@ -807,15 +807,12 @@ if st.session_state.show_login_form and not st.session_state.admin:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
                     st.session_state.show_login_form = False
-                    
-                    # [FIX-1] 로그인 성공 시 활동 시간 업데이트 (자동 로그아웃 방지)
+                    # 활동 시간 갱신: 로그인이 성공했으므로 활동 시간을 현재로 설정
                     update_activity() 
-                    st.success(_("logged_in_success")) # 성공 메시지 출력
-                    
-                    # [CRITICAL FIX] 폼 제출 시 자동 RERUN을 사용하므로, 수동 RERUN을 제거합니다.
-                    # safe_rerun() 
-                    
-                else: st.warning(_("incorrect_password"))
+                    st.success(_("logged_in_success")) 
+                    # 폼 제출은 이미 Rerun을 유발하므로, 수동 RERUN 제거 (이전 수정 반영)
+                else: 
+                    st.warning(_("incorrect_password"))
 # --- 4. 수정 끝 ---
 
 
@@ -860,7 +857,10 @@ with tab_notice_obj:
                     file_info_list = save_uploaded_files(uploaded_files)
 
                     new_notice = {"id": str(uuid.uuid4()), "title": notice_title, "content": notice_content, "type": notice_type, "files": file_info_list, "date": datetime.now(timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M:%S")}
-                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); st.success(_("notice_reg_success")); safe_rerun()
+                    tour_notices.insert(0, new_notice); save_json(NOTICE_FILE, tour_notices); 
+                    # [FIX: 활동 갱신 추가]
+                    update_activity(); 
+                    st.success(_("notice_reg_success")); safe_rerun()
                 elif submitted: st.warning(_("fill_in_fields"))
 
         # --- 관리자: 공지사항 목록 및 수정/삭제 ---
@@ -883,6 +883,8 @@ with tab_notice_obj:
                             if os.path.exists(file_info['path']): os.remove(file_info['path'])
 
                         tour_notices[:] = [n for n in tour_notices if n.get('id') != notice_id]
+                        # [FIX: 활동 갱신 추가]
+                        update_activity();
                         save_json(NOTICE_FILE, tour_notices); st.success(_("notice_del_success")); safe_rerun()
 
                 with col_title:
@@ -905,7 +907,10 @@ with tab_notice_obj:
                         if st.form_submit_button(_("update")):
                             for n in tour_notices:
                                 if n.get('id') == notice_id:
-                                    n['content'] = updated_content; n['type'] = updated_type_key; save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
+                                    n['content'] = updated_content; n['type'] = updated_type_key; 
+                                    # [FIX: 활동 갱신 추가]
+                                    update_activity();
+                                    save_json(NOTICE_FILE, tour_notices); st.success(_("notice_upd_success")); safe_rerun()
 
             # === 6. 수정: 관리자 제목 변경 ===
             st.subheader(f"📸 포스트 관리")
@@ -935,6 +940,8 @@ with tab_notice_obj:
                                     except Exception as e:
                                         st.warning(f"파일 삭제 오류: {e}")
                             user_posts[:] = [p for p in user_posts if p.get('id') != post_id]
+                            # [FIX: 활동 갱신 추가]
+                            update_activity();
                             save_json(USER_POST_FILE, user_posts)
                             st.success("포스트가 삭제되었습니다.")
                             safe_rerun()
@@ -1065,6 +1072,8 @@ with tab_map_obj:
                         
                         if cities_added_count > 0:
                             save_json(CITY_FILE, tour_schedule)
+                            # [FIX: 활동 갱신 추가]
+                            update_activity()
                             st.success(_("schedule_reg_success")) 
                             safe_rerun()
                         # === 로직 수정 완료 ===
@@ -1136,6 +1145,8 @@ with tab_map_obj:
                                             "note": updated_note, "google_link": updated_google, "probability": updated_probability,
                                         })
                                         save_json(CITY_FILE, tour_schedule)
+                                        # [FIX: 활동 갱신 추가]
+                                        update_activity()
                                         st.success(_("schedule_upd_success"))
                                         safe_rerun()
 
@@ -1144,6 +1155,8 @@ with tab_map_obj:
                             if st.form_submit_button(_("remove"), help=_("schedule_del_success")):
                                 tour_schedule[:] = [s for s in tour_schedule if s.get('id') != item_id]
                                 save_json(CITY_FILE, tour_schedule)
+                                # [FIX: 활동 갱신 추가]
+                                update_activity()
                                 st.success(_("schedule_del_success"))
                                 safe_rerun()
 
