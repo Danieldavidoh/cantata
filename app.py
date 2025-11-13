@@ -1108,23 +1108,50 @@ with tab_map_obj:
         if valid_schedule:
             st.subheader(_("venue_list_title")) 
             schedule_dict = {item['id']: item for item in valid_schedule}
-            sorted_schedule_items = sorted(schedule_dict.items(), key=lambda x: x[1].get('date', '9999-12-31'))
+            
+            # [FIX 7] 정렬 순서 변경: 날짜(date) -> 등록 날짜(reg_date)
+            # 날짜를 주 정렬 키로, 등록 시간을 보조 정렬 키로 사용하여 '이전 도시 아래' 효과를 확실히 보장합니다.
+            sorted_schedule_items = sorted(
+                schedule_dict.items(), 
+                key=lambda x: (x[1].get('date', '9999-12-31'), x[1].get('reg_date', '9999-12-31 23:59:59'))
+            )
+            
             type_options_map_rev = {"indoor": _("indoor"), "outdoor": _("outdoor")}
+            
+            # 한국어 요일 매핑 (0=월요일, 6=일요일)
+            korean_weekdays = ["(월)", "(화)", "(수)", "(목)", "(금)", "(토)", "(일)"]
+
 
             for i, (item_id, item) in enumerate(sorted_schedule_items):
                 current_type_key = item.get('type', 'outdoor')
                 translated_type = type_options_map_rev.get(current_type_key, _("outdoor"))
                 probability_val = item.get('probability', 100)
-                current_no_show = item.get('no_show', False) # [FIX 6-3] no_show 상태 로드
+                current_no_show = item.get('no_show', False) 
 
                 city_name_display = item.get('city', 'N/A')
                 
-                type_color_md = "#1E90FF" if current_type_key == 'indoor' else "#A52A2A" 
-                
-                # Expander 제목
-                header_text = f"[{item.get('date', 'N/A')}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
+                # --- 날짜/요일 포맷팅 ---
+                date_str_raw = item.get('date', 'N/A')
+                display_date_text = date_str_raw
+                try:
+                    event_date_obj = datetime.strptime(date_str_raw, "%Y-%m-%d")
+                    day_of_month = event_date_obj.day
+                    weekday_index = event_date_obj.weekday() # 0 is Monday, 6 is Sunday
+                    weekday_kr = korean_weekdays[weekday_index]
+                    
+                    # [FIX 8] 최종 표시 형식: "DD일(요일)"
+                    display_date_text = f"{day_of_month}일{weekday_kr}"
+                except ValueError:
+                    # 날짜 형식이 N/A 거나 잘못된 경우
+                    display_date_text = date_str_raw
+
+
+                # Expander 제목 생성 (수정된 날짜 형식 적용)
+                # 예: "15일(토) Pune - dddd (실외) | 가능성: 100%"
+                header_text = f"[{display_date_text}] **:{'orange'}[{city_name_display}]** - {item['venue']} ({translated_type}) | {_('probability')}: **{probability_val}%**"
 
                 # [FIX 4-1] 현재 도시 정보 Expander 렌더링
+                # 등록/수정/삭제 후 Expander가 자동으로 접히도록 expanded=False 유지
                 with st.expander(header_text, expanded=False): 
 
                     with st.form(f"edit_delete_form_{item_id}", clear_on_submit=False):
