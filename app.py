@@ -2617,4 +2617,5 @@ city_dict = {
     "Wadala": {"lat": 19.0216, "lon": 72.8646},
     "Achalpur": {"lat": 20.1833, "lon": 77.6833}, "Akot": {"lat": 21.1, "lon": 77.1167},
     "Ambajogai": {"lat": 18.9667, "lon": 76.3833}
-    }
+}
+    
