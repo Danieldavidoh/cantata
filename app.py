@@ -7,7 +7,7 @@ import streamlit as st
 from datetime import datetime, date, timedelta
 import folium
 from streamlit_folium import st_folium
-from folium.plugins import AntPath
+from folium.plugins import AntPath, MarkerCluster # MarkerCluster import 추가
 from pytz import timezone
 from math import radians, cos, sin, asin, sqrt, atan2, degrees
 import requests
@@ -67,7 +67,7 @@ LANG = {
         "no_posts": "현재 포스트가 없습니다。",
         "admin_only_files": "첨부 파일은 관리자만 확인 가능합니다。", 
         "probability": "가능성",
-        "caption": "지도 위의 아이콘이나 경로를 클릭하여 세부 정보를 확인하세요。",
+        "caption": "지도 위의 클러스터나 아이콘을 클릭하여 세부 정보를 확인하세요.", # 캡션 수정
         "delete_all_data": "전체 데이터 영구 삭제",
         "delete_all_warning": "경고: 모든 공지, 일정 및 사용자 포스트가 영구 삭제됩니다. 계속하시려면 비밀번호를 입력하세요。",
         "delete_all_confirm": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다!",
@@ -106,7 +106,7 @@ LANG = {
         "no_posts": "No posts available.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "Probability",
-        "caption": "Click icons or routes on the map for details.",
+        "caption": "Click clusters or icons on the map for details.", # 캡션 수정
         "delete_all_data": "Permanently Delete All Data",
         "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password to proceed.",
         "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
@@ -141,7 +141,7 @@ LANG = {
         "media_attachment": "फोटो/वीडियो संलग्न करें", "post_success": "पोस्ट सफलतापूर्वक अपलोड हुई!", "no_posts": "कोई पोस्ट उपलब्ध नहीं है.",
         "admin_only_files": "Attached files can only be viewed by Admin.",
         "probability": "संभावना",
-        "caption": "विवरण के लिए मानचित्र पर आइकन या मार्गों पर क्लिक करें।",
+        "caption": "विवरण के लिए मानचित्र पर क्ल러스터 या आइकन पर क्लिक करें।", # 캡션 수정
         "delete_all_data": "Permanently Delete All Data",
         "delete_all_warning": "Warning: All notices, schedules, and user posts will be permanently deleted. Enter password to proceed.",
         "delete_all_confirm": "Are you sure you want to delete ALL data? This action is irreversible!",
@@ -311,91 +311,36 @@ def calculate_distance_and_time(p1, p2):
 
     return f"{distance_str} / {time_str}"
 
-# --- 5. 도시 목록 및 좌표 정의 ---
+# --- 5. 도시 목록 및 좌표 정의 (달력 이미지 기반으로 정리) ---
 city_dict = {
-    "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, "Akola": {"lat": 20.702269, "lon": 77.004699},
-    "Ambernath": {"lat": 19.186354, "lon": 73.191948}, "Amravati": {"lat": 20.93743, "lon": 77.779271},
-    # [추가] Adul (Near Aurangabad)
-    "Adul": {"lat": 19.98, "lon": 75.35},
-    "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, "Badlapur": {"lat": 19.1088, "lon": 73.1311},
-    "Bandra": {"lat": 19.0544, "lon": 72.8406},
-    # [추가] Bazar (Near Akola)
-    "Bazar": {"lat": 20.75, "lon": 77.05},
-    "Bhandara": {"lat": 21.180052, "lon": 79.564987}, "Bhiwandi": {"lat": 19.300282, "lon": 73.069645},
-    "Bhusawal": {"lat": 21.02606, "lon": 75.830095},
-    # [수정] Buldhana 추가
-    "Buldhana": {"lat": 20.5312, "lon": 76.1706},
-    "Chandrapur": {"lat": 19.957275, "lon": 79.296875},
-    "Chiplun": {"lat": 17.5322, "lon": 73.516}, "Dhule": {"lat": 20.904964, "lon": 74.774651},
-    "Dombivli": {"lat": 19.2183, "lon": 73.0865}, "Gondia": {"lat": 21.4598, "lon": 80.195},
-    "Hingoli": {"lat": 19.7146, "lon": 77.1424}, "Ichalkaranji": {"lat": 16.6956, "lon": 74.4561},
-    "Jalgaon": {"lat": 21.007542, "lon": 75.562554}, "Jalna": {"lat": 19.833333, "lon": 75.883333},
-    # [추가] Jawla (Near Parbhani/Hingoli)
-    "Jawla": {"lat": 19.50, "lon": 77.30},
-    "Kalyan": {"lat": 19.240283, "lon": 73.13073}, "Karad": {"lat": 17.284, "lon": 74.1779},
-    "Karanja": {"lat": 20.7083, "lon": 76.93}, "Karanja Lad": {"lat": 20.3969, "lon": 76.8908},
-    "Karjat": {"lat": 18.9121, "lon": 73.3259}, "Kavathe Mahankal": {"lat": 17.218, "lon": 74.416},
-    "Khamgaon": {"lat": 20.691, "lon": 76.6886}, "Khopoli": {"lat": 18.6958, "lon": 73.3207},
-    "Kodoli": {"lat": 16.8764, "lon": 74.1909},
-    "Kolad": {"lat": 18.5132, "lon": 73.2166}, "Kolhapur": {"lat": 16.691031, "lon": 74.229523},
-    "Kopargaon": {"lat": 19.883333, "lon": 74.483333}, "Koparkhairane": {"lat": 19.0873, "lon": 72.9856},
-    "Kothrud": {"lat": 18.507399, "lon": 73.807648}, "Kudal": {"lat": 16.033333, "lon": 73.683333},
-    "Kurla": {"lat": 19.0667, "lon": 72.8833}, "Latur": {"lat": 18.406526, "lon": 76.560229},
-    "Lonavala": {"lat": 18.75, "lon": 73.4}, "Mahad": {"lat": 18.086, "lon": 73.3006},
-    "Malegaon": {"lat": 20.555256, "lon": 74.525539}, "Malkapur": {"lat": 20.4536, "lon": 76.3886},
-    "Manmad": {"lat": 20.3333, "lon": 74.4333}, 
-    "Mira Road": {"lat": 19.2799, "lon": 72.8561},
-    "Mira-Bhayandar": {"lat": 19.271112, "lon": 72.854094},
-    "Miraj": {"lat": 16.8295, "lon": 74.6433},
-    "Mumbai": {"lat": 19.07609, "lon": 72.877426}, "Nagpur": {"lat": 21.1458, "lon": 79.088154},
-    "Nanded": {"lat": 19.148733, "lon": 77.321011}, "Nandurbar": {"lat": 21.317, "lon": 74.02},
-    "Nashik": {"lat": 20.011645, "lon": 73.790332}, "Niphad": {"lat": 20.074, "lon": 73.834},
-    "Osmanabad": {"lat": 18.169111, "lon": 76.035309}, "Palghar": {"lat": 19.691644, "lon": 72.768478},
-    "Panaji": {"lat": 15.4909, "lon": 73.8278}, "Panvel": {"lat": 18.989746, "lon": 73.117069},
-    "Paratwada": {"lat": 21.3019, "lon": 77.5178},
-    "Parbhani": {"lat": 19.270335, "lon": 76.773347}, "Peth": {"lat": 18.125, "lon": 74.514},
-    "Phaltan": {"lat": 17.9977, "lon": 74.4066}, "Pune": {"lat": 18.52043, "lon": 73.856743},
-    "Raigad": {"lat": 18.515048, "lon": 73.179436}, "Ramtek": {"lat": 21.3142, "lon": 79.2676},
-    "Ratnagiri": {"lat": 16.990174, "lon": 73.311902}, "Sangli": {"lat": 16.855005, "lon": 74.56427},
-    "Sangole": {"lat": 17.126, "lon": 75.0331}, "Saswad": {"lat": 18.3461, "lon": 74.0335},
-    "Satara": {"lat": 17.688481, "lon": 73.993631}, "Sawantwadi": {"lat": 15.8964, "lon": 73.7626},
-    "Shahada": {"lat": 21.1167, "lon": 74.5667}, "Shirdi": {"lat": 19.7667, "lon": 74.4771},
-    "Shirpur": {"lat": 21.1286, "lon": 74.4172}, "Shirur": {"lat": 18.7939, "lon": 74.0305},
-    "Shrirampur": {"lat": 19.6214, "lon": 73.8653}, "Sinnar": {"lat": 19.8531, "lon": 73.9976},
-    "Solan": {"lat": 30.9083, "lon": 77.0989}, "Solapur": {"lat": 17.659921, "lon": 75.906393},
-    "Talegaon": {"lat": 18.7519, "lon": 73.487}, "Thane": {"lat": 19.218331, "lon": 72.978088},
-    "Wadala": {"lat": 19.0216, "lon": 72.8646},
-    "Achalpur": {"lat": 20.1833, "lon": 77.6833}, "Akot": {"lat": 21.1, "lon": 77.1167},
-    "Ambajogai": {"lat": 18.9667, "lon": 76.6833}, "Amalner": {"lat": 21.0333, "lon": 75.3333},
-    "Anjangaon Surji": {"lat": 21.1167, "lon": 77.8667}, "Arvi": {"lat": 20.45, "lon": 78.15},
-    "Ashti": {"lat": 18.0, "lon": 76.25}, "Atpadi": {"lat": 17.1667, "lon": 74.4167},
-    "Baramati": {"lat": 18.15, "lon": 74.6}, "Barshi": {"lat": 18.11, "lon": 76.06},
-    "Basmat": {"lat": 18.7, "lon": 77.856}, "Bhokar": {"lat": 19.5167, "lon": 77.3833},
-    "Biloli": {"lat": 19.5333, "lon": 77.2167}, "Chikhli": {"lat": 20.9, "lon": 76.0167},
-    "Daund": {"lat": 18.4667, "lon": 74.65}, "Deola": {"lat": 20.5667, "lon": 74.05},
-    "Dhanora": {"lat": 20.7167, "lon": 79.0167}, "Dharni": {"lat": 21.25, "lon": 78.2667},
-    "Dharur": {"lat": 18.0833, "lon": 76.7}, "Digras": {"lat": 19.45, "lon": 77.55},
-    "Dindori": {"lat": 21.0, "lon": 79.0}, "Erandol": {"lat": 21.0167, "lon": 75.2167},
-    "Faizpur": {"lat": 21.1167, "lon": 75.7167}, "Gadhinglaj": {"lat": 16.2333, "lon": 74.1333},
-    "Guhagar": {"lat": 16.4, "lon": 73.4}, "Hinganghat": {"lat": 20.0167, "lon": 78.7667},
-    "Igatpuri": {"lat": 19.6961, "lon": 73.5212}, "Junnar": {"lat": 19.2667, "lon": 73.8833},
-    "Kankavli": {"lat": 16.3833, "lon": 73.5167}, "Koregaon": {"lat": 17.2333, "lon": 74.1167},
-    "Kupwad": {"lat": 16.7667, "lon": 74.4667}, "Lonar": {"lat": 19.9833, "lon": 76.5167},
-    "Mangaon": {"lat": 18.1869, "lon": 73.2555}, "Mangalwedha": {"lat": 16.6667, "lon": 75.1333},
-    "Morshi": {"lat": 20.0556, "lon": 77.7647}, "Pandharpur": {"lat": 17.6658, "lon": 75.3203},
-    "Parli": {"lat": 18.8778, "lon": 76.65}, "Rahuri": {"lat": 19.2833, "lon": 74.5833},
-    "Raver": {"lat": 20.5876, "lon": 75.9002}, "Sangamner": {"lat": 19.3167, "lon": 74.5333},
-    "Savner": {"lat": 21.0833, "lon": 79.1333}, "Sillod": {"lat": 20.0667, "lon": 75.1833},
-    "Tumsar": {"lat": 20.4623, "lon": 79.5429}, "Udgir": {"lat": 18.4167, "lon": 77.1239},
-    "Ulhasnagar": {"lat": 19.218451, "lon": 73.16024}, "Vasai-Virar": {"lat": 19.391003, "lon": 72.839729},
-    "Wadgaon Road": {"lat": 18.52, "lon": 73.85}, "Wadwani": {"lat": 18.9, "lon": 76.69},
-    "Wai": {"lat": 17.9524, "lon": 73.8775}, "Wani": {"lat": 19.0, "lon": 78.002},
-    "Wardha": {"lat": 20.745445, "lon": 78.602452}, "Wardha Road": {"lat": 20.75, "lon": 78.6},
-    "Yavatmal": {"lat": 20.389917, "lon": 78.130051}
+    "Ahmadnagar": {"lat": 19.095193, "lon": 74.749596}, # 9일
+    "Adul": {"lat": 19.98, "lon": 75.35}, # 17일
+    "Aurangabad": {"lat": 19.876165, "lon": 75.343314}, # 7일
+    "Bandra": {"lat": 19.0544, "lon": 72.8406}, # 8일, 26일
+    "Buldhana": {"lat": 20.5312, "lon": 76.1706}, # 6일
+    "Ichalkaranji": {"lat": 16.6956, "lon": 74.4561}, # 13일
+    "Kolhapur": {"lat": 16.691031, "lon": 74.229523}, # 11일
+    "Kodoli": {"lat": 16.8764, "lon": 74.1909}, # 14일
+    "Karad": {"lat": 17.284, "lon": 74.1779}, # 14일, 16일
+    "Mumbai": {"lat": 19.07609, "lon": 72.877426}, # 8일, 20일
+    "Nagpur": {"lat": 21.1458, "lon": 79.088154}, # 4일
+    "Nashik": {"lat": 20.011645, "lon": 73.790332}, # 29일
+    "Parbhani": {"lat": 19.270335, "lon": 76.773347}, # 18일
+    "Paratwada": {"lat": 21.3019, "lon": 77.5178}, # 5일
+    "Palghar": {"lat": 19.691644, "lon": 72.768478}, # 21일
+    "Pune": {"lat": 18.52043, "lon": 73.856743}, # 16일, 28일
+    "Satara": {"lat": 17.688481, "lon": 73.993631}, # 15일
+    "Sangli": {"lat": 16.855005, "lon": 74.56427}, # 10일
+    "Miraj": {"lat": 16.8295, "lon": 74.6433}, # 12일
+    "Shirur": {"lat": 18.7939, "lon": 74.0305}, # 19일
+    "Ambernath": {"lat": 19.186354, "lon": 73.191948}, # 22일
+    "Mira Road": {"lat": 19.2799, "lon": 72.8561}, # 23일
+    "Wadala": {"lat": 19.0216, "lon": 72.8646}, # 24일
+    "Solapur": {"lat": 17.659921, "lon": 75.906393}, # 25일, 30일
+    "Jawla Bazar": {"lat": 20.75, "lon": 77.05}, # 18일 (Bazar의 임의 좌표 사용)
 }
 
-major_cities_available = [c for c in ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Kalyan", "Vasai-Virar", "Aurangabad", "Solapur", "Mira-Bhayandar", "Bhiwandi", "Amravati", "Nanded", "Kolhapur", "Ulhasnagar", "Sangli", "Malegaon", "Jalgaon", "Akola", "Latur", "Dhule", "Ahmadnagar", "Chandrapur", "Parbhani", "Ichalkaranji", "Jalna", "Ambernath", "Bhusawal", "Panvel", "Dombivli"] if c in city_dict]
-# city_options는 이제 모든 도시를 포함하며, 중복 선택이 가능해지므로, 남아있는 도시 목록을 만들 필요가 없습니다.
+major_cities_available = [c for c in city_dict.keys()]
 remaining_cities = sorted([c for c in city_dict if c not in major_cities_available])
 city_options = major_cities_available + remaining_cities
 
@@ -1344,9 +1289,10 @@ with tab_map_obj:
 
     m = folium.Map(location=start_coords, zoom_start=8, tiles="CartoDB positron")
     locations = []
-    city_names_for_map = [] 
     
-    # [수정된 로직] 공연 순서 카운터를 초기화합니다.
+    # [추가] 마커 클러스터 그룹 생성
+    marker_cluster = MarkerCluster().add_to(m) 
+    
     performance_order = 0 
     
     # 순회하며 마커를 추가하고 순서를 부여합니다.
@@ -1370,70 +1316,53 @@ with tab_map_obj:
         if not item_no_show:
             performance_order += 1
         
-        # [수정된 로직] 마커 내용 설정 (크기 두 배)
+        # [마커 클러스터링을 위해 커스텀 DivIcon 대신 Font Awesome 아이콘 사용]
         if item_no_show:
-            marker_content = "X"
-            text_size = "32px" # 증가
-            pin_color = "#666666" # Grey pin for No Show
-            text_top = "8px" 
+            icon_color = "darkred" if is_past else "darkgray" # No Show는 회색 계열
+            icon_name = 'times' # X 표시
+            icon_prefix = 'fa'
         else:
-            marker_content = str(performance_order)
-            text_size = "28px" # 증가 (24px -> 28px)
-            pin_color = "#BB3333" # Red pin for performance
-            text_top = "9px" # Adjust vertical position
-        
-        probability_val = item.get('probability', 100); city_name_display = item.get('city', 'N/A')
-        red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_display}</span>'
+            icon_color = "green" if not is_past else "lightgray" # 공연은 초록색
+            icon_name = 'star' # 별 아이콘
+            icon_prefix = 'fa'
 
         # [FIX 6-7] no_show 상태에 따라 팝업에 경고 메시지 추가
+        red_city_name = f'<span style="color: #BB3333; font-weight: bold;">{city_name_map}</span>'
         no_show_warning = ""
         if item_no_show:
             no_show_warning = f'<div style="color: #FF8C00; font-weight: bold; margin-bottom: 10px;">⚠️ {_("no_show")}</div>'
         
         popup_html = f"""
         <div style="color: #1A1A1A; background-color: #FFFFFF; padding: 10px; border-radius: 8px; min-height: 190px;">
+            <b>No:</b> {performance_order if not item_no_show else 'N/A'}<br>
             {no_show_warning}
             <div style="color: #1A1A1A;">
                 <b>{_('city')}:</b> {red_city_name}<br>
                 <b>{_('date')}:</b> {date_str_map}<br>
                 <b>{_('venue')}:</b> {item.get('venue', 'N/A')}<br>
                 <b>{_('type')}:</b> <span style="color: {type_color_html};"><i class="fa {map_type_icon_fa}" style="margin-right: 5px;"></i> {translated_type}</span><br>
-                <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{probability_val}%</span>
+                <b>{_('probability')}:</b> <span style="font-weight: bold; color: #66BB66;">{item.get('probability', 100)}%</span>
                 
                 <div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; height: 10px; margin-top: 5px;">
-                    <div style="width: {probability_val}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
+                    <div style="width: {item.get('probability', 100)}%; background-color: #66BB66; border-radius: 5px; height: 10px;"></div>
                 </div>
             </div>
         """
         
         google_link_data = item.get('google_link')
         if google_link_data:
-            
-            # --- 1. Google Maps 링크 생성 로직 수정 ---
-            
-            # A. 유효한 Google Maps URL인지 확인
             is_valid_url = google_link_data.startswith('http') and ('google.com/maps' in google_link_data or 'goo.gl/maps' in google_link_data)
             
             if is_valid_url:
-                # URL이 직접 입력된 경우: 해당 URL을 최종 링크로 사용
                 final_link = google_link_data
             else:
-                # 장소 이름이나 일반 쿼리가 입력된 경우: 검색/길찾기 쿼리로 변환
-                
-                # 'venue'가 비어있으면 'city'만 사용하고, 아니면 'venue, city' 사용
                 query_string = item.get('venue', '')
                 if not query_string or query_string.lower() == 'n/a':
                     query_string = item.get('city', 'Maharashtra')
                 else:
                     query_string = f"{query_string}, {item.get('city', 'Maharashtra')}"
-
-                # 쿼리를 URL 인코딩
                 encoded_query = quote(query_string)
-                
-                # 웹 기반 Google Maps 검색 링크 (q=query) 사용
                 final_link = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
-            
-            # --- 수정된 링크를 팝업에 추가 ---
             
             popup_html += f"""
                 <span style="display: block; margin-top: 10px; font-weight: bold;">
@@ -1445,37 +1374,19 @@ with tab_map_obj:
                 </span>
             """
 
-        # 최상위 DIV 닫기
         popup_html += "</div>"
 
-        # 마커 아이콘
-        marker_icon_html = f"""
-            <div style="
-                transform: scale(0.666);
-                opacity: {0.5 if is_past else 1.0};
-                text-align: center;
-                white-space: nowrap;
-            ">
-                <i class="fa fa-map-marker fa-3x" style="color: {pin_color};"></i>
-                <div style="
-                    font-size: {text_size}; 
-                    color: white; /* 흰색 글씨 */
-                    font-weight: bold; 
-                    position: absolute; 
-                    top: {text_top}; 
-                    left: 50%;
-                    transform: translate(-50%, 0); /* 수평 중앙 정렬 */
-                ">{marker_content}</div>
-            </div>
-        """
-
-        folium.Marker([lat, lon], popup=folium.Popup(popup_html, max_width=300), icon=folium.DivIcon(icon_size=(30, 45), icon_anchor=(15, 45), html=marker_icon_html)).add_to(m)
+        # [수정] 마커 클러스터에 마커 추가
+        folium.Marker(
+            [lat, lon], 
+            popup=folium.Popup(popup_html, max_width=300), 
+            icon=folium.Icon(color=icon_color, icon=icon_name, prefix=icon_prefix)
+        ).add_to(marker_cluster) # 마커를 marker_cluster에 추가
+        
         locations.append([lat, lon])
-        city_names_for_map.append(city_name_map)
 
 
     # 4. AntPath (경로 애니메이션) 및 거리/시간 텍스트 배치
-    # [수정된 로직] show_route 체크박스 상태에 따라 경로 표시 여부 결정
     if show_route and len(locations) > 1:
         current_index = -1
 
@@ -1496,7 +1407,6 @@ with tab_map_obj:
         if len(past_segments) > 1:
             for i in range(len(past_segments) - 1):
                 segment = [past_segments[i], past_segments[i+1]]
-                # [FIX 3] 업데이트된 calculate_distance_and_time 함수 호출
                 dist_time = calculate_distance_and_time(past_segments[i], past_segments[i+1])
                 tooltip_text = f"{dist_time}"
                 
@@ -1504,7 +1414,6 @@ with tab_map_obj:
                 
                 folium.PolyLine(
                     locations=segment, 
-                    # [수정] 라인 색상을 하늘색으로 변경
                     color=SKY_BLUE, 
                     weight=5, 
                     opacity=0.125, 
@@ -1515,7 +1424,6 @@ with tab_map_obj:
         if len(future_segments) > 1:
             for i in range(len(future_segments) - 1):
                 segment = [future_segments[i], future_segments[i+1]]
-                # [FIX 3] 업데이트된 calculate_distance_and_time 함수 호출
                 dist_time = calculate_distance_and_time(future_segments[i], future_segments[i+1])
                 tooltip_text = f"{dist_time}"
 
@@ -1525,11 +1433,9 @@ with tab_map_obj:
                     segment, 
                     use="regular", 
                     dash_array='30, 20', 
-                    # [수정] 라인 색상을 하늘색으로 변경
                     color=SKY_BLUE, 
                     weight=5, 
                     opacity=0.8, 
-                    # [수정] 옵션의 색상도 하늘색으로 변경
                     options={"delay": 24000, "dash_factor": -0.1, "color": SKY_BLUE},
                     tooltip=tooltip_obj 
                 ).add_to(m)
