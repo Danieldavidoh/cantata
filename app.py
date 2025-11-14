@@ -173,7 +173,7 @@ update_activity()
 # 1. 자동 로그아웃 검사
 if st.session_state.admin:
     # 10초마다 자동 새로고침 설정 (관리자 모드에서만)
-    st_autorefresh(interval=10000, key="auto_refresh_admin", limit=0) # 이 호출이 Streamlit 실행 시점에 한 번만 등록되도록 합니다.
+    st_autorefresh(interval=10000, key="auto_refresh_admin", limit=0) 
     
     time_since_last_activity = (datetime.now() - st.session_state.last_activity_time).total_seconds()
     TIMEOUT_SECONDS = 120 
@@ -645,6 +645,12 @@ st.markdown(
         font-size: 1.1em;
     }
     
+    /* 12. 등록 버튼 오른쪽 정렬을 위한 CSS (추가) */
+    .register-button-right {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
     </style>
     
     <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
@@ -842,12 +848,12 @@ if st.session_state.show_login_form and not st.session_state.admin:
                 if password == ADMIN_PASS:
                     st.session_state.admin = True
                     st.session_state.logged_in_user = "Admin"
-                    st.session_state.show_login_form = False
+                    st.session_state.show_login_form = False # [수정] 로그인 성공 시 폼 닫기
                     
                     # 로그인 성공 시 활동 시간 업데이트 (자동 로그아웃 방지)
                     update_activity() 
                     st.success(_("logged_in_success")) # 성공 메시지 출력
-                    
+                    safe_rerun()
                     
                 else: st.warning(_("incorrect_password"))
 
@@ -887,7 +893,11 @@ with tab_notice_obj:
                 selected_display_type = st.radio(_("type"), list(type_options.values()))
                 notice_type = list(type_options.keys())[list(type_options.values()).index(selected_display_type)]
 
-                submitted = st.form_submit_button(_("register"))
+                # [수정] 등록 버튼 오른쪽 정렬을 위해 컬럼 사용
+                col_spacer_btn, col_submit_btn = st.columns([4, 1])
+                with col_submit_btn:
+                    submitted = st.form_submit_button(_("register"))
+                # [수정 끝]
 
                 if submitted and notice_title and notice_content:
                     file_info_list = save_uploaded_files(uploaded_files)
@@ -1000,7 +1010,13 @@ with tab_notice_obj:
                 with st.form("user_post_form", clear_on_submit=True):
                     post_content = st.text_area(_("post_content"), placeholder="여행 후기, 사진 공유 등 자유롭게 작성하세요.")
                     uploaded_media = st.file_uploader(_("media_attachment"), type=["png", "jpg", "jpeg", "mp4", "mov"], accept_multiple_files=True, key="user_media_uploader")
-                    post_submitted = st.form_submit_button(_("register"))
+                    
+                    # [수정] 등록 버튼 오른쪽 정렬을 위해 컬럼 사용
+                    col_spacer_post_btn, col_submit_post_btn = st.columns([4, 1])
+                    with col_submit_post_btn:
+                        post_submitted = st.form_submit_button(_("register"))
+                    # [수정 끝]
+
 
                     if post_submitted and (post_content or uploaded_media):
                         media_info_list = save_uploaded_files(uploaded_media)
@@ -1035,7 +1051,13 @@ with tab_notice_obj:
             delete_password = st.text_input("Confirm Password", type="password", key="delete_all_pass")
             confirm_delete = st.checkbox(_("delete_all_confirm"), key="delete_all_confirm_check")
             
-            if st.form_submit_button(_("delete_all_data")):
+            # [수정] 삭제 버튼 오른쪽 정렬을 위해 컬럼 사용
+            col_spacer_del, col_submit_del = st.columns([4, 1])
+            with col_submit_del:
+                delete_submitted = st.form_submit_button(_("delete_all_data"))
+            # [수정 끝]
+            
+            if delete_submitted:
                 if delete_password == ADMIN_PASS and confirm_delete:
                     # 모든 데이터 파일 삭제
                     if os.path.exists(NOTICE_FILE): os.remove(NOTICE_FILE)
@@ -1099,8 +1121,11 @@ with tab_map_obj:
                 col_no_show_check.write("") # 수직 정렬을 위한 공백
                 no_show = col_no_show_check.checkbox(_("no_show"), key="new_no_show_check")
 
-
-                submitted = st.form_submit_button(_("register"))
+                # [요청 반영] 등록 버튼 오른쪽 정렬을 위한 컬럼 분리 및 버튼 이동
+                col_spacer_reg, col_submit_reg = st.columns([4, 1])
+                with col_submit_reg:
+                    submitted = st.form_submit_button(_("register")) 
+                # [요청 반영 끝]
 
                 # === [수정] 제출 로직: city_name_list만 검사하도록 수정 (나머지는 N/A 허용) ===
                 if submitted:
